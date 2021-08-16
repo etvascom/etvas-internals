@@ -27,7 +27,7 @@
     "test:watch": "nwb test-react --server",
     "storybook": "BROWSER=none start-storybook -p 6006",
     "build-storybook": "build-storybook -o build/ --quiet",
-    "push": "npm run build && git add es && git add lib && git commit -m \"build\" && gti push"
+    "push": "npm run build && git add es && git add lib && git commit -m \"build\" && git push"
   },
   "peerDependencies": {
     "react": "^16.6.0 || ^17",
