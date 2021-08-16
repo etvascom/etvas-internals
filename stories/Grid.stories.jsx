@@ -23,6 +23,7 @@ const getExampleGrid = () => ({
         </GridMainComponent>
       ),
       sort: 'name',
+      tooltip: { content: 'This is the name' },
       width: '240px'
     },
     {
