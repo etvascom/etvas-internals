@@ -18,7 +18,7 @@ import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Checkbox, Icon, themed, Touchable, Typography } from '@etvas/etvaskit';
-import { Tooltip } from '../Tooltip';
+import Tooltip from '../Tooltip';
 
 var getCellWithAttribute = function getCellWithAttribute(item, column) {
   return /*#__PURE__*/React.createElement(Typography, {
