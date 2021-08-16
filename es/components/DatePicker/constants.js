@@ -1,0 +1,1 @@
+export var COMMON_FORMAT = 'YYYY-MM-DD';
