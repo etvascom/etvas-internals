@@ -24,6 +24,9 @@ const getOptions = ({ categories, series, ...rest }) => ({
   title: {
     text: ''
   },
+  yAxis: {
+    title: ''
+  },
   xAxis: {
     categories
   },
