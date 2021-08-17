@@ -30,10 +30,10 @@
     "push": "npm run build && git add es && git add lib && git commit -m \"build\" && git push"
   },
   "peerDependencies": {
-    "react": "^16.6.0 || ^17",
-    "styled-components": "^5.1.0",
     "@etvas/etvaskit": "^1",
-    "moment": "^2"
+    "moment": "^2",
+    "react": "^16.6.0 || ^17",
+    "styled-components": "^5.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.10.2",
@@ -73,5 +73,8 @@
   "keywords": [
     "etvas"
   ],
-  "dependencies": {}
+  "dependencies": {
+    "highcharts": "^9.1.2",
+    "highcharts-react-official": "^3.0.0"
+  }
 }
