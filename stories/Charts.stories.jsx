@@ -1,5 +1,5 @@
 import React from 'react'
-import { LineChart, ColumnChart } from '../src'
+import { LineChart, ColumnChart, BarChart } from '../src'
 
 export default {
   title: 'Components/Charts'
@@ -8,6 +8,9 @@ export default {
 const colors = ['#54BEF6', '#F7D935', '#0040E3', '#B91C6B']
 
 const categories = [
+  'January 2021',
+  'February 2021',
+  'March 2021',
   'April 2021',
   'May 2021',
   'June 2021',
@@ -28,4 +31,12 @@ export const LineChartExample = () => (
 
 export const ColumnChartExample = () => (
   <ColumnChart categories={categories} series={[series[0]]} colors={colors} />
+)
+
+export const BarChartExample = () => (
+  <BarChart
+    categories={categories}
+    series={[series[0], series[1]]}
+    colors={colors}
+  />
 )
