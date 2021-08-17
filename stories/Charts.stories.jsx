@@ -1,8 +1,8 @@
 import React from 'react'
-import { LineChart } from '../src'
+import { LineChart, ColumnChart } from '../src'
 
 export default {
-  title: 'Components/LineChart'
+  title: 'Components/Charts'
 }
 
 const colors = ['#54BEF6', '#F7D935', '#0040E3', '#B91C6B']
@@ -24,4 +24,8 @@ const series = [
 
 export const LineChartExample = () => (
   <LineChart categories={categories} series={series} colors={colors} />
+)
+
+export const ColumnChartExample = () => (
+  <ColumnChart categories={categories} series={[series[0]]} colors={colors} />
 )
