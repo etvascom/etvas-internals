@@ -18,7 +18,9 @@ export const DateRangePicker = ({
   yearDisplayEnd,
   navigationByYear,
   disabled,
-  onChange
+  onChange,
+  label,
+  placeholder
 }) => {
   const wrapRef = useRef()
   const [isExpanded, setExpanded] = useState(false)
@@ -86,57 +88,72 @@ export const DateRangePicker = ({
   const highlight = day => mStart.isSameOrBefore(day) && mEnd.isSameOrAfter(day)
 
   return (
-    <Wrapper ref={wrapRef}>
-      <FakeInput
-        onClick={toggleExpanded}
-        expanded={isExpanded}
-        disabled={disabled}>
-        <Typography
-          mx={2}
-          truncate
-          color={disabled ? 'textInputDisabled' : 'baseBlack'}>
-          {mStart.format(displayFormat)} &divide; {mEnd.format(displayFormat)}
+    <Flex flexDirection='column'>
+      {label && (
+        <Typography as='label' variant='inputLabel' width='fit-content'>
+          {label}
         </Typography>
-        <Flex mr={2} opacity={disabled ? 0.35 : 1}>
-          <Icon name='calendar' />
-        </Flex>
-      </FakeInput>
-      {isExpanded && (
-        <DropdownWrapper>
-          {navigationByYear && (
-            <Years
-              mr={2}
-              value={currentYear}
-              displayStart={yearDisplayStart}
-              displayEnd={yearDisplayEnd}
-              startOfTime={mSot.year()}
-              endOfTime={mEot.year()}
-              onChange={handleChangeCurrentYear}
-            />
-          )}
-          <Calendar
-            mx={2}
-            value={mStart.format(COMMON_FORMAT)}
-            monthNavigationWithinYear={navigationByYear}
-            yearSelector={!navigationByYear}
-            onChange={handleChangeDateStart}
-            startOfTime={mSot.format(COMMON_FORMAT)}
-            endOfTime={mEnd.format(COMMON_FORMAT)}
-            highlight={highlight}
-          />
-          <Calendar
-            yearSelector={!navigationByYear}
-            ml={2}
-            value={mEnd.format(COMMON_FORMAT)}
-            monthNavigationWithinYear={navigationByYear}
-            onChange={handleChangeDateEnd}
-            startOfTime={mStart.format(COMMON_FORMAT)}
-            endOfTime={mEot.format(COMMON_FORMAT)}
-            highlight={highlight}
-          />
-        </DropdownWrapper>
       )}
-    </Wrapper>
+      <Wrapper ref={wrapRef}>
+        <FakeInput
+          onClick={toggleExpanded}
+          expanded={isExpanded}
+          disabled={disabled}>
+          <Typography
+            mx={2}
+            truncate
+            variant='labelSmall'
+            color={disabled ? 'textInputDisabled' : 'baseBlack'}>
+            {placeholder && !value ? (
+              placeholder
+            ) : (
+              <>
+                {mStart.format(displayFormat)} &divide;{' '}
+                {mEnd.format(displayFormat)}
+              </>
+            )}
+          </Typography>
+          <Flex mr={2} opacity={disabled ? 0.35 : 1}>
+            <Icon name='calendar' />
+          </Flex>
+        </FakeInput>
+        {isExpanded && (
+          <DropdownWrapper>
+            {navigationByYear && (
+              <Years
+                mr={2}
+                value={currentYear}
+                displayStart={yearDisplayStart}
+                displayEnd={yearDisplayEnd}
+                startOfTime={mSot.year()}
+                endOfTime={mEot.year()}
+                onChange={handleChangeCurrentYear}
+              />
+            )}
+            <Calendar
+              mx={2}
+              value={mStart.format(COMMON_FORMAT)}
+              monthNavigationWithinYear={navigationByYear}
+              yearSelector={!navigationByYear}
+              onChange={handleChangeDateStart}
+              startOfTime={mSot.format(COMMON_FORMAT)}
+              endOfTime={mEnd.format(COMMON_FORMAT)}
+              highlight={highlight}
+            />
+            <Calendar
+              yearSelector={!navigationByYear}
+              ml={2}
+              value={mEnd.format(COMMON_FORMAT)}
+              monthNavigationWithinYear={navigationByYear}
+              onChange={handleChangeDateEnd}
+              startOfTime={mStart.format(COMMON_FORMAT)}
+              endOfTime={mEot.format(COMMON_FORMAT)}
+              highlight={highlight}
+            />
+          </DropdownWrapper>
+        )}
+      </Wrapper>
+    </Flex>
   )
 }
 
@@ -200,16 +217,18 @@ DateRangePicker.propTypes = {
       PropTypes.string,
       PropTypes.object,
       PropTypes.number
-    ]).isRequired,
+    ]),
     end: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.object,
       PropTypes.number
-    ]).isRequired
-  }).isRequired,
+    ])
+  }),
   onChange: PropTypes.func,
   disabled: PropTypes.bool,
   displayFormat: PropTypes.string,
+  label: PropTypes.node,
+  placeholder: PropTypes.node,
   navigationByYear: PropTypes.bool
 }
 
