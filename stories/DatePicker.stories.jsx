@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { Box, Card, Flex } from '@etvas/etvaskit'
-import { Calendar, DateRangePicker, DatePicker } from '../src'
+import { Card } from '@etvas/etvaskit'
+import { DateRangePicker, DatePicker } from '../src'
 
 export default {
   title: 'Components/DatePicker',
