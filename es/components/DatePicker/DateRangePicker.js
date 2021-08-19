@@ -19,7 +19,9 @@ export var DateRangePicker = function DateRangePicker(_ref) {
       yearDisplayEnd = _ref.yearDisplayEnd,
       navigationByYear = _ref.navigationByYear,
       disabled = _ref.disabled,
-      onChange = _ref.onChange;
+      onChange = _ref.onChange,
+      label = _ref.label,
+      placeholder = _ref.placeholder;
   var wrapRef = useRef();
 
   var _useState = useState(false),
@@ -103,7 +105,13 @@ export var DateRangePicker = function DateRangePicker(_ref) {
     return mStart.isSameOrBefore(day) && mEnd.isSameOrAfter(day);
   };
 
-  return /*#__PURE__*/React.createElement(Wrapper, {
+  return /*#__PURE__*/React.createElement(Flex, {
+    flexDirection: "column"
+  }, label && /*#__PURE__*/React.createElement(Typography, {
+    as: "label",
+    variant: "inputLabel",
+    width: "fit-content"
+  }, label), /*#__PURE__*/React.createElement(Wrapper, {
     ref: wrapRef
   }, /*#__PURE__*/React.createElement(FakeInput, {
     onClick: toggleExpanded,
@@ -112,8 +120,9 @@ export var DateRangePicker = function DateRangePicker(_ref) {
   }, /*#__PURE__*/React.createElement(Typography, {
     mx: 2,
     truncate: true,
+    variant: "labelSmall",
     color: disabled ? 'textInputDisabled' : 'baseBlack'
-  }, mStart.format(displayFormat), " \xF7 ", mEnd.format(displayFormat)), /*#__PURE__*/React.createElement(Flex, {
+  }, placeholder && !value ? placeholder : /*#__PURE__*/React.createElement(React.Fragment, null, mStart.format(displayFormat), " \xF7", ' ', mEnd.format(displayFormat))), /*#__PURE__*/React.createElement(Flex, {
     mr: 2,
     opacity: disabled ? 0.35 : 1
   }, /*#__PURE__*/React.createElement(Icon, {
@@ -144,7 +153,7 @@ export var DateRangePicker = function DateRangePicker(_ref) {
     startOfTime: mStart.format(COMMON_FORMAT),
     endOfTime: mEot.format(COMMON_FORMAT),
     highlight: highlight
-  })));
+  }))));
 };
 var DropdownWrapper = styled(Flex)(function (_ref3) {
   var theme = _ref3.theme;
@@ -186,12 +195,14 @@ DateRangePicker.propTypes = process.env.NODE_ENV !== "production" ? {
   startOfTime: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.number]),
   endOfTime: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.number]),
   value: PropTypes.shape({
-    start: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.number]).isRequired,
-    end: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.number]).isRequired
-  }).isRequired,
+    start: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.number]),
+    end: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.number])
+  }),
   onChange: PropTypes.func,
   disabled: PropTypes.bool,
   displayFormat: PropTypes.string,
+  label: PropTypes.node,
+  placeholder: PropTypes.node,
   navigationByYear: PropTypes.bool
 } : {};
 DateRangePicker.defaultProps = {

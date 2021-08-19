@@ -36,6 +36,9 @@ var getOptions = function getOptions(_ref) {
     title: {
       text: ''
     },
+    yAxis: {
+      title: ''
+    },
     xAxis: {
       categories: categories
     },
