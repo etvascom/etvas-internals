@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Card } from '@etvas/etvaskit'
-import { DatePicker } from '../src'
+import { DateRangePicker, DatePicker } from '../src'
 
 export default {
   title: 'Components/DatePicker',
@@ -53,4 +53,26 @@ Simple.args = {
   yearSelector: true,
   startOfTime: '1860-01-01',
   endOfTime: '2180-12-31'
+}
+
+export const DateRange = () => {
+  const [dateRange, setDateRange] = useState()
+
+  const onChangeDateRange = value => {
+    setDateRange(value)
+  }
+
+  return (
+    <DateRangePicker
+      value={dateRange}
+      label='Date Range Picker'
+      placeholder='Select new range'
+      onChange={onChangeDateRange}
+      displayFormat='dddd DD MMMM YYYY'
+      yearDisplayStart={2021}
+      yearDisplayEnd={2022}
+      startOfTime='2021-01-05'
+      endOfTime='2022-03-15'
+    />
+  )
 }
