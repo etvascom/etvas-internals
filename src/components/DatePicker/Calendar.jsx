@@ -2,6 +2,7 @@ import React, { useState, useMemo, useCallback, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import 'moment/locale/de'
+import 'moment/locale/en-gb'
 
 import { COMMON_FORMAT } from './constants'
 import { Flex, Typography, Touchable, Icon, styled } from '@etvas/etvaskit'
@@ -80,7 +81,10 @@ export const Calendar = ({
     }
 
     if (
-      end.clone().endOf('week').diff(start.clone().startOf('week'), 'week') < 5
+      end
+        .clone()
+        .endOf('week')
+        .diff(start.clone().startOf('week'), 'week') < 5
     ) {
       start.startOf('week').add(-1, 'day')
     }
