@@ -97,7 +97,7 @@ Years.propTypes = {
   displayEnd: PropTypes.number,
   displayStatus: PropTypes.func,
   onChange: PropTypes.func,
-  label: PropTypes.string
+  label: PropTypes.node
 }
 
 Years.defaultProps = {

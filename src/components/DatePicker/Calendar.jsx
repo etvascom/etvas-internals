@@ -81,7 +81,10 @@ export const Calendar = ({
     }
 
     if (
-      end.clone().endOf('week').diff(start.clone().startOf('week'), 'week') < 5
+      end
+        .clone()
+        .endOf('week')
+        .diff(start.clone().startOf('week'), 'week') < 5
     ) {
       start.startOf('week').add(-1, 'day')
     }
@@ -481,7 +484,7 @@ Calendar.propTypes = {
   monthNavigationWithinYear: PropTypes.bool,
   onChange: PropTypes.func,
   highlight: PropTypes.func,
-  label: PropTypes.string
+  label: PropTypes.node
 }
 
 Calendar.defaultProps = {

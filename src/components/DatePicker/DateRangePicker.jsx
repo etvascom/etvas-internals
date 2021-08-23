@@ -251,9 +251,9 @@ DateRangePicker.propTypes = {
   label: PropTypes.node,
   placeholder: PropTypes.node,
   navigationByYear: PropTypes.bool,
-  labelYear: PropTypes.string,
-  labelStartDate: PropTypes.string,
-  labelEndDate: PropTypes.string
+  labelYear: PropTypes.node,
+  labelStartDate: PropTypes.node,
+  labelEndDate: PropTypes.node
 }
 
 DateRangePicker.defaultProps = {
