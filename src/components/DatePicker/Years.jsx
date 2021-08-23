@@ -45,9 +45,11 @@ export const Years = ({
 
   return (
     <Box width='224px' {...props}>
-      <Typography variant='labelSmallBold' px={3} mb={1}>
-        {label}
-      </Typography>
+      {!!label && (
+        <Typography variant='labelSmallBold' px={3} mb={1}>
+          {label}
+        </Typography>
+      )}
       <Typography variant='labelSmallBold' px={3} mt={2}>
         {value}
       </Typography>

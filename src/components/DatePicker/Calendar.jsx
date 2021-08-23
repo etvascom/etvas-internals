@@ -221,9 +221,11 @@ export const Calendar = ({
 
   return (
     <Flex justifyContent='flex-start' flexWrap='wrap' width='224px' {...props}>
-      <Typography variant='labelSmallBold' mb={1}>
-        {label}
-      </Typography>
+      {!!label && (
+        <Typography variant='labelSmallBold' mb={1}>
+          {label}
+        </Typography>
+      )}
       <Flex width='224px' mb={1}>
         {monthSelector && (
           <DropTrigger onClick={toggleMonths} mx={1}>
