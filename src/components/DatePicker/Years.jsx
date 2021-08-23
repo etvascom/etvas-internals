@@ -13,6 +13,7 @@ export const Years = ({
   displayEnd,
   perRow,
   onChange,
+  label,
   ...props
 }) => {
   const interval = useMemo(() => {
@@ -44,6 +45,9 @@ export const Years = ({
 
   return (
     <Box width='224px' {...props}>
+      <Typography variant='labelSmallBold' px={3} mb={1}>
+        {label}
+      </Typography>
       <Typography variant='labelSmallBold' px={3} mt={2}>
         {value}
       </Typography>
@@ -92,7 +96,8 @@ Years.propTypes = {
   displayStart: PropTypes.number,
   displayEnd: PropTypes.number,
   displayStatus: PropTypes.func,
-  onChange: PropTypes.func
+  onChange: PropTypes.func,
+  label: PropTypes.string
 }
 
 Years.defaultProps = {
