@@ -21,6 +21,7 @@ export const Calendar = ({
   endOfTime,
   onChange,
   highlight,
+  label,
   ...props
 }) => {
   const [isMonthsShown, setMonthsShown] = useState(false)
@@ -80,7 +81,10 @@ export const Calendar = ({
     }
 
     if (
-      end.clone().endOf('week').diff(start.clone().startOf('week'), 'week') < 5
+      end
+        .clone()
+        .endOf('week')
+        .diff(start.clone().startOf('week'), 'week') < 5
     ) {
       start.startOf('week').add(-1, 'day')
     }
@@ -217,6 +221,11 @@ export const Calendar = ({
 
   return (
     <Flex justifyContent='flex-start' flexWrap='wrap' width='224px' {...props}>
+      {!!label && (
+        <Typography variant='labelSmallBold' mb={1}>
+          {label}
+        </Typography>
+      )}
       <Flex width='224px' mb={1}>
         {monthSelector && (
           <DropTrigger onClick={toggleMonths} mx={1}>
@@ -476,7 +485,8 @@ Calendar.propTypes = {
   monthNavigation: PropTypes.bool,
   monthNavigationWithinYear: PropTypes.bool,
   onChange: PropTypes.func,
-  highlight: PropTypes.func
+  highlight: PropTypes.func,
+  label: PropTypes.node
 }
 
 Calendar.defaultProps = {

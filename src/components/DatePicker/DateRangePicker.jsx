@@ -20,7 +20,10 @@ export const DateRangePicker = ({
   disabled,
   onChange,
   label,
-  placeholder
+  placeholder,
+  labelYear,
+  labelStartDate,
+  labelEndDate
 }) => {
   const wrapRef = useRef()
   const [isExpanded, setExpanded] = useState(false)
@@ -39,12 +42,27 @@ export const DateRangePicker = ({
     return () => window.removeEventListener('click', listener)
   }, [])
 
-  const mSot = moment(startOfTime || moment().add(-160, 'year').startOf('year'))
-  const mEot = moment(endOfTime || moment().add(160, 'year').endOf('year'))
+  const mSot = moment(
+    startOfTime ||
+      moment()
+        .add(-160, 'year')
+        .startOf('year')
+  )
+  const mEot = moment(
+    endOfTime ||
+      moment()
+        .add(160, 'year')
+        .endOf('year')
+  )
 
   const [mStart, mEnd] = useMemo(() => {
     const { start, end } = value || {}
-    const mStart = moment(start || moment().add(-1, 'month').startOf('month'))
+    const mStart = moment(
+      start ||
+        moment()
+          .add(-1, 'month')
+          .startOf('month')
+    )
     const mEnd = moment(end || moment())
     return [mStart, mEnd]
   }, [value])
@@ -128,6 +146,7 @@ export const DateRangePicker = ({
                 startOfTime={mSot.year()}
                 endOfTime={mEot.year()}
                 onChange={handleChangeCurrentYear}
+                label={labelYear}
               />
             )}
             <Calendar
@@ -139,6 +158,7 @@ export const DateRangePicker = ({
               startOfTime={mSot.format(COMMON_FORMAT)}
               endOfTime={mEnd.format(COMMON_FORMAT)}
               highlight={highlight}
+              label={labelStartDate}
             />
             <Calendar
               yearSelector={!navigationByYear}
@@ -149,6 +169,7 @@ export const DateRangePicker = ({
               startOfTime={mStart.format(COMMON_FORMAT)}
               endOfTime={mEot.format(COMMON_FORMAT)}
               highlight={highlight}
+              label={labelEndDate}
             />
           </DropdownWrapper>
         )}
@@ -229,7 +250,10 @@ DateRangePicker.propTypes = {
   displayFormat: PropTypes.string,
   label: PropTypes.node,
   placeholder: PropTypes.node,
-  navigationByYear: PropTypes.bool
+  navigationByYear: PropTypes.bool,
+  labelYear: PropTypes.node,
+  labelStartDate: PropTypes.node,
+  labelEndDate: PropTypes.node
 }
 
 DateRangePicker.defaultProps = {

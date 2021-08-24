@@ -76,3 +76,28 @@ export const DateRange = () => {
     />
   )
 }
+
+export const DateRangeWithLabel = () => {
+  const [dateRange, setDateRange] = useState()
+
+  const onChangeDateRange = value => {
+    setDateRange(value)
+  }
+
+  return (
+    <DateRangePicker
+      value={dateRange}
+      label='Date Range Picker'
+      placeholder='Select new range'
+      onChange={onChangeDateRange}
+      displayFormat='dddd DD MMMM YYYY'
+      yearDisplayStart={2021}
+      yearDisplayEnd={2022}
+      startOfTime='2021-01-05'
+      endOfTime='2022-03-15'
+      labelYear='Selected Year'
+      labelStartDate='Start Date'
+      labelEndDate='End Date'
+    />
+  )
+}

@@ -1,6 +1,6 @@
 var _templateObject, _templateObject2;
 
-var _excluded = ["value", "dayFormat", "monthFormat", "yearFormat", "weekdayFormat", "monthSelector", "monthNavigation", "monthNavigationWithinYear", "yearSelector", "startOfTime", "endOfTime", "onChange", "highlight"];
+var _excluded = ["value", "dayFormat", "monthFormat", "yearFormat", "weekdayFormat", "monthSelector", "monthNavigation", "monthNavigationWithinYear", "yearSelector", "startOfTime", "endOfTime", "onChange", "highlight", "label"];
 
 function _taggedTemplateLiteralLoose(strings, raw) { if (!raw) { raw = strings.slice(0); } strings.raw = raw; return strings; }
 
@@ -29,6 +29,7 @@ export var Calendar = function Calendar(_ref) {
       endOfTime = _ref.endOfTime,
       onChange = _ref.onChange,
       highlight = _ref.highlight,
+      label = _ref.label,
       props = _objectWithoutPropertiesLoose(_ref, _excluded);
 
   var _useState = useState(false),
@@ -240,7 +241,10 @@ export var Calendar = function Calendar(_ref) {
     justifyContent: "flex-start",
     flexWrap: "wrap",
     width: "224px"
-  }, props), /*#__PURE__*/React.createElement(Flex, {
+  }, props), /*#__PURE__*/React.createElement(Typography, {
+    variant: "labelSmallBold",
+    mb: 1
+  }, label), /*#__PURE__*/React.createElement(Flex, {
     width: "224px",
     mb: 1
   }, monthSelector && /*#__PURE__*/React.createElement(DropTrigger, {
@@ -473,7 +477,8 @@ Calendar.propTypes = process.env.NODE_ENV !== "production" ? {
   monthNavigation: PropTypes.bool,
   monthNavigationWithinYear: PropTypes.bool,
   onChange: PropTypes.func,
-  highlight: PropTypes.func
+  highlight: PropTypes.func,
+  label: PropTypes.node
 } : {};
 Calendar.defaultProps = {
   dayFormat: 'D',

@@ -21,7 +21,10 @@ export var DateRangePicker = function DateRangePicker(_ref) {
       disabled = _ref.disabled,
       onChange = _ref.onChange,
       label = _ref.label,
-      placeholder = _ref.placeholder;
+      placeholder = _ref.placeholder,
+      labelYear = _ref.labelYear,
+      labelStartDate = _ref.labelStartDate,
+      labelEndDate = _ref.labelEndDate;
   var wrapRef = useRef();
 
   var _useState = useState(false),
@@ -134,7 +137,8 @@ export var DateRangePicker = function DateRangePicker(_ref) {
     displayEnd: yearDisplayEnd,
     startOfTime: mSot.year(),
     endOfTime: mEot.year(),
-    onChange: handleChangeCurrentYear
+    onChange: handleChangeCurrentYear,
+    label: labelYear
   }), /*#__PURE__*/React.createElement(Calendar, {
     mx: 2,
     value: mStart.format(COMMON_FORMAT),
@@ -143,7 +147,8 @@ export var DateRangePicker = function DateRangePicker(_ref) {
     onChange: handleChangeDateStart,
     startOfTime: mSot.format(COMMON_FORMAT),
     endOfTime: mEnd.format(COMMON_FORMAT),
-    highlight: highlight
+    highlight: highlight,
+    label: labelStartDate
   }), /*#__PURE__*/React.createElement(Calendar, {
     yearSelector: !navigationByYear,
     ml: 2,
@@ -152,7 +157,8 @@ export var DateRangePicker = function DateRangePicker(_ref) {
     onChange: handleChangeDateEnd,
     startOfTime: mStart.format(COMMON_FORMAT),
     endOfTime: mEot.format(COMMON_FORMAT),
-    highlight: highlight
+    highlight: highlight,
+    label: labelEndDate
   }))));
 };
 var DropdownWrapper = styled(Flex)(function (_ref3) {
@@ -203,7 +209,10 @@ DateRangePicker.propTypes = process.env.NODE_ENV !== "production" ? {
   displayFormat: PropTypes.string,
   label: PropTypes.node,
   placeholder: PropTypes.node,
-  navigationByYear: PropTypes.bool
+  navigationByYear: PropTypes.bool,
+  labelYear: PropTypes.node,
+  labelStartDate: PropTypes.node,
+  labelEndDate: PropTypes.node
 } : {};
 DateRangePicker.defaultProps = {
   displayFormat: 'D MMMM YYYY',

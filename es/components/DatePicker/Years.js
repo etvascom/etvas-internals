@@ -1,4 +1,4 @@
-var _excluded = ["value", "startOfTime", "endOfTime", "displayStart", "displayEnd", "perRow", "onChange"];
+var _excluded = ["value", "startOfTime", "endOfTime", "displayStart", "displayEnd", "perRow", "onChange", "label"];
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
@@ -17,6 +17,7 @@ export var Years = function Years(_ref) {
       displayEnd = _ref.displayEnd,
       perRow = _ref.perRow,
       onChange = _ref.onChange,
+      label = _ref.label,
       props = _objectWithoutPropertiesLoose(_ref, _excluded);
 
   var interval = useMemo(function () {
@@ -51,6 +52,10 @@ export var Years = function Years(_ref) {
   return /*#__PURE__*/React.createElement(Box, _extends({
     width: "224px"
   }, props), /*#__PURE__*/React.createElement(Typography, {
+    variant: "labelSmallBold",
+    px: 3,
+    mb: 1
+  }, label), /*#__PURE__*/React.createElement(Typography, {
     variant: "labelSmallBold",
     px: 3,
     mt: 2
@@ -101,7 +106,8 @@ Years.propTypes = process.env.NODE_ENV !== "production" ? {
   displayStart: PropTypes.number,
   displayEnd: PropTypes.number,
   displayStatus: PropTypes.func,
-  onChange: PropTypes.func
+  onChange: PropTypes.func,
+  label: PropTypes.node
 } : {};
 Years.defaultProps = {
   perRow: 4
