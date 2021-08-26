@@ -23,7 +23,8 @@ export const DateRangePicker = ({
   placeholder,
   labelYear,
   labelStartDate,
-  labelEndDate
+  labelEndDate,
+  ...props
 }) => {
   const wrapRef = useRef()
   const [isExpanded, setExpanded] = useState(false)
@@ -42,27 +43,12 @@ export const DateRangePicker = ({
     return () => window.removeEventListener('click', listener)
   }, [])
 
-  const mSot = moment(
-    startOfTime ||
-      moment()
-        .add(-160, 'year')
-        .startOf('year')
-  )
-  const mEot = moment(
-    endOfTime ||
-      moment()
-        .add(160, 'year')
-        .endOf('year')
-  )
+  const mSot = moment(startOfTime || moment().add(-160, 'year').startOf('year'))
+  const mEot = moment(endOfTime || moment().add(160, 'year').endOf('year'))
 
   const [mStart, mEnd] = useMemo(() => {
     const { start, end } = value || {}
-    const mStart = moment(
-      start ||
-        moment()
-          .add(-1, 'month')
-          .startOf('month')
-    )
+    const mStart = moment(start || moment().add(-1, 'month').startOf('month'))
     const mEnd = moment(end || moment())
     return [mStart, mEnd]
   }, [value])
@@ -106,7 +92,7 @@ export const DateRangePicker = ({
   const highlight = day => mStart.isSameOrBefore(day) && mEnd.isSameOrAfter(day)
 
   return (
-    <Flex flexDirection='column'>
+    <Flex flexDirection='column' {...props}>
       {label && (
         <Typography as='label' variant='inputLabel' width='fit-content'>
           {label}

@@ -1,6 +1,12 @@
 var _templateObject;
 
+var _excluded = ["startOfTime", "endOfTime", "value", "displayFormat", "yearDisplayStart", "yearDisplayEnd", "navigationByYear", "disabled", "onChange", "label", "placeholder", "labelYear", "labelStartDate", "labelEndDate"];
+
 function _taggedTemplateLiteralLoose(strings, raw) { if (!raw) { raw = strings.slice(0); } strings.raw = raw; return strings; }
+
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
 import React, { useLayoutEffect, useRef, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
@@ -24,7 +30,9 @@ export var DateRangePicker = function DateRangePicker(_ref) {
       placeholder = _ref.placeholder,
       labelYear = _ref.labelYear,
       labelStartDate = _ref.labelStartDate,
-      labelEndDate = _ref.labelEndDate;
+      labelEndDate = _ref.labelEndDate,
+      props = _objectWithoutPropertiesLoose(_ref, _excluded);
+
   var wrapRef = useRef();
 
   var _useState = useState(false),
@@ -108,9 +116,9 @@ export var DateRangePicker = function DateRangePicker(_ref) {
     return mStart.isSameOrBefore(day) && mEnd.isSameOrAfter(day);
   };
 
-  return /*#__PURE__*/React.createElement(Flex, {
+  return /*#__PURE__*/React.createElement(Flex, _extends({
     flexDirection: "column"
-  }, label && /*#__PURE__*/React.createElement(Typography, {
+  }, props), label && /*#__PURE__*/React.createElement(Typography, {
     as: "label",
     variant: "inputLabel",
     width: "fit-content"

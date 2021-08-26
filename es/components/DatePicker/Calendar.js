@@ -241,7 +241,7 @@ export var Calendar = function Calendar(_ref) {
     justifyContent: "flex-start",
     flexWrap: "wrap",
     width: "224px"
-  }, props), /*#__PURE__*/React.createElement(Typography, {
+  }, props), !!label && /*#__PURE__*/React.createElement(Typography, {
     variant: "labelSmallBold",
     mb: 1
   }, label), /*#__PURE__*/React.createElement(Flex, {

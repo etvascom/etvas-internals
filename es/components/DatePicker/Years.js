@@ -51,7 +51,7 @@ export var Years = function Years(_ref) {
   var today = moment().year();
   return /*#__PURE__*/React.createElement(Box, _extends({
     width: "224px"
-  }, props), /*#__PURE__*/React.createElement(Typography, {
+  }, props), !!label && /*#__PURE__*/React.createElement(Typography, {
     variant: "labelSmallBold",
     px: 3,
     mb: 1
