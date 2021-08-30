@@ -32,7 +32,8 @@
   "peerDependencies": {
     "@etvas/etvaskit": "^1",
     "moment": "^2",
-    "react": "^16.6.0 || ^17",
+    "react": "^17",
+    "react-dom": "^17",
     "styled-components": "^5.1.0"
   },
   "devDependencies": {
@@ -59,8 +60,8 @@
     "nwb": "^0.25.2",
     "prettier-eslint": "^9.0.2",
     "prettier-eslint-cli": "^5.0.0",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0",
     "storybook": "^6.3.7",
     "styled-components": "^5.1.1",
     "stylelint": "^13.5.0",
