@@ -32,8 +32,8 @@
   "peerDependencies": {
     "@etvas/etvaskit": "^1",
     "moment": "^2",
-    "react": "^17",
-    "react-dom": "^17",
+    "react": "^16.6.0 || ^17",
+    "react-dom": "^16.6.0 || ^17",
     "styled-components": "^5.1.0"
   },
   "devDependencies": {
