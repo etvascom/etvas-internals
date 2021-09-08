@@ -29,6 +29,6 @@ Counter.propTypes = {
 }
 
 Counter.defaultProps = {
-  chipBgColor: 'brand',
-  chipTextColor: 'white'
+  chipBgColor: 'etvas',
+  chipTextColor: 'baseWhite'
 }
