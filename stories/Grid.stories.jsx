@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button } from '@etvas/etvaskit'
-import { Grid, GridMainComponent, TruncateGridInfo } from '../src'
+import { Grid, GridMainComponent } from '../src'
 
 export default {
   title: 'Components/Grid'
@@ -29,21 +29,15 @@ const getExampleGrid = () => ({
     {
       name: 'value',
       header: 'Value',
-      attribute: 'value',
+      attribute: item => item.value,
       sort: 'value',
-      render: item => (
-        <TruncateGridInfo width='100%'>{item.value}</TruncateGridInfo>
-      ),
       width: '240px'
     },
     {
       name: 'description',
       header: 'Description',
-      attribute: 'description',
+      attribute: item => item.description,
       sort: 'description',
-      render: item => (
-        <TruncateGridInfo width='100%'>{item.description}</TruncateGridInfo>
-      ),
       width: '240px'
     },
     {

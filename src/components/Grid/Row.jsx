@@ -11,6 +11,7 @@ const Row = ({
   prefix,
   extended,
   isClickableRow,
+  isDisabledRow,
   rowAction,
   ...props
 }) => {
@@ -25,6 +26,7 @@ const Row = ({
       extended={extended}
       isClickableRow={isClickableRow}
       onClick={() => rowAction(item)}
+      isDisabledRow={isDisabledRow}
       {...props}>
       {columns.map(column => (
         <Cell
@@ -44,6 +46,7 @@ const StyledRow = styled(Box)`
   grid-template-columns: ${props => props.gridTemplateColumns};
   ${props => props.extended && themed('Grid.row-extended')}
   cursor: ${({ isClickableRow }) => isClickableRow && 'pointer'};
+  ${({ isDisabledRow }) => isDisabledRow && `opacity: 50%;`}
 `
 
 Row.propTypes = {
@@ -56,7 +59,8 @@ Row.propTypes = {
   ),
   prefix: PropTypes.string,
   rowAction: PropTypes.func,
-  isClickableRow: PropTypes.bool
+  isClickableRow: PropTypes.bool,
+  isDisabledRow: PropTypes.bool
 }
 
 export default Row

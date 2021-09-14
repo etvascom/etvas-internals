@@ -1,20 +1,14 @@
 import React, { useEffect, useMemo, useState, useRef } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import {
-  ActivityIndicator,
-  Typography,
-  Icon,
-  Flex,
-  Box,
-  themed
-} from '@etvas/etvaskit'
+import { Typography, Icon, Flex, Box, themed } from '@etvas/etvaskit'
 
 import Row from './Row'
 import Header from './GridHeader'
 
 import { doSort } from './sorting'
 import GridFooter from './GridFooter'
+import { LoadingGrid } from './LoadingGrid'
 
 const Grid = ({
   extendedField,
@@ -28,9 +22,15 @@ const Grid = ({
   hasHeader,
   onRowClick,
   initialSort,
+  rowKeyAttribute,
   paginationConfig,
+  isDisabledRow,
+  busyVariant,
+  busySkeletonNumber,
   ...props
 }) => {
+  // eslint-disable-next-line no-console
+  console.log('INIT_DEV_GRID')
   const [sortConfig, setSortConfig] = useState(() => {
     if (initialSort?.by) {
       const asc = initialSort.asc === true || initialSort.asc === undefined
@@ -145,12 +145,10 @@ const Grid = ({
           />
         )}
         {busy ? (
-          <Shadow>
-            <ActivityIndicator
-              variant='runningbar'
-              colors={{ background: 'transparent', primary: 'accent' }}
-            />
-          </Shadow>
+          <LoadingGrid
+            busyVariant={busyVariant}
+            busySkeletonNumber={busySkeletonNumber}
+          />
         ) : (
           sortItems(items, sortConfig).map(item => (
             <ItemWrapper
@@ -158,7 +156,7 @@ const Grid = ({
                 item[extendedField] === extendedItem &&
                 forceExtended === extendedItem
               }
-              key={(item.id || item._id) ?? item.organizationId}>
+              key={item[rowKeyAttribute]}>
               <Row
                 key={`${name}-row-${item.id ?? item._id}`}
                 item={item}
@@ -167,10 +165,15 @@ const Grid = ({
                 extended={item[extendedField] === extendedItem}
                 isClickableRow={isExpandableRow || !!onRowClick}
                 rowAction={handleOnRowClick}
+                isDisabledRow={isDisabledRow(item)}
               />
               {item[extendedField] === extendedItem ? (
                 <ExtendedWrapper>
-                  <RenderExtended {...item} />
+                  {item['key'] ? (
+                    <RenderExtended item={item} />
+                  ) : (
+                    <RenderExtended {...item} />
+                  )}
                 </ExtendedWrapper>
               ) : null}
             </ItemWrapper>
@@ -241,17 +244,20 @@ Grid.propTypes = {
   ),
   emptyGridText: PropTypes.string,
   onRowClick: PropTypes.func,
-  paginationConfig: PropTypes.object
+  paginationConfig: PropTypes.object,
+  rowKeyAttribute: PropTypes.string,
+  busyVariant: PropTypes.oneOf(['blockSkeleton', 'runningBar']),
+  isDisabledRow: PropTypes.func,
+  busySkeletonNumber: PropTypes.number
 }
 
 Grid.defaultProps = {
   hasHeader: true,
-  emptyGridText: 'No items found'
+  emptyGridText: 'No items found',
+  rowKeyAttribute: 'id',
+  busyVariant: 'runningBar',
+  isDisabledRow: () => false,
+  busySkeletonNumber: 5
 }
-
-const Shadow = styled.div`
-  width: 100%;
-  min-height: 240px;
-`
 
 export default Grid
