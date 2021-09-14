@@ -1,6 +1,6 @@
 var _templateObject;
 
-var _excluded = ["item", "columns", "prefix", "extended", "isClickableRow", "rowAction"];
+var _excluded = ["item", "columns", "prefix", "extended", "isClickableRow", "isDisabledRow", "rowAction"];
 
 function _taggedTemplateLiteralLoose(strings, raw) { if (!raw) { raw = strings.slice(0); } strings.raw = raw; return strings; }
 
@@ -20,6 +20,7 @@ var Row = function Row(_ref) {
       prefix = _ref.prefix,
       extended = _ref.extended,
       isClickableRow = _ref.isClickableRow,
+      isDisabledRow = _ref.isDisabledRow,
       rowAction = _ref.rowAction,
       props = _objectWithoutPropertiesLoose(_ref, _excluded);
 
@@ -34,7 +35,8 @@ var Row = function Row(_ref) {
     isClickableRow: isClickableRow,
     onClick: function onClick() {
       return rowAction(item);
-    }
+    },
+    isDisabledRow: isDisabledRow
   }, props), columns.map(function (column) {
     return /*#__PURE__*/React.createElement(Cell, {
       key: prefix + "-cell-" + column.name,
@@ -46,13 +48,16 @@ var Row = function Row(_ref) {
   }));
 };
 
-var StyledRow = styled(Box)(_templateObject || (_templateObject = _taggedTemplateLiteralLoose(["\n  ", ";\n  grid-template-columns: ", ";\n  ", "\n  cursor: ", ";\n"])), themed('Grid.row'), function (props) {
+var StyledRow = styled(Box)(_templateObject || (_templateObject = _taggedTemplateLiteralLoose(["\n  ", ";\n  grid-template-columns: ", ";\n  ", "\n  cursor: ", ";\n  ", "\n"])), themed('Grid.row'), function (props) {
   return props.gridTemplateColumns;
 }, function (props) {
   return props.extended && themed('Grid.row-extended');
 }, function (_ref2) {
   var isClickableRow = _ref2.isClickableRow;
   return isClickableRow && 'pointer';
+}, function (_ref3) {
+  var isDisabledRow = _ref3.isDisabledRow;
+  return isDisabledRow && "opacity: 50%;";
 });
 Row.propTypes = process.env.NODE_ENV !== "production" ? {
   extended: PropTypes.bool,
@@ -62,6 +67,7 @@ Row.propTypes = process.env.NODE_ENV !== "production" ? {
   })),
   prefix: PropTypes.string,
   rowAction: PropTypes.func,
-  isClickableRow: PropTypes.bool
+  isClickableRow: PropTypes.bool,
+  isDisabledRow: PropTypes.bool
 } : {};
 export default Row;

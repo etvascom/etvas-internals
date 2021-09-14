@@ -1,6 +1,6 @@
-var _templateObject, _templateObject2;
+var _templateObject;
 
-var _excluded = ["extendedField", "renderExtended", "forceExtended", "busy", "name", "columns", "items", "emptyGridText", "hasHeader", "onRowClick", "initialSort", "paginationConfig"];
+var _excluded = ["extendedField", "renderExtended", "forceExtended", "busy", "name", "columns", "items", "emptyGridText", "hasHeader", "onRowClick", "initialSort", "rowKeyAttribute", "paginationConfig", "isDisabledRow", "busyVariant", "busySkeletonNumber"];
 
 function _taggedTemplateLiteralLoose(strings, raw) { if (!raw) { raw = strings.slice(0); } strings.raw = raw; return strings; }
 
@@ -11,11 +11,12 @@ function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) r
 import React, { useEffect, useMemo, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { ActivityIndicator, Typography, Icon, Flex, Box, themed } from '@etvas/etvaskit';
+import { Typography, Icon, Flex, Box, themed } from '@etvas/etvaskit';
 import Row from './Row';
 import Header from './GridHeader';
 import { doSort } from './sorting';
 import GridFooter from './GridFooter';
+import { LoadingGrid } from './LoadingGrid';
 
 var Grid = function Grid(_ref) {
   var extendedField = _ref.extendedField,
@@ -29,8 +30,15 @@ var Grid = function Grid(_ref) {
       hasHeader = _ref.hasHeader,
       onRowClick = _ref.onRowClick,
       initialSort = _ref.initialSort,
+      rowKeyAttribute = _ref.rowKeyAttribute,
       paginationConfig = _ref.paginationConfig,
+      isDisabledRow = _ref.isDisabledRow,
+      busyVariant = _ref.busyVariant,
+      busySkeletonNumber = _ref.busySkeletonNumber,
       props = _objectWithoutPropertiesLoose(_ref, _excluded);
+
+  // eslint-disable-next-line no-console
+  console.log('INIT_DEV_GRID');
 
   var _useState = useState(function () {
     if (initialSort === null || initialSort === void 0 ? void 0 : initialSort.by) {
@@ -154,18 +162,15 @@ var Grid = function Grid(_ref) {
     columns: gridColumns,
     toggleSort: toggleSort,
     sortConfig: sortConfig
-  }), busy ? /*#__PURE__*/React.createElement(Shadow, null, /*#__PURE__*/React.createElement(ActivityIndicator, {
-    variant: "runningbar",
-    colors: {
-      background: 'transparent',
-      primary: 'accent'
-    }
-  })) : sortItems(items, sortConfig).map(function (item) {
-    var _ref2, _item$id;
+  }), busy ? /*#__PURE__*/React.createElement(LoadingGrid, {
+    busyVariant: busyVariant,
+    busySkeletonNumber: busySkeletonNumber
+  }) : sortItems(items, sortConfig).map(function (item) {
+    var _item$id;
 
     return /*#__PURE__*/React.createElement(ItemWrapper, {
       scroll: item[extendedField] === extendedItem && forceExtended === extendedItem,
-      key: (_ref2 = item.id || item._id) !== null && _ref2 !== void 0 ? _ref2 : item.organizationId
+      key: item[rowKeyAttribute]
     }, /*#__PURE__*/React.createElement(Row, {
       key: name + "-row-" + ((_item$id = item.id) !== null && _item$id !== void 0 ? _item$id : item._id),
       item: item,
@@ -173,16 +178,19 @@ var Grid = function Grid(_ref) {
       columns: gridColumns,
       extended: item[extendedField] === extendedItem,
       isClickableRow: isExpandableRow || !!onRowClick,
-      rowAction: handleOnRowClick
-    }), item[extendedField] === extendedItem ? /*#__PURE__*/React.createElement(ExtendedWrapper, null, /*#__PURE__*/React.createElement(RenderExtended, item)) : null);
+      rowAction: handleOnRowClick,
+      isDisabledRow: isDisabledRow(item)
+    }), item[extendedField] === extendedItem ? /*#__PURE__*/React.createElement(ExtendedWrapper, null, item['key'] ? /*#__PURE__*/React.createElement(RenderExtended, {
+      item: item
+    }) : /*#__PURE__*/React.createElement(RenderExtended, item)) : null);
   })), /*#__PURE__*/React.createElement(GridFooter, {
     paginationConfig: paginationConfig
   }));
 };
 
-var ItemWrapper = function ItemWrapper(_ref3) {
-  var children = _ref3.children,
-      scroll = _ref3.scroll;
+var ItemWrapper = function ItemWrapper(_ref2) {
+  var children = _ref2.children,
+      scroll = _ref2.scroll;
   var viewRef = useRef();
   useEffect(function () {
     if (viewRef.current && scroll) {
@@ -238,11 +246,20 @@ Grid.propTypes = process.env.NODE_ENV !== "production" ? {
   })),
   emptyGridText: PropTypes.string,
   onRowClick: PropTypes.func,
-  paginationConfig: PropTypes.object
+  paginationConfig: PropTypes.object,
+  rowKeyAttribute: PropTypes.string,
+  busyVariant: PropTypes.oneOf(['blockSkeleton', 'runningBar']),
+  isDisabledRow: PropTypes.func,
+  busySkeletonNumber: PropTypes.number
 } : {};
 Grid.defaultProps = {
   hasHeader: true,
-  emptyGridText: 'No items found'
+  emptyGridText: 'No items found',
+  rowKeyAttribute: 'id',
+  busyVariant: 'runningBar',
+  isDisabledRow: function isDisabledRow() {
+    return false;
+  },
+  busySkeletonNumber: 5
 };
-var Shadow = styled.div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteralLoose(["\n  width: 100%;\n  min-height: 240px;\n"])));
 export default Grid;
