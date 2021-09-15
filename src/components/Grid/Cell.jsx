@@ -29,7 +29,6 @@ const Cell = ({ item, column, checked, extended, ...props }) => {
         typeof column.hide === 'boolean' ||
         (column.hide instanceof Function && column.hide(item))
       ) {
-        // try null
         return <Box width='100%' height='100%' />
       }
     }

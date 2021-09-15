@@ -4,11 +4,17 @@ import PropTypes from 'prop-types'
 import Tooltip from '../Tooltip'
 import { GridDot } from './GridDot'
 
-export const GridMainComponent = ({ children, icon, dotColor, ...props }) => (
+export const GridMainComponent = ({
+  children,
+  icon,
+  iconColor,
+  dotColor,
+  ...props
+}) => (
   <Flex alignItems='center' width='100%' pr={2}>
     {!!icon && (
       <Flex alignItems='center' mr={3}>
-        <Icon name={icon} size='medium' color='inputIcon' />
+        <Icon name={icon} size='medium' color={iconColor} />
       </Flex>
     )}
     {!!dotColor && (
@@ -70,5 +76,10 @@ TruncateGridInfo.defaultProps = {
 GridMainComponent.propTypes = {
   children: PropTypes.any,
   icon: PropTypes.string,
-  dotColor: PropTypes.string
+  dotColor: PropTypes.string,
+  iconColor: PropTypes.string
+}
+
+GridMainComponent.defaultProps = {
+  iconColor: 'inputIcon'
 }
