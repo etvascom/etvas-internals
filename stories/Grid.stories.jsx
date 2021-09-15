@@ -79,3 +79,45 @@ export const Example = args => {
     <Grid name={grid.name} columns={grid.columns} items={items} busy={false} />
   )
 }
+
+export const LoadingGrid = args => {
+  const grid = getExampleGrid()
+  const items = getItems()
+
+  return (
+    <Grid
+      name={grid.name}
+      columns={grid.columns}
+      items={items}
+      busy={true}
+      busyVariant='blockSkeleton'
+      busySkeletonNumber={5}
+    />
+  )
+}
+
+export const ColorGridRow = args => {
+  const grid = getExampleGrid()
+  const items = getItems()
+
+  const getColor = item => {
+    if (item.value === 0) {
+      return 'statusWarning'
+    }
+    if (item.value === 768677) {
+      return 'purple'
+    }
+    if (item.value === 16) {
+      return '#666'
+    }
+  }
+
+  return (
+    <Grid
+      name={grid.name}
+      columns={grid.columns}
+      items={items}
+      rowColor={getColor}
+    />
+  )
+}

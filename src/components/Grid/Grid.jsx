@@ -25,12 +25,11 @@ const Grid = ({
   rowKeyAttribute,
   paginationConfig,
   isDisabledRow,
+  rowColor,
   busyVariant,
   busySkeletonNumber,
   ...props
 }) => {
-  // eslint-disable-next-line no-console
-  console.log('INIT_DEV_GRID')
   const [sortConfig, setSortConfig] = useState(() => {
     if (initialSort?.by) {
       const asc = initialSort.asc === true || initialSort.asc === undefined
@@ -164,6 +163,7 @@ const Grid = ({
                 columns={gridColumns}
                 extended={item[extendedField] === extendedItem}
                 isClickableRow={isExpandableRow || !!onRowClick}
+                rowColor={rowColor}
                 rowAction={handleOnRowClick}
                 isDisabledRow={isDisabledRow(item)}
               />
@@ -248,7 +248,8 @@ Grid.propTypes = {
   rowKeyAttribute: PropTypes.string,
   busyVariant: PropTypes.oneOf(['blockSkeleton', 'runningBar']),
   isDisabledRow: PropTypes.func,
-  busySkeletonNumber: PropTypes.number
+  busySkeletonNumber: PropTypes.number,
+  rowColor: PropTypes.func
 }
 
 Grid.defaultProps = {
@@ -257,7 +258,8 @@ Grid.defaultProps = {
   rowKeyAttribute: 'id',
   busyVariant: 'runningBar',
   isDisabledRow: () => false,
-  busySkeletonNumber: 5
+  busySkeletonNumber: 5,
+  rowColor: item => 'baseWhite'
 }
 
 export default Grid
