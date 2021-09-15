@@ -44,7 +44,6 @@ var Cell = function Cell(_ref) {
   var contents = useMemo(function () {
     if (column.hide) {
       if (typeof column.hide === 'boolean' || column.hide instanceof Function && column.hide(item)) {
-        // try null
         return /*#__PURE__*/React.createElement(Box, {
           width: "100%",
           height: "100%"
