@@ -1,6 +1,6 @@
 var _templateObject;
 
-var _excluded = ["extendedField", "renderExtended", "forceExtended", "busy", "name", "columns", "items", "emptyGridText", "hasHeader", "onRowClick", "initialSort", "rowKeyAttribute", "paginationConfig", "isDisabledRow", "busyVariant", "busySkeletonNumber"];
+var _excluded = ["extendedField", "renderExtended", "forceExtended", "busy", "name", "columns", "items", "emptyGridText", "hasHeader", "onRowClick", "initialSort", "rowKeyAttribute", "paginationConfig", "isDisabledRow", "rowColor", "busyVariant", "busySkeletonNumber"];
 
 function _taggedTemplateLiteralLoose(strings, raw) { if (!raw) { raw = strings.slice(0); } strings.raw = raw; return strings; }
 
@@ -33,12 +33,10 @@ var Grid = function Grid(_ref) {
       rowKeyAttribute = _ref.rowKeyAttribute,
       paginationConfig = _ref.paginationConfig,
       isDisabledRow = _ref.isDisabledRow,
+      rowColor = _ref.rowColor,
       busyVariant = _ref.busyVariant,
       busySkeletonNumber = _ref.busySkeletonNumber,
       props = _objectWithoutPropertiesLoose(_ref, _excluded);
-
-  // eslint-disable-next-line no-console
-  console.log('INIT_DEV_GRID');
 
   var _useState = useState(function () {
     if (initialSort === null || initialSort === void 0 ? void 0 : initialSort.by) {
@@ -178,6 +176,7 @@ var Grid = function Grid(_ref) {
       columns: gridColumns,
       extended: item[extendedField] === extendedItem,
       isClickableRow: isExpandableRow || !!onRowClick,
+      rowColor: rowColor,
       rowAction: handleOnRowClick,
       isDisabledRow: isDisabledRow(item)
     }), item[extendedField] === extendedItem ? /*#__PURE__*/React.createElement(ExtendedWrapper, null, item['key'] ? /*#__PURE__*/React.createElement(RenderExtended, {
@@ -250,7 +249,8 @@ Grid.propTypes = process.env.NODE_ENV !== "production" ? {
   rowKeyAttribute: PropTypes.string,
   busyVariant: PropTypes.oneOf(['blockSkeleton', 'runningBar']),
   isDisabledRow: PropTypes.func,
-  busySkeletonNumber: PropTypes.number
+  busySkeletonNumber: PropTypes.number,
+  rowColor: PropTypes.func
 } : {};
 Grid.defaultProps = {
   hasHeader: true,
@@ -260,6 +260,9 @@ Grid.defaultProps = {
   isDisabledRow: function isDisabledRow() {
     return false;
   },
-  busySkeletonNumber: 5
+  busySkeletonNumber: 5,
+  rowColor: function rowColor(item) {
+    return 'baseWhite';
+  }
 };
 export default Grid;

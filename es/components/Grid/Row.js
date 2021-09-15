@@ -1,6 +1,6 @@
 var _templateObject;
 
-var _excluded = ["item", "columns", "prefix", "extended", "isClickableRow", "isDisabledRow", "rowAction"];
+var _excluded = ["item", "columns", "prefix", "extended", "isClickableRow", "isDisabledRow", "rowAction", "rowColor"];
 
 function _taggedTemplateLiteralLoose(strings, raw) { if (!raw) { raw = strings.slice(0); } strings.raw = raw; return strings; }
 
@@ -22,6 +22,7 @@ var Row = function Row(_ref) {
       isClickableRow = _ref.isClickableRow,
       isDisabledRow = _ref.isDisabledRow,
       rowAction = _ref.rowAction,
+      rowColor = _ref.rowColor,
       props = _objectWithoutPropertiesLoose(_ref, _excluded);
 
   var gridTemplateColumns = useMemo(function () {
@@ -36,7 +37,8 @@ var Row = function Row(_ref) {
     onClick: function onClick() {
       return rowAction(item);
     },
-    isDisabledRow: isDisabledRow
+    isDisabledRow: isDisabledRow,
+    color: rowColor(item)
   }, props), columns.map(function (column) {
     return /*#__PURE__*/React.createElement(Cell, {
       key: prefix + "-cell-" + column.name,
@@ -48,7 +50,7 @@ var Row = function Row(_ref) {
   }));
 };
 
-var StyledRow = styled(Box)(_templateObject || (_templateObject = _taggedTemplateLiteralLoose(["\n  ", ";\n  grid-template-columns: ", ";\n  ", "\n  cursor: ", ";\n  ", "\n"])), themed('Grid.row'), function (props) {
+var StyledRow = styled(Box)(_templateObject || (_templateObject = _taggedTemplateLiteralLoose(["\n  ", ";\n  grid-template-columns: ", ";\n  ", "\n  cursor: ", ";\n  ", "\n  background-color: ", ";\n"])), themed('Grid.row'), function (props) {
   return props.gridTemplateColumns;
 }, function (props) {
   return props.extended && themed('Grid.row-extended');
@@ -58,6 +60,12 @@ var StyledRow = styled(Box)(_templateObject || (_templateObject = _taggedTemplat
 }, function (_ref3) {
   var isDisabledRow = _ref3.isDisabledRow;
   return isDisabledRow && "opacity: 50%;";
+}, function (_ref4) {
+  var _theme$colors$color;
+
+  var color = _ref4.color,
+      theme = _ref4.theme;
+  return (_theme$colors$color = theme.colors[color]) !== null && _theme$colors$color !== void 0 ? _theme$colors$color : color;
 });
 Row.propTypes = process.env.NODE_ENV !== "production" ? {
   extended: PropTypes.bool,
@@ -67,6 +75,7 @@ Row.propTypes = process.env.NODE_ENV !== "production" ? {
   })),
   prefix: PropTypes.string,
   rowAction: PropTypes.func,
+  rowColor: PropTypes.func,
   isClickableRow: PropTypes.bool,
   isDisabledRow: PropTypes.bool
 } : {};
