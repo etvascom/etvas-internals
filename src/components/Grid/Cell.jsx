@@ -1,20 +1,36 @@
 import React, { useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { Checkbox, Icon, themed, Touchable, Typography } from '@etvas/etvaskit'
+import {
+  Checkbox,
+  Box,
+  Icon,
+  Touchable,
+  themed,
+  Typography,
+  Button
+} from '@etvas/etvaskit'
+import { TruncateGridInfo } from './index'
 import Tooltip from '../Tooltip'
 
-const getCellWithAttribute = (item, column) => (
-  <Typography variant='labelSmall' color='textCardTitle'>
-    {item[column.attribute]}
-  </Typography>
+const renderText = renderedValue => (
+  <TruncateGridInfo>
+    <Typography variant='labelSmall' color='textCardTitle'>
+      {renderedValue}
+    </Typography>
+  </TruncateGridInfo>
 )
 
-const Cell = ({ item, column, checked, extended, cellAction, ...props }) => {
+const Cell = ({ item, column, checked, extended, ...props }) => {
   const [isChecked, setChecked] = useState(checked)
   const contents = useMemo(() => {
     if (column.hide) {
-      return
+      if (
+        typeof column.hide === 'boolean' ||
+        (column.hide instanceof Function && column.hide(item))
+      ) {
+        return <Box width='100%' height='100%' />
+      }
     }
     if (column.checkbox) {
       const _handleChange = async () => {
@@ -35,41 +51,36 @@ const Cell = ({ item, column, checked, extended, cellAction, ...props }) => {
     }
     if (column.iconButton) {
       const iconButton = (
-        <IconButton
-          as='button'
-          align={column.align}
+        <Button
+          variant='link'
+          icon={column.iconButton}
           disabled={column.isDisabled ?? false}
+          iconColor='inputIcon'
+          align={column.align}
           onClick={e => {
             column.action(item, extended)
             e.stopPropagation()
-          }}>
-          <Icon name={column.iconButton} size='medium' color='inputIcon' />
-        </IconButton>
+          }}
+        />
       )
-      return (
-        <StyledTouchable
-          as='div'
-          align={column.align}
-          onClick={cellAction}
-          width='100%'
-          {...props}>
-          {column.tooltip ? (
-            <Tooltip {...column.tooltip}>{iconButton}</Tooltip>
-          ) : (
-            iconButton
-          )}
-        </StyledTouchable>
+      return column.tooltip ? (
+        <Tooltip {...column.tooltip}>{iconButton}</Tooltip>
+      ) : (
+        iconButton
       )
     }
     if (column.render) {
       return column.render(item, extended)
     }
     if (column.attribute) {
-      return getCellWithAttribute(item, column)
+      if (column.attribute instanceof Function) {
+        return renderText(column.attribute(item))
+      }
+      return renderText(item[column.attribute])
     }
 
     return ''
-  }, [column, isChecked, item, cellAction, props, extended])
+  }, [column, isChecked, item, extended])
 
   const cellContent = (
     <StyledTouchable
@@ -79,16 +90,12 @@ const Cell = ({ item, column, checked, extended, cellAction, ...props }) => {
       disabled={column.isDisabled ?? false}
       activeOpacity={0.75}
       effect='opacity'
-      onClick={column.action ?? cellAction}
+      onClick={column.action}
       width='100%'
       {...props}>
       {contents}
     </StyledTouchable>
   )
-
-  if (column.iconButton) {
-    return <>{contents}</>
-  }
 
   return column.tooltip ? (
     <Tooltip {...column.tooltip}>{cellContent}</Tooltip>
@@ -104,23 +111,11 @@ const StyledTouchable = styled(Touchable)`
   align-items: center;
 `
 
-const IconButton = styled(StyledTouchable)`
-  appearance: none;
-  border: none;
-  background-color: transparent;
-  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
-
-  &:hover path {
-    fill: ${({ disabled }) => !disabled && themed('colors.brand')} !important;
-  }
-`
-
 Cell.propTypes = {
   extended: PropTypes.bool,
   item: PropTypes.object,
   column: PropTypes.object,
-  checked: PropTypes.bool,
-  cellAction: PropTypes.func
+  checked: PropTypes.bool
 }
 
 export default Cell

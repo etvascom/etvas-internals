@@ -11,7 +11,9 @@ const Row = ({
   prefix,
   extended,
   isClickableRow,
+  isDisabledRow,
   rowAction,
+  rowColor,
   ...props
 }) => {
   const gridTemplateColumns = useMemo(
@@ -25,6 +27,8 @@ const Row = ({
       extended={extended}
       isClickableRow={isClickableRow}
       onClick={() => rowAction(item)}
+      isDisabledRow={isDisabledRow}
+      color={rowColor(item)}
       {...props}>
       {columns.map(column => (
         <Cell
@@ -44,6 +48,8 @@ const StyledRow = styled(Box)`
   grid-template-columns: ${props => props.gridTemplateColumns};
   ${props => props.extended && themed('Grid.row-extended')}
   cursor: ${({ isClickableRow }) => isClickableRow && 'pointer'};
+  ${({ isDisabledRow }) => isDisabledRow && `opacity: 50%;`}
+  background-color: ${({ color, theme }) => theme.colors[color] ?? color};
 `
 
 Row.propTypes = {
@@ -56,7 +62,9 @@ Row.propTypes = {
   ),
   prefix: PropTypes.string,
   rowAction: PropTypes.func,
-  isClickableRow: PropTypes.bool
+  rowColor: PropTypes.func,
+  isClickableRow: PropTypes.bool,
+  isDisabledRow: PropTypes.bool
 }
 
 export default Row

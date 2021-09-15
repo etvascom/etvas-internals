@@ -1,4 +1,4 @@
-var _excluded = ["children", "icon", "dotColor"],
+var _excluded = ["children", "icon", "iconColor", "dotColor"],
     _excluded2 = ["children", "fontWeight", "color"];
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
@@ -13,6 +13,7 @@ import { GridDot } from './GridDot';
 export var GridMainComponent = function GridMainComponent(_ref) {
   var children = _ref.children,
       icon = _ref.icon,
+      iconColor = _ref.iconColor,
       dotColor = _ref.dotColor,
       props = _objectWithoutPropertiesLoose(_ref, _excluded);
 
@@ -26,7 +27,7 @@ export var GridMainComponent = function GridMainComponent(_ref) {
   }, /*#__PURE__*/React.createElement(Icon, {
     name: icon,
     size: "medium",
-    color: "inputIcon"
+    color: iconColor
   })), !!dotColor && /*#__PURE__*/React.createElement(Flex, {
     alignItems: "center",
     mr: 4
@@ -84,5 +85,9 @@ TruncateGridInfo.defaultProps = {
 GridMainComponent.propTypes = process.env.NODE_ENV !== "production" ? {
   children: PropTypes.any,
   icon: PropTypes.string,
-  dotColor: PropTypes.string
+  dotColor: PropTypes.string,
+  iconColor: PropTypes.string
 } : {};
+GridMainComponent.defaultProps = {
+  iconColor: 'inputIcon'
+};

@@ -1,8 +1,8 @@
 import _regeneratorRuntime from "@babel/runtime/regenerator";
 
-var _templateObject, _templateObject2;
+var _templateObject;
 
-var _excluded = ["item", "column", "checked", "extended", "cellAction"];
+var _excluded = ["item", "column", "checked", "extended"];
 
 function _taggedTemplateLiteralLoose(strings, raw) { if (!raw) { raw = strings.slice(0); } strings.raw = raw; return strings; }
 
@@ -17,24 +17,24 @@ function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) r
 import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Checkbox, Icon, themed, Touchable, Typography } from '@etvas/etvaskit';
+import { Checkbox, Box, Icon, Touchable, themed, Typography, Button } from '@etvas/etvaskit';
+import { TruncateGridInfo } from './index';
 import Tooltip from '../Tooltip';
 
-var getCellWithAttribute = function getCellWithAttribute(item, column) {
-  return /*#__PURE__*/React.createElement(Typography, {
+var renderText = function renderText(renderedValue) {
+  return /*#__PURE__*/React.createElement(TruncateGridInfo, null, /*#__PURE__*/React.createElement(Typography, {
     variant: "labelSmall",
     color: "textCardTitle"
-  }, item[column.attribute]);
+  }, renderedValue));
 };
 
 var Cell = function Cell(_ref) {
-  var _column$isDisabled2, _column$action;
+  var _column$isDisabled2;
 
   var item = _ref.item,
       column = _ref.column,
       checked = _ref.checked,
       extended = _ref.extended,
-      cellAction = _ref.cellAction,
       props = _objectWithoutPropertiesLoose(_ref, _excluded);
 
   var _useState = useState(checked),
@@ -43,7 +43,12 @@ var Cell = function Cell(_ref) {
 
   var contents = useMemo(function () {
     if (column.hide) {
-      return;
+      if (typeof column.hide === 'boolean' || column.hide instanceof Function && column.hide(item)) {
+        return /*#__PURE__*/React.createElement(Box, {
+          width: "100%",
+          height: "100%"
+        });
+      }
     }
 
     if (column.checkbox) {
@@ -93,25 +98,18 @@ var Cell = function Cell(_ref) {
     if (column.iconButton) {
       var _column$isDisabled;
 
-      var iconButton = /*#__PURE__*/React.createElement(IconButton, {
-        as: "button",
-        align: column.align,
+      var iconButton = /*#__PURE__*/React.createElement(Button, {
+        variant: "link",
+        icon: column.iconButton,
         disabled: (_column$isDisabled = column.isDisabled) !== null && _column$isDisabled !== void 0 ? _column$isDisabled : false,
+        iconColor: "inputIcon",
+        align: column.align,
         onClick: function onClick(e) {
           column.action(item, extended);
           e.stopPropagation();
         }
-      }, /*#__PURE__*/React.createElement(Icon, {
-        name: column.iconButton,
-        size: "medium",
-        color: "inputIcon"
-      }));
-      return /*#__PURE__*/React.createElement(StyledTouchable, _extends({
-        as: "div",
-        align: column.align,
-        onClick: cellAction,
-        width: "100%"
-      }, props), column.tooltip ? /*#__PURE__*/React.createElement(Tooltip, column.tooltip, iconButton) : iconButton);
+      });
+      return column.tooltip ? /*#__PURE__*/React.createElement(Tooltip, column.tooltip, iconButton) : iconButton;
     }
 
     if (column.render) {
@@ -119,11 +117,15 @@ var Cell = function Cell(_ref) {
     }
 
     if (column.attribute) {
-      return getCellWithAttribute(item, column);
+      if (column.attribute instanceof Function) {
+        return renderText(column.attribute(item));
+      }
+
+      return renderText(item[column.attribute]);
     }
 
     return '';
-  }, [column, isChecked, item, cellAction, props, extended]);
+  }, [column, isChecked, item, extended]);
   var cellContent = /*#__PURE__*/React.createElement(StyledTouchable, _extends({
     as: "div",
     icon: !!column.icon,
@@ -131,32 +133,19 @@ var Cell = function Cell(_ref) {
     disabled: (_column$isDisabled2 = column.isDisabled) !== null && _column$isDisabled2 !== void 0 ? _column$isDisabled2 : false,
     activeOpacity: 0.75,
     effect: "opacity",
-    onClick: (_column$action = column.action) !== null && _column$action !== void 0 ? _column$action : cellAction,
+    onClick: column.action,
     width: "100%"
   }, props), contents);
-
-  if (column.iconButton) {
-    return /*#__PURE__*/React.createElement(React.Fragment, null, contents);
-  }
-
   return column.tooltip ? /*#__PURE__*/React.createElement(Tooltip, column.tooltip, cellContent) : cellContent;
 };
 
 var StyledTouchable = styled(Touchable)(_templateObject || (_templateObject = _taggedTemplateLiteralLoose(["\n  ", ";\n  display: flex;\n  justify-content: ", ";\n  align-items: center;\n"])), themed('Grid.cell'), function (props) {
   return props.align || 'left';
 });
-var IconButton = styled(StyledTouchable)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteralLoose(["\n  appearance: none;\n  border: none;\n  background-color: transparent;\n  cursor: ", ";\n\n  &:hover path {\n    fill: ", " !important;\n  }\n"])), function (_ref3) {
-  var disabled = _ref3.disabled;
-  return disabled ? 'not-allowed' : 'pointer';
-}, function (_ref4) {
-  var disabled = _ref4.disabled;
-  return !disabled && themed('colors.brand');
-});
 Cell.propTypes = process.env.NODE_ENV !== "production" ? {
   extended: PropTypes.bool,
   item: PropTypes.object,
   column: PropTypes.object,
-  checked: PropTypes.bool,
-  cellAction: PropTypes.func
+  checked: PropTypes.bool
 } : {};
 export default Cell;
