@@ -98,7 +98,7 @@ var Cell = function Cell(_ref) {
     if (column.iconButton) {
       var _column$isDisabled;
 
-      var iconButton = /*#__PURE__*/React.createElement(Button, {
+      return /*#__PURE__*/React.createElement(Button, {
         variant: "link",
         icon: column.iconButton,
         disabled: (_column$isDisabled = column.isDisabled) !== null && _column$isDisabled !== void 0 ? _column$isDisabled : false,
@@ -109,7 +109,6 @@ var Cell = function Cell(_ref) {
           e.stopPropagation();
         }
       });
-      return column.tooltip ? /*#__PURE__*/React.createElement(Tooltip, column.tooltip, iconButton) : iconButton;
     }
 
     if (column.render) {

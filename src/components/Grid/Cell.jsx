@@ -50,7 +50,7 @@ const Cell = ({ item, column, checked, extended, ...props }) => {
       return <Icon name={column.icon} size='medium' color='inputIcon' />
     }
     if (column.iconButton) {
-      const iconButton = (
+      return (
         <Button
           variant='link'
           icon={column.iconButton}
@@ -62,11 +62,6 @@ const Cell = ({ item, column, checked, extended, ...props }) => {
             e.stopPropagation()
           }}
         />
-      )
-      return column.tooltip ? (
-        <Tooltip {...column.tooltip}>{iconButton}</Tooltip>
-      ) : (
-        iconButton
       )
     }
     if (column.render) {

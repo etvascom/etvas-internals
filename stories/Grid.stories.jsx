@@ -49,6 +49,16 @@ const getExampleGrid = () => ({
       ),
       align: 'center',
       width: '1fr'
+    },
+    {
+      name: 'editAction',
+      iconButton: 'edit',
+      tooltip: {
+        content: 'Edit'
+      },
+      action: () => {},
+      align: 'center',
+      width: '1fr'
     }
   ]
 })
