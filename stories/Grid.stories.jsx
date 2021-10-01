@@ -8,6 +8,8 @@ export default {
 
 const getExampleGrid = () => ({
   name: 'example-list',
+  extendedField: 'id',
+  renderExtended: ExtendedContent,
   columns: [
     {
       name: 'left-spacing',
@@ -56,7 +58,8 @@ const getExampleGrid = () => ({
       tooltip: {
         content: 'Edit'
       },
-      action: () => {},
+      // eslint-disable-next-line no-console
+      action: item => console.log(item),
       align: 'center',
       width: '1fr'
     }
@@ -65,16 +68,14 @@ const getExampleGrid = () => ({
 
 const getItems = () => [
   {
+    id: '1',
     name: 'test 1',
     value: 16,
     description: 'description 1'
   },
+  { id: '2', name: 'test 12', value: 768677, description: 'description 12' },
   {
-    name: 'test 12',
-    value: 768677,
-    description: 'description 12'
-  },
-  {
+    id: '3',
     name: 'test 4',
     value: 0,
     description: 'this is a long description'
@@ -89,6 +90,24 @@ export const Example = args => {
     <Grid name={grid.name} columns={grid.columns} items={items} busy={false} />
   )
 }
+
+export const ExtendedGrid = args => {
+  const grid = getExampleGrid()
+  const items = getItems()
+
+  return (
+    <Grid
+      name={grid.name}
+      columns={grid.columns}
+      items={items}
+      busy={false}
+      extendedField={grid.extendedField}
+      renderExtended={grid.renderExtended}
+    />
+  )
+}
+
+const ExtendedContent = () => <h1>Extended Content</h1>
 
 export const LoadingGrid = args => {
   const grid = getExampleGrid()
