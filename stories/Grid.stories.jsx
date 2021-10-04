@@ -1,4 +1,6 @@
 import React from 'react'
+import { action } from '@storybook/addon-actions'
+
 import { Button } from '@etvas/etvaskit'
 import { Grid, GridMainComponent } from '../src'
 
@@ -58,8 +60,7 @@ const getExampleGrid = () => ({
       tooltip: {
         content: 'Edit'
       },
-      // eslint-disable-next-line no-console
-      action: item => console.log(item),
+      action: action('Edit action clicked'),
       align: 'center',
       width: '1fr'
     }
