@@ -51,7 +51,7 @@ const Cell = ({ item, column, checked, extended, ...props }) => {
     }
     if (column.iconButton) {
       return (
-        <Button
+        <IconButton
           variant='link'
           icon={column.iconButton}
           disabled={column.isDisabled ?? false}
@@ -85,7 +85,6 @@ const Cell = ({ item, column, checked, extended, ...props }) => {
       disabled={column.isDisabled ?? false}
       activeOpacity={0.75}
       effect='opacity'
-      onClick={column.action}
       width='100%'
       {...props}>
       {contents}
@@ -113,4 +112,12 @@ Cell.propTypes = {
   checked: PropTypes.bool
 }
 
+const IconButton = styled(Button)`
+  width: 100%;
+  height: 100%;
+
+  :not([disabled]):hover svg {
+    fill: ${({ theme }) => theme.colors.brand};
+  }
+`
 export default Cell

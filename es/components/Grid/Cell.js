@@ -1,6 +1,6 @@
 import _regeneratorRuntime from "@babel/runtime/regenerator";
 
-var _templateObject;
+var _templateObject, _templateObject2;
 
 var _excluded = ["item", "column", "checked", "extended"];
 
@@ -98,7 +98,7 @@ var Cell = function Cell(_ref) {
     if (column.iconButton) {
       var _column$isDisabled;
 
-      return /*#__PURE__*/React.createElement(Button, {
+      return /*#__PURE__*/React.createElement(IconButton, {
         variant: "link",
         icon: column.iconButton,
         disabled: (_column$isDisabled = column.isDisabled) !== null && _column$isDisabled !== void 0 ? _column$isDisabled : false,
@@ -132,7 +132,6 @@ var Cell = function Cell(_ref) {
     disabled: (_column$isDisabled2 = column.isDisabled) !== null && _column$isDisabled2 !== void 0 ? _column$isDisabled2 : false,
     activeOpacity: 0.75,
     effect: "opacity",
-    onClick: column.action,
     width: "100%"
   }, props), contents);
   return column.tooltip ? /*#__PURE__*/React.createElement(Tooltip, column.tooltip, cellContent) : cellContent;
@@ -147,4 +146,8 @@ Cell.propTypes = process.env.NODE_ENV !== "production" ? {
   column: PropTypes.object,
   checked: PropTypes.bool
 } : {};
+var IconButton = styled(Button)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteralLoose(["\n  width: 100%;\n  height: 100%;\n\n  :not([disabled]):hover svg {\n    fill: ", ";\n  }\n"])), function (_ref3) {
+  var theme = _ref3.theme;
+  return theme.colors.brand;
+});
 export default Cell;
