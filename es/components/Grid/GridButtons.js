@@ -16,6 +16,7 @@ export var GridButtons = function GridButtons(_ref) {
       width: "auto",
       key: action.buttonText,
       disabled: action.disabled,
+      loading: action.loading,
       onClick: function onClick(e) {
         e.stopPropagation();
         action.action(item);

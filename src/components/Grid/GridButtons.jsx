@@ -12,6 +12,7 @@ export const GridButtons = ({ item, actions }) => {
           width='auto'
           key={action.buttonText}
           disabled={action.disabled}
+          loading={action.loading}
           onClick={e => {
             e.stopPropagation()
             action.action(item)
