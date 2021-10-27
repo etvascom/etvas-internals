@@ -10,7 +10,11 @@ export const GridButtons = ({ item, actions }) => {
       {availableActions.map((action, i) => (
         <GridButton
           width='auto'
-          key={action.buttonText}
+          key={
+            typeof action.buttonText === 'string'
+              ? action.buttonText
+              : action.id
+          }
           disabled={action.disabled}
           loading={action.loading}
           onClick={e => {
