@@ -14,7 +14,7 @@ export var GridButtons = function GridButtons(_ref) {
   }, availableActions.map(function (action, i) {
     return /*#__PURE__*/React.createElement(GridButton, {
       width: "auto",
-      key: action.buttonText,
+      key: typeof action.buttonText === 'string' ? action.buttonText : action.id,
       disabled: action.disabled,
       loading: action.loading,
       onClick: function onClick(e) {
