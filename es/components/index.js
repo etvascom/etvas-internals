@@ -1,3 +1,4 @@
+export { default as Tooltip } from './Tooltip';
 export * from './DatePicker';
 export * from './Grid';
 export * from './Charts';
