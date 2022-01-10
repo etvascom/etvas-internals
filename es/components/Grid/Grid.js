@@ -243,7 +243,7 @@ Grid.propTypes = process.env.NODE_ENV !== "production" ? {
   items: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string
   })),
-  emptyGridText: PropTypes.string,
+  emptyGridText: PropTypes.node,
   onRowClick: PropTypes.func,
   paginationConfig: PropTypes.object,
   rowKeyAttribute: PropTypes.string,

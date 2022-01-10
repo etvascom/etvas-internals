@@ -7,11 +7,13 @@ import React from 'react';
 import styled from 'styled-components';
 import { BlockSkeleton, ActivityIndicator } from '@etvas/etvaskit';
 export var LoadingGrid = function LoadingGrid(_ref) {
-  var _ref2;
-
   var busyVariant = _ref.busyVariant,
       busySkeletonNumber = _ref.busySkeletonNumber;
-  return busyVariant === 'blockSkeleton' ? /*#__PURE__*/React.createElement(React.Fragment, null, (_ref2 = [].concat(new Array(busySkeletonNumber + 1).keys())) === null || _ref2 === void 0 ? void 0 : _ref2.map(function (el) {
+  return busyVariant === 'blockSkeleton' && busySkeletonNumber > 0 ? /*#__PURE__*/React.createElement(React.Fragment, null, Array.from({
+    length: busySkeletonNumber
+  }, function (_, i) {
+    return i + 1;
+  }).map(function (el) {
     return /*#__PURE__*/React.createElement(BlockSkeleton, {
       key: el,
       height: "44px",

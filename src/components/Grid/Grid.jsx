@@ -242,7 +242,7 @@ Grid.propTypes = {
       id: PropTypes.string
     })
   ),
-  emptyGridText: PropTypes.string,
+  emptyGridText: PropTypes.node,
   onRowClick: PropTypes.func,
   paginationConfig: PropTypes.object,
   rowKeyAttribute: PropTypes.string,

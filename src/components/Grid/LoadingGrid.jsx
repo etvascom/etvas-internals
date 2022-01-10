@@ -4,9 +4,9 @@ import styled from 'styled-components'
 import { BlockSkeleton, ActivityIndicator } from '@etvas/etvaskit'
 
 export const LoadingGrid = ({ busyVariant, busySkeletonNumber }) =>
-  busyVariant === 'blockSkeleton' ? (
+  busyVariant === 'blockSkeleton' && busySkeletonNumber > 0 ? (
     <>
-      {[...new Array(busySkeletonNumber + 1).keys()]?.map(el => (
+      {Array.from({ length: busySkeletonNumber }, (_, i) => i + 1).map(el => (
         <BlockSkeleton key={el} height='44px' mb={1} />
       ))}
     </>
