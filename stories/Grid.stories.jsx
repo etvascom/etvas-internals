@@ -151,3 +151,9 @@ export const ColorGridRow = args => {
     />
   )
 }
+
+export const EmptyGrid = () => {
+  const grid = getExampleGrid()
+
+  return <Grid name={grid.name} columns={grid.columns} items={[]} />
+}

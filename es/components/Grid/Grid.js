@@ -1,12 +1,8 @@
 var _templateObject;
 
-var _excluded = ["extendedField", "renderExtended", "forceExtended", "busy", "name", "columns", "items", "emptyGridText", "hasHeader", "onRowClick", "initialSort", "rowKeyAttribute", "paginationConfig", "isDisabledRow", "rowColor", "busyVariant", "busySkeletonNumber"];
-
 function _taggedTemplateLiteralLoose(strings, raw) { if (!raw) { raw = strings.slice(0); } strings.raw = raw; return strings; }
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
-function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
 import React, { useEffect, useMemo, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
@@ -35,8 +31,7 @@ var Grid = function Grid(_ref) {
       isDisabledRow = _ref.isDisabledRow,
       rowColor = _ref.rowColor,
       busyVariant = _ref.busyVariant,
-      busySkeletonNumber = _ref.busySkeletonNumber,
-      props = _objectWithoutPropertiesLoose(_ref, _excluded);
+      busySkeletonNumber = _ref.busySkeletonNumber;
 
   var _useState = useState(function () {
     if (initialSort === null || initialSort === void 0 ? void 0 : initialSort.by) {
@@ -127,15 +122,14 @@ var Grid = function Grid(_ref) {
   };
 
   if (!busy && (items === null || items === void 0 ? void 0 : items.length) === 0) {
-    return /*#__PURE__*/React.createElement(Box, props, /*#__PURE__*/React.createElement(Flex, {
-      height: "64px",
-      backgroundColor: "white-smoke",
+    return /*#__PURE__*/React.createElement(Flex, {
       alignItems: "center",
       justifyContent: "center"
     }, /*#__PURE__*/React.createElement(Typography, {
-      variant: "labelSmall",
-      color: "lighterText"
-    }, emptyGridText)));
+      variant: "base14Light",
+      color: "baseMetal",
+      p: 6
+    }, emptyGridText));
   }
 
   var handleOnRowClick = function handleOnRowClick(item) {
