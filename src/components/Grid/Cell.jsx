@@ -14,8 +14,8 @@ import { TruncateGridInfo } from './index'
 import Tooltip from '../Tooltip'
 
 const renderText = renderedValue => (
-  <TruncateGridInfo>
-    <Typography variant='labelSmall' color='textCardTitle'>
+  <TruncateGridInfo minWidth='0'>
+    <Typography variant='labelSmall' truncate color='textCardTitle'>
       {renderedValue}
     </Typography>
   </TruncateGridInfo>

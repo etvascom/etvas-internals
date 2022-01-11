@@ -22,8 +22,11 @@ import { TruncateGridInfo } from './index';
 import Tooltip from '../Tooltip';
 
 var renderText = function renderText(renderedValue) {
-  return /*#__PURE__*/React.createElement(TruncateGridInfo, null, /*#__PURE__*/React.createElement(Typography, {
+  return /*#__PURE__*/React.createElement(TruncateGridInfo, {
+    minWidth: "0"
+  }, /*#__PURE__*/React.createElement(Typography, {
     variant: "labelSmall",
+    truncate: true,
     color: "textCardTitle"
   }, renderedValue));
 };
