@@ -102,8 +102,8 @@ const Grid = ({
 
   if (!busy && items?.length === 0) {
     return (
-      <Flex height='64px' alignItems='center' justifyContent='center'>
-        <Typography variant='base14Light' color='baseMetal'>
+      <Flex alignItems='center' justifyContent='center'>
+        <Typography variant='base14Light' color='baseMetal' p={6}>
           {emptyGridText}
         </Typography>
       </Flex>
