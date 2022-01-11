@@ -80,6 +80,13 @@ const getItems = () => [
     name: 'test 4',
     value: 0,
     description: 'this is a long description'
+  },
+  {
+    id: '3',
+    name: 'this is a super long name and will need to be truncated by the grid',
+    value: 0,
+    description:
+      'this is a super long description and will also need to be truncated by the grid'
   }
 ]
 
