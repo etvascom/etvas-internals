@@ -27,8 +27,7 @@ const Grid = ({
   isDisabledRow,
   rowColor,
   busyVariant,
-  busySkeletonNumber,
-  emptyGridColor
+  busySkeletonNumber
 }) => {
   const [sortConfig, setSortConfig] = useState(() => {
     if (initialSort?.by) {
@@ -103,11 +102,7 @@ const Grid = ({
 
   if (!busy && items?.length === 0) {
     return (
-      <Flex
-        height='64px'
-        backgroundColor={emptyGridColor}
-        alignItems='center'
-        justifyContent='center'>
+      <Flex height='64px' alignItems='center' justifyContent='center'>
         <Typography variant='base14Light' color='baseMetal'>
           {emptyGridText}
         </Typography>
@@ -247,8 +242,7 @@ Grid.propTypes = {
   busyVariant: PropTypes.oneOf(['blockSkeleton', 'runningBar']),
   isDisabledRow: PropTypes.func,
   busySkeletonNumber: PropTypes.number,
-  rowColor: PropTypes.func,
-  emptyGridColor: PropTypes.string
+  rowColor: PropTypes.func
 }
 
 Grid.defaultProps = {
@@ -258,8 +252,7 @@ Grid.defaultProps = {
   busyVariant: 'runningBar',
   isDisabledRow: () => false,
   busySkeletonNumber: 5,
-  rowColor: item => 'baseWhite',
-  emptyGridColor: 'baseGrayLightest'
+  rowColor: item => 'baseWhite'
 }
 
 export default Grid
