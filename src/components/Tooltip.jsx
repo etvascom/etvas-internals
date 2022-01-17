@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { Flex, Typography } from '@etvas/etvaskit'
@@ -12,16 +12,16 @@ const Tooltip = ({
   ...props
 }) => {
   const [isTooltipShown, setIsToolTipShown] = useState(false)
-  let timeout
+  const timeoutRef = useRef()
 
   const showTip = () => {
-    timeout = setTimeout(() => {
+    timeoutRef.current = setTimeout(() => {
       setIsToolTipShown(true)
     }, delay || 350)
   }
 
   const hideTip = () => {
-    clearInterval(timeout)
+    clearInterval(timeoutRef.current)
     setIsToolTipShown(false)
   }
 
@@ -32,8 +32,8 @@ const Tooltip = ({
         <StyledTypography
           px={4}
           py={2}
-          color='white'
-          variant='labelSmall'
+          color='baseWhite'
+          variant='base14Light'
           distance={distance}
           placement={placement}>
           {content}
@@ -53,8 +53,9 @@ const StyledTypography = styled(Typography)`
   position: absolute;
   transform: translateX(-50%);
   left: 50%;
-  white-space: nowrap;
   background: #536083;
+  width: max-content;
+  max-width: 300px;
 
   ${({ placement, distance }) =>
     placement === 'right'

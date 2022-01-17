@@ -8,7 +8,7 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 
 function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Flex, Typography } from '@etvas/etvaskit';
@@ -25,16 +25,16 @@ var Tooltip = function Tooltip(_ref) {
       isTooltipShown = _useState[0],
       setIsToolTipShown = _useState[1];
 
-  var timeout;
+  var timeoutRef = useRef();
 
   var showTip = function showTip() {
-    timeout = setTimeout(function () {
+    timeoutRef.current = setTimeout(function () {
       setIsToolTipShown(true);
     }, delay || 350);
   };
 
   var hideTip = function hideTip() {
-    clearInterval(timeout);
+    clearInterval(timeoutRef.current);
     setIsToolTipShown(false);
   };
 
@@ -44,15 +44,15 @@ var Tooltip = function Tooltip(_ref) {
   }, props), children, isTooltipShown && /*#__PURE__*/React.createElement(StyledTypography, {
     px: 4,
     py: 2,
-    color: "white",
-    variant: "labelSmall",
+    color: "baseWhite",
+    variant: "base14Light",
     distance: distance,
     placement: placement
   }, content));
 };
 
 var StyledFlex = styled(Flex)(_templateObject || (_templateObject = _taggedTemplateLiteralLoose(["\n  display: inline;\n  position: relative;\n"])));
-var StyledTypography = styled(Typography)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteralLoose(["\n  z-index: 50;\n  border-radius: 3px;\n  position: absolute;\n  transform: translateX(-50%);\n  left: 50%;\n  white-space: nowrap;\n  background: #536083;\n\n  ", ";\n"])), function (_ref2) {
+var StyledTypography = styled(Typography)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteralLoose(["\n  z-index: 50;\n  border-radius: 3px;\n  position: absolute;\n  transform: translateX(-50%);\n  left: 50%;\n  background: #536083;\n  width: max-content;\n  max-width: 300px;\n\n  ", ";\n"])), function (_ref2) {
   var placement = _ref2.placement,
       distance = _ref2.distance;
   return placement === 'right' ? " left: calc(100% + " + distance + ");\n  top: 50%;\n  transform: translateX(0) translateY(-50%);" : placement === 'left' ? "left: auto;\n  right: calc(100% + " + distance + ");\n  top: 50%;\n  transform: translateX(0) translateY(-50%);" : "\n" + placement + ": calc(" + distance + " * -1);\n";
