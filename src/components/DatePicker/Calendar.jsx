@@ -9,6 +9,7 @@ import { css } from 'styled-components'
 
 export const Calendar = ({
   value,
+  browseDate,
   dayFormat,
   monthFormat,
   yearFormat,
@@ -20,18 +21,21 @@ export const Calendar = ({
   startOfTime,
   endOfTime,
   onChange,
+  onHover,
   highlight,
+  highlightCurrent,
+  canChange,
   label,
   ...props
 }) => {
   const [isMonthsShown, setMonthsShown] = useState(false)
   const [isYearsShown, setYearsShown] = useState(false)
   const [yearPanel, setYearPanel] = useState(null)
-  const [currentDate, setCurrentDate] = useState(value)
+  const [currentDate, setCurrentDate] = useState(browseDate || value)
 
   useEffect(() => {
-    setCurrentDate(value)
-  }, [value])
+    setCurrentDate(browseDate || value)
+  }, [value, browseDate])
 
   let m = useMemo(() => moment(currentDate), [currentDate])
   const mRef = useMemo(() => moment(value), [value])
@@ -81,10 +85,7 @@ export const Calendar = ({
     }
 
     if (
-      end
-        .clone()
-        .endOf('week')
-        .diff(start.clone().startOf('week'), 'week') < 5
+      end.clone().endOf('week').diff(start.clone().startOf('week'), 'week') < 5
     ) {
       start.startOf('week').add(-1, 'day')
     }
@@ -215,8 +216,15 @@ export const Calendar = ({
     if (monthNavigationWithinYear && !day._m.isSame(mRef, 'year')) {
       return
     }
-    setCurrentDate(day._m.format(COMMON_FORMAT))
-    onChange && onChange(day._m.format(COMMON_FORMAT))
+
+    if (!canChange || canChange(day._m.format(COMMON_FORMAT))) {
+      setCurrentDate(day._m.format(COMMON_FORMAT))
+      onChange && onChange(day._m.format(COMMON_FORMAT))
+    }
+  }
+
+  const handleHover = day => {
+    onHover && onHover(day._m.format(COMMON_FORMAT))
   }
 
   return (
@@ -343,7 +351,9 @@ export const Calendar = ({
         cal.map(day => (
           <CellWrapper key={day.key} ratio={1 / 7}>
             <DayCell
+              onMouseOver={() => handleHover(day)}
               onClick={() => handleDayChange(day)}
+              highlightCurrent={highlightCurrent}
               current={day.current}
               highlight={day.highlight}
               disabled={!isBetweenDate(day._m)}
@@ -433,11 +443,13 @@ const WeekCell = styled(Typography)(({ theme }) =>
 )
 
 const DayCell = styled(Touchable)(
-  ({ current, disabled, highlight, hidden, month, theme }) =>
+  ({ current, disabled, highlight, hidden, month, theme, highlightCurrent }) =>
     css({
       ...cellStyle,
       backgroundColor:
-        current || highlight ? theme.colors.accentFade : 'transparent',
+        (highlightCurrent && current) || highlight
+          ? theme.colors.accentFade
+          : 'transparent',
       cursor: disabled || hidden ? 'not-allowed' : 'pointer',
       opacity: hidden ? 0.05 : disabled ? 0.35 : month ? 1 : 0.1,
       border: '1px solid transparent',
@@ -474,6 +486,7 @@ const DropTrigger = styled(Touchable)`
 
 Calendar.propTypes = {
   value: PropTypes.string,
+  browseDate: PropTypes.string,
   startOfTime: PropTypes.string,
   endOfTime: PropTypes.string,
   dayFormat: PropTypes.string,
@@ -485,7 +498,10 @@ Calendar.propTypes = {
   monthNavigation: PropTypes.bool,
   monthNavigationWithinYear: PropTypes.bool,
   onChange: PropTypes.func,
+  onHover: PropTypes.func,
   highlight: PropTypes.func,
+  highlightCurrent: PropTypes.bool,
+  canChange: PropTypes.func,
   label: PropTypes.node
 }
 
@@ -498,5 +514,6 @@ Calendar.defaultProps = {
   yearSelector: true,
   monthNavigation: true,
   monthNavigationWithinYear: false,
+  highlightCurrent: true,
   highlight: () => false
 }

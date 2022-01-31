@@ -116,6 +116,7 @@ export var DateRangePicker = function DateRangePicker(_ref) {
     return mStart.isSameOrBefore(day) && mEnd.isSameOrAfter(day);
   };
 
+  console.warn('* Deprecated: please use RangePicker component *');
   return /*#__PURE__*/React.createElement(Flex, _extends({
     flexDirection: "column"
   }, props), label && /*#__PURE__*/React.createElement(Typography, {
