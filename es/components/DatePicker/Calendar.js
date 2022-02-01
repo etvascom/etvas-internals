@@ -1,6 +1,6 @@
 var _templateObject, _templateObject2;
 
-var _excluded = ["value", "dayFormat", "monthFormat", "yearFormat", "weekdayFormat", "monthSelector", "monthNavigation", "monthNavigationWithinYear", "yearSelector", "startOfTime", "endOfTime", "onChange", "highlight", "label"];
+var _excluded = ["value", "browseDate", "dayFormat", "monthFormat", "yearFormat", "weekdayFormat", "monthSelector", "monthNavigation", "monthNavigationWithinYear", "yearSelector", "startOfTime", "endOfTime", "onChange", "onHover", "highlight", "highlightCurrent", "canChange", "label"];
 
 function _taggedTemplateLiteralLoose(strings, raw) { if (!raw) { raw = strings.slice(0); } strings.raw = raw; return strings; }
 
@@ -17,6 +17,7 @@ import { Flex, Typography, Touchable, Icon, styled } from '@etvas/etvaskit';
 import { css } from 'styled-components';
 export var Calendar = function Calendar(_ref) {
   var value = _ref.value,
+      browseDate = _ref.browseDate,
       dayFormat = _ref.dayFormat,
       monthFormat = _ref.monthFormat,
       yearFormat = _ref.yearFormat,
@@ -28,7 +29,10 @@ export var Calendar = function Calendar(_ref) {
       startOfTime = _ref.startOfTime,
       endOfTime = _ref.endOfTime,
       onChange = _ref.onChange,
+      onHover = _ref.onHover,
       highlight = _ref.highlight,
+      highlightCurrent = _ref.highlightCurrent,
+      canChange = _ref.canChange,
       label = _ref.label,
       props = _objectWithoutPropertiesLoose(_ref, _excluded);
 
@@ -44,13 +48,13 @@ export var Calendar = function Calendar(_ref) {
       yearPanel = _useState3[0],
       setYearPanel = _useState3[1];
 
-  var _useState4 = useState(value),
+  var _useState4 = useState(browseDate || value),
       currentDate = _useState4[0],
       setCurrentDate = _useState4[1];
 
   useEffect(function () {
-    setCurrentDate(value);
-  }, [value]);
+    setCurrentDate(browseDate || value);
+  }, [value, browseDate]);
   var m = useMemo(function () {
     return moment(currentDate);
   }, [currentDate]);
@@ -233,8 +237,14 @@ export var Calendar = function Calendar(_ref) {
       return;
     }
 
-    setCurrentDate(day._m.format(COMMON_FORMAT));
-    onChange && onChange(day._m.format(COMMON_FORMAT));
+    if (!canChange || canChange(day._m.format(COMMON_FORMAT))) {
+      setCurrentDate(day._m.format(COMMON_FORMAT));
+      onChange && onChange(day._m.format(COMMON_FORMAT));
+    }
+  };
+
+  var handleHover = function handleHover(day) {
+    onHover && onHover(day._m.format(COMMON_FORMAT));
   };
 
   return /*#__PURE__*/React.createElement(Flex, _extends({
@@ -357,9 +367,13 @@ export var Calendar = function Calendar(_ref) {
       key: day.key,
       ratio: 1 / 7
     }, /*#__PURE__*/React.createElement(DayCell, {
+      onMouseOver: function onMouseOver() {
+        return handleHover(day);
+      },
       onClick: function onClick() {
         return handleDayChange(day);
       },
+      highlightCurrent: highlightCurrent,
       current: day.current,
       highlight: day.highlight,
       disabled: !isBetweenDate(day._m),
@@ -442,9 +456,10 @@ var DayCell = styled(Touchable)(function (_ref7) {
       highlight = _ref7.highlight,
       hidden = _ref7.hidden,
       month = _ref7.month,
-      theme = _ref7.theme;
+      theme = _ref7.theme,
+      highlightCurrent = _ref7.highlightCurrent;
   return css(_extends({}, cellStyle, {
-    backgroundColor: current || highlight ? theme.colors.accentFade : 'transparent',
+    backgroundColor: highlightCurrent && current || highlight ? theme.colors.accentFade : 'transparent',
     cursor: disabled || hidden ? 'not-allowed' : 'pointer',
     opacity: hidden ? 0.05 : disabled ? 0.35 : month ? 1 : 0.1,
     border: '1px solid transparent',
@@ -466,6 +481,7 @@ var MonthNav = styled(Touchable)(function () {
 var DropTrigger = styled(Touchable)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteralLoose(["\n  height: 32px;\n  flex: 1 1;\n"])));
 Calendar.propTypes = process.env.NODE_ENV !== "production" ? {
   value: PropTypes.string,
+  browseDate: PropTypes.string,
   startOfTime: PropTypes.string,
   endOfTime: PropTypes.string,
   dayFormat: PropTypes.string,
@@ -477,7 +493,10 @@ Calendar.propTypes = process.env.NODE_ENV !== "production" ? {
   monthNavigation: PropTypes.bool,
   monthNavigationWithinYear: PropTypes.bool,
   onChange: PropTypes.func,
+  onHover: PropTypes.func,
   highlight: PropTypes.func,
+  highlightCurrent: PropTypes.bool,
+  canChange: PropTypes.func,
   label: PropTypes.node
 } : {};
 Calendar.defaultProps = {
@@ -489,6 +508,7 @@ Calendar.defaultProps = {
   yearSelector: true,
   monthNavigation: true,
   monthNavigationWithinYear: false,
+  highlightCurrent: true,
   highlight: function highlight() {
     return false;
   }

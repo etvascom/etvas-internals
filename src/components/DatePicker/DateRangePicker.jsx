@@ -91,6 +91,8 @@ export const DateRangePicker = ({
 
   const highlight = day => mStart.isSameOrBefore(day) && mEnd.isSameOrAfter(day)
 
+  console.warn('* Deprecated: please use RangePicker component *')
+
   return (
     <Flex flexDirection='column' {...props}>
       {label && (

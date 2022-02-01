@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Card } from '@etvas/etvaskit'
-import { DateRangePicker, DatePicker } from '../src'
+import { DateRangePicker, DatePicker, RangePicker } from '../src'
 
 export default {
   title: 'Components/DatePicker',
@@ -98,6 +98,61 @@ export const DateRangeWithLabel = () => {
       labelYear='Selected Year'
       labelStartDate='Start Date'
       labelEndDate='End Date'
+    />
+  )
+}
+
+export const RangePickerWithLabel = () => {
+  const [dateRange, setDateRange] = useState()
+
+  const onChangeDateRange = value => {
+    setDateRange(value)
+  }
+
+  return (
+    <>
+      <RangePicker
+        value={dateRange}
+        label='Date Range Picker'
+        placeholder='Select new range'
+        onChange={onChangeDateRange}
+        displayFormat='dddd DD MMMM YYYY'
+        yearDisplayStart={2021}
+        yearDisplayEnd={2022}
+        startOfTime='2021-12-05'
+        endOfTime='2022-03-15'
+        labelYear='Selected Year'
+        labelStartDate='Start Date'
+        labelEndDate='End Date'
+        navigationByYear={false}
+      />
+      <pre>{JSON.stringify(dateRange, null, 2)}</pre>
+    </>
+  )
+}
+
+export const RangePickerWithNavigationByYear = () => {
+  const [dateRange, setDateRange] = useState()
+
+  const onChangeDateRange = value => {
+    setDateRange(value)
+  }
+
+  return (
+    <RangePicker
+      value={dateRange}
+      label='Date Range Picker'
+      placeholder='Select new range'
+      onChange={onChangeDateRange}
+      displayFormat='dddd DD MMMM YYYY'
+      yearDisplayStart={2021}
+      yearDisplayEnd={2022}
+      startOfTime='2021-01-05'
+      endOfTime='2022-03-15'
+      labelYear='Selected Year'
+      labelStartDate='Start Date'
+      labelEndDate='End Date'
+      navigationByYear
     />
   )
 }
