@@ -53,7 +53,6 @@ export const RangePicker = ({
         return
       }
       setExpanded(false)
-      // setIsEndDate(false)
     }
     window.addEventListener('click', listener)
     return () => window.removeEventListener('click', listener)

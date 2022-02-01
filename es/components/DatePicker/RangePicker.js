@@ -82,7 +82,7 @@ export var RangePicker = function RangePicker(_ref) {
         return;
       }
 
-      setExpanded(false); // setIsEndDate(false)
+      setExpanded(false);
     };
 
     window.addEventListener('click', listener);
