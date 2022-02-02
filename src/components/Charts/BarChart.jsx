@@ -43,14 +43,22 @@ export const BarChart = ({ categories, series, ...rest }) => {
 
 BarChart.propTypes = {
   categories: PropTypes.arrayOf(
-    PropTypes.oneOf([PropTypes.number, PropTypes.string])
-  ).isRequired,
+    PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+  ),
   series: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string,
-      data: PropTypes.arrayOf(
-        PropTypes.oneOf([PropTypes.number, PropTypes.string])
-      )
+      data: PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.string,
+        PropTypes.arrayOf(
+          PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.number,
+            PropTypes.object
+          ])
+        )
+      ])
     })
   ).isRequired,
   colors: PropTypes.arrayOf(PropTypes.string)

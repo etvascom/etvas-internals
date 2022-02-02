@@ -63,10 +63,10 @@ export var LineChart = function LineChart(_ref2) {
   });
 };
 LineChart.propTypes = process.env.NODE_ENV !== "production" ? {
-  categories: PropTypes.arrayOf(PropTypes.oneOf([PropTypes.number, PropTypes.string])).isRequired,
+  categories: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.number, PropTypes.string])).isRequired,
   series: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string,
-    data: PropTypes.arrayOf(PropTypes.oneOf([PropTypes.number, PropTypes.string]))
+    data: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object]))])
   })).isRequired,
   colors: PropTypes.arrayOf(PropTypes.string)
 } : {};

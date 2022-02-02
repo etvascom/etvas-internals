@@ -116,7 +116,7 @@ var FakeInput = styled(Flex)(function (_ref3) {
 });
 var Wrapper = styled(Flex)(_templateObject || (_templateObject = _taggedTemplateLiteralLoose(["\n  width: 100%;\n  position: relative;\n"])));
 DatePicker.propTypes = process.env.NODE_ENV !== "production" ? {
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   onChange: PropTypes.func,
   displayFormat: PropTypes.string,
   collapseOnPick: PropTypes.bool,

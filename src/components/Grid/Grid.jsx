@@ -232,7 +232,7 @@ Grid.propTypes = {
   }),
   items: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.string
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
     })
   ),
   emptyGridText: PropTypes.node,

@@ -46,14 +46,22 @@ export const LineChart = ({ categories, series, ...rest }) => {
 
 LineChart.propTypes = {
   categories: PropTypes.arrayOf(
-    PropTypes.oneOf([PropTypes.number, PropTypes.string])
+    PropTypes.oneOfType([PropTypes.number, PropTypes.string])
   ).isRequired,
   series: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string,
-      data: PropTypes.arrayOf(
-        PropTypes.oneOf([PropTypes.number, PropTypes.string])
-      )
+      data: PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.string,
+        PropTypes.arrayOf(
+          PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.number,
+            PropTypes.object
+          ])
+        )
+      ])
     })
   ).isRequired,
   colors: PropTypes.arrayOf(PropTypes.string)

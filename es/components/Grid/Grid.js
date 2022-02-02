@@ -235,7 +235,7 @@ Grid.propTypes = process.env.NODE_ENV !== "production" ? {
     asc: PropTypes.bool
   }),
   items: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
   })),
   emptyGridText: PropTypes.node,
   onRowClick: PropTypes.func,

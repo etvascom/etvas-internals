@@ -118,7 +118,7 @@ const Wrapper = styled(Flex)`
 `
 
 DatePicker.propTypes = {
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   onChange: PropTypes.func,
   displayFormat: PropTypes.string,
   collapseOnPick: PropTypes.bool,
