@@ -5,15 +5,14 @@ function _taggedTemplateLiteralLoose(strings, raw) { if (!raw) { raw = strings.s
 import React, { Fragment, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { themed, Box, Typography, Touchable, Icon } from '@etvas/etvaskit';
+import { themed, Box, Touchable, Icon } from '@etvas/etvaskit';
+import GridHeaderLabel from './GridHeaderLabel';
 var sortTypes = process.env.NODE_ENV !== "production" ? [0, 1, 2, 3] : {};
 
 var HeaderCell = function HeaderCell(_ref) {
   var column = _ref.column,
       sortType = _ref.sortType;
-  return /*#__PURE__*/React.createElement(StyledWrapper, null, /*#__PURE__*/React.createElement(Typography, {
-    variant: "inputLabel"
-  }, column.header, sortType ? /*#__PURE__*/React.createElement(StyledOrderIcons, null, /*#__PURE__*/React.createElement(Icon, {
+  return /*#__PURE__*/React.createElement(StyledWrapper, null, sortType ? /*#__PURE__*/React.createElement(Box, null, /*#__PURE__*/React.createElement(StyledOrderIcons, null, /*#__PURE__*/React.createElement(Icon, {
     size: "small",
     name: "menuUp",
     color: sortType === 3 ? 'brand' : 'textLabelDefault'
@@ -21,7 +20,9 @@ var HeaderCell = function HeaderCell(_ref) {
     size: "small",
     name: "menuDown",
     color: sortType === 2 ? 'brand' : 'textLabelDefault'
-  })) : null));
+  }))) : null, /*#__PURE__*/React.createElement(GridHeaderLabel, {
+    tooltipContent: column.header
+  }, column.header));
 };
 
 var Header = function Header(_ref2) {
@@ -48,7 +49,8 @@ var Header = function Header(_ref2) {
       key: "header-" + column.name,
       onClick: function onClick() {
         return toggleSort(column.sort);
-      }
+      },
+      minWidth: 0
     }, /*#__PURE__*/React.createElement(HeaderCell, {
       column: column,
       sortType: getSortType(column)
@@ -66,7 +68,7 @@ var StyledRow = styled(Box)(_templateObject || (_templateObject = _taggedTemplat
 var StyledWrapper = styled(Box)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteralLoose(["\n  display: flex;\n  justify-content: ", ";\n  align-items: center;\n"])), function (props) {
   return props.align || 'left';
 });
-var StyledOrderIcons = styled(Box)(_templateObject3 || (_templateObject3 = _taggedTemplateLiteralLoose(["\n  display: inline-flex;\n  flex-direction: column;\n  justify-content: center;\n  margin-left: 4px;\n\n  > svg:first-child {\n    margin-bottom: -5px;\n  }\n\n  > svg:last-child {\n    margin-top: -5px;\n  }\n"])));
+var StyledOrderIcons = styled(Box)(_templateObject3 || (_templateObject3 = _taggedTemplateLiteralLoose(["\n  display: inline-flex;\n  flex-direction: column;\n  justify-content: center;\n  margin-right: 4px;\n\n  > svg:first-child {\n    margin-bottom: -5px;\n  }\n\n  > svg:last-child {\n    margin-top: -5px;\n  }\n"])));
 HeaderCell.propTypes = process.env.NODE_ENV !== "production" ? {
   column: PropTypes.object,
   sortType: PropTypes.oneOf(sortTypes)

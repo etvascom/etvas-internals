@@ -1,15 +1,15 @@
 import React, { Fragment, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { themed, Box, Typography, Touchable, Icon } from '@etvas/etvaskit'
+import { themed, Box, Touchable, Icon } from '@etvas/etvaskit'
+import GridHeaderLabel from './GridHeaderLabel'
 
 const sortTypes = [0, 1, 2, 3]
 
 const HeaderCell = ({ column, sortType }) => (
   <StyledWrapper>
-    <Typography variant='inputLabel'>
-      {column.header}
-      {sortType ? (
+    {sortType ? (
+      <Box>
         <StyledOrderIcons>
           <Icon
             size='small'
@@ -22,8 +22,11 @@ const HeaderCell = ({ column, sortType }) => (
             color={sortType === 2 ? 'brand' : 'textLabelDefault'}
           />
         </StyledOrderIcons>
-      ) : null}
-    </Typography>
+      </Box>
+    ) : null}
+    <GridHeaderLabel tooltipContent={column.header}>
+      {column.header}
+    </GridHeaderLabel>
   </StyledWrapper>
 )
 
@@ -47,7 +50,8 @@ const Header = ({ columns, toggleSort, sortConfig }) => {
           {column.sort ? (
             <Touchable
               key={`header-${column.name}`}
-              onClick={() => toggleSort(column.sort)}>
+              onClick={() => toggleSort(column.sort)}
+              minWidth={0}>
               <HeaderCell column={column} sortType={getSortType(column)} />
             </Touchable>
           ) : (
@@ -78,7 +82,7 @@ const StyledOrderIcons = styled(Box)`
   display: inline-flex;
   flex-direction: column;
   justify-content: center;
-  margin-left: 4px;
+  margin-right: 4px;
 
   > svg:first-child {
     margin-bottom: -5px;
