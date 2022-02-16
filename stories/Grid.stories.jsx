@@ -1,7 +1,7 @@
 import React from 'react'
 import { action } from '@storybook/addon-actions'
 
-import { Button } from '@etvas/etvaskit'
+import { Button, Box } from '@etvas/etvaskit'
 import { Grid, GridMainComponent } from '../src'
 
 export default {
@@ -43,6 +43,65 @@ const getExampleGrid = () => ({
       attribute: item => item.description,
       sort: 'description',
       width: '240px'
+    },
+    {
+      name: 'retry',
+      render: () => (
+        <Button variant='link' onClick={() => {}} disabled={false}>
+          Act
+        </Button>
+      ),
+      align: 'center',
+      width: '1fr'
+    },
+    {
+      name: 'editAction',
+      iconButton: 'edit',
+      tooltip: {
+        content: 'Edit'
+      },
+      action: action('Edit action clicked'),
+      align: 'center',
+      width: '1fr'
+    }
+  ]
+})
+
+const getGridLongHeader = () => ({
+  name: 'example-list',
+  extendedField: 'id',
+  renderExtended: ExtendedContent,
+  columns: [
+    {
+      name: 'left-spacing',
+      width: '16px'
+    },
+    {
+      name: 'name',
+      header: 'Lorem ipsum dolor sit amet consectetur adipisicing.',
+      render: item => (
+        <GridMainComponent
+          dotColor={item.name.length % 2 ? 'positive' : 'error'}>
+          {item.name}
+        </GridMainComponent>
+      ),
+      sort: 'name',
+      tooltip: { content: 'This is a tooltip' },
+      width: '240px'
+    },
+    {
+      name: 'value',
+      header: 'Lorem ipsum dolor sit amet consectetur adipisicing.',
+      attribute: item => item.value,
+      sort: 'value',
+      width: '1fr'
+    },
+    {
+      name: 'description',
+      header: 'Lorem ipsum dolor sit amet consectetur.',
+      attribute: item => item.description,
+      sort: 'description',
+      width: '2fr'
     },
     {
       name: 'retry',
@@ -163,4 +222,15 @@ export const EmptyGrid = () => {
   const grid = getExampleGrid()
 
   return <Grid name={grid.name} columns={grid.columns} items={[]} />
+}
+
+export const GridWithLongHeaders = () => {
+  const grid = getGridLongHeader()
+  const items = getItems()
+
+  return (
+    <Box m={10}>
+      <Grid name={grid.name} columns={grid.columns} items={items} />
+    </Box>
+  )
 }
