@@ -252,7 +252,8 @@ export var Calendar = function Calendar(_ref) {
     flexWrap: "wrap",
     width: "224px"
   }, props), !!label && /*#__PURE__*/React.createElement(Typography, {
-    variant: "labelSmallBold",
+    variant: "base12Bold",
+    color: "baseMetal",
     mb: 1
   }, label), /*#__PURE__*/React.createElement(Flex, {
     width: "224px",

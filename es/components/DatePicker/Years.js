@@ -52,7 +52,8 @@ export var Years = function Years(_ref) {
   return /*#__PURE__*/React.createElement(Box, _extends({
     width: "224px"
   }, props), !!label && /*#__PURE__*/React.createElement(Typography, {
-    variant: "labelSmallBold",
+    variant: "base12Bold",
+    color: "baseMetal",
     px: 3,
     mb: 1
   }, label), /*#__PURE__*/React.createElement(Typography, {

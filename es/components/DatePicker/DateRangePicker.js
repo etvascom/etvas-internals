@@ -121,8 +121,10 @@ export var DateRangePicker = function DateRangePicker(_ref) {
     flexDirection: "column"
   }, props), label && /*#__PURE__*/React.createElement(Typography, {
     as: "label",
-    variant: "inputLabel",
-    width: "fit-content"
+    variant: "base12Bold",
+    color: "baseMetal",
+    width: "fit-content",
+    mb: 1
   }, label), /*#__PURE__*/React.createElement(Wrapper, {
     ref: wrapRef
   }, /*#__PURE__*/React.createElement(FakeInput, {
