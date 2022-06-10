@@ -137,14 +137,15 @@ export const RangePicker = ({
   return (
     <Flex flexDirection='column' {...props}>
       {label && (
-        <Typography
-          as='label'
-          variant='base12Bold'
-          color='baseMetal'
-          width='fit-content'
-          mb={1}>
-          {label}
-        </Typography>
+        <Box mb={1}>
+          <Typography
+            as='label'
+            variant='base12Bold'
+            color='baseMetal'
+            width='fit-content'>
+            {label}
+          </Typography>
+        </Box>
       )}
       <Wrapper ref={wrapRef}>
         <FakeInput

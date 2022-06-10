@@ -4,7 +4,7 @@ import moment from 'moment'
 import 'moment/locale/de'
 
 import { COMMON_FORMAT } from './constants'
-import { Flex, Typography, Touchable, Icon, styled } from '@etvas/etvaskit'
+import { Flex, Typography, Touchable, Icon, Box, styled } from '@etvas/etvaskit'
 import { css } from 'styled-components'
 
 export const Calendar = ({
@@ -230,9 +230,11 @@ export const Calendar = ({
   return (
     <Flex justifyContent='flex-start' flexWrap='wrap' width='224px' {...props}>
       {!!label && (
-        <Typography variant='base12Bold' color='baseMetal' mb={1}>
-          {label}
-        </Typography>
+        <Box mb={1}>
+          <Typography variant='base12Bold' color='baseMetal'>
+            {label}
+          </Typography>
+        </Box>
       )}
       <Flex width='224px' mb={1}>
         {monthSelector && (

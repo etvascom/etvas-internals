@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useRef, useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
-import { Flex, Typography, Icon, styled } from '@etvas/etvaskit'
+import { Flex, Typography, Icon, Box, styled } from '@etvas/etvaskit'
 import { css } from 'styled-components'
 
 import { Years } from './Years'
@@ -96,14 +96,15 @@ export const DateRangePicker = ({
   return (
     <Flex flexDirection='column' {...props}>
       {label && (
-        <Typography
-          as='label'
-          variant='base12Bold'
-          color='baseMetal'
-          width='fit-content'
-          mb={1}>
-          {label}
-        </Typography>
+        <Box mb={1}>
+          <Typography
+            as='label'
+            variant='base12Bold'
+            color='baseMetal'
+            width='fit-content'>
+            {label}
+          </Typography>
+        </Box>
       )}
       <Wrapper ref={wrapRef}>
         <FakeInput

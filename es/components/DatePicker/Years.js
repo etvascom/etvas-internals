@@ -51,12 +51,13 @@ export var Years = function Years(_ref) {
   var today = moment().year();
   return /*#__PURE__*/React.createElement(Box, _extends({
     width: "224px"
-  }, props), !!label && /*#__PURE__*/React.createElement(Typography, {
+  }, props), !!label && /*#__PURE__*/React.createElement(Box, {
+    mb: 1
+  }, /*#__PURE__*/React.createElement(Typography, {
     variant: "base12Bold",
     color: "baseMetal",
-    px: 3,
-    mb: 1
-  }, label), /*#__PURE__*/React.createElement(Typography, {
+    px: 3
+  }, label)), /*#__PURE__*/React.createElement(Typography, {
     variant: "labelSmallBold",
     px: 3,
     mt: 2

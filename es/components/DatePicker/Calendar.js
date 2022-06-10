@@ -13,7 +13,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import 'moment/locale/de';
 import { COMMON_FORMAT } from './constants';
-import { Flex, Typography, Touchable, Icon, styled } from '@etvas/etvaskit';
+import { Flex, Typography, Touchable, Icon, Box, styled } from '@etvas/etvaskit';
 import { css } from 'styled-components';
 export var Calendar = function Calendar(_ref) {
   var value = _ref.value,
@@ -251,11 +251,12 @@ export var Calendar = function Calendar(_ref) {
     justifyContent: "flex-start",
     flexWrap: "wrap",
     width: "224px"
-  }, props), !!label && /*#__PURE__*/React.createElement(Typography, {
-    variant: "base12Bold",
-    color: "baseMetal",
+  }, props), !!label && /*#__PURE__*/React.createElement(Box, {
     mb: 1
-  }, label), /*#__PURE__*/React.createElement(Flex, {
+  }, /*#__PURE__*/React.createElement(Typography, {
+    variant: "base12Bold",
+    color: "baseMetal"
+  }, label)), /*#__PURE__*/React.createElement(Flex, {
     width: "224px",
     mb: 1
   }, monthSelector && /*#__PURE__*/React.createElement(DropTrigger, {

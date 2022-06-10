@@ -11,7 +11,7 @@ function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) r
 import React, { useLayoutEffect, useRef, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Flex, Typography, Icon, styled } from '@etvas/etvaskit';
+import { Flex, Typography, Icon, Box, styled } from '@etvas/etvaskit';
 import { css } from 'styled-components';
 import { Years } from './Years';
 import { Calendar } from './Calendar';
@@ -119,13 +119,14 @@ export var DateRangePicker = function DateRangePicker(_ref) {
   console.warn('* Deprecated: please use RangePicker component *');
   return /*#__PURE__*/React.createElement(Flex, _extends({
     flexDirection: "column"
-  }, props), label && /*#__PURE__*/React.createElement(Typography, {
+  }, props), label && /*#__PURE__*/React.createElement(Box, {
+    mb: 1
+  }, /*#__PURE__*/React.createElement(Typography, {
     as: "label",
     variant: "base12Bold",
     color: "baseMetal",
-    width: "fit-content",
-    mb: 1
-  }, label), /*#__PURE__*/React.createElement(Wrapper, {
+    width: "fit-content"
+  }, label)), /*#__PURE__*/React.createElement(Wrapper, {
     ref: wrapRef
   }, /*#__PURE__*/React.createElement(FakeInput, {
     onClick: toggleExpanded,
