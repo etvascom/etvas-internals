@@ -230,7 +230,7 @@ export const Calendar = ({
   return (
     <Flex justifyContent='flex-start' flexWrap='wrap' width='224px' {...props}>
       {!!label && (
-        <Typography variant='labelSmallBold' mb={1}>
+        <Typography variant='base12Bold' color='baseMetal' mb={1}>
           {label}
         </Typography>
       )}
