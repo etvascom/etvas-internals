@@ -1,4 +1,10 @@
-import React, { useEffect, useMemo, useState, useRef } from 'react'
+import React, {
+  useEffect,
+  useMemo,
+  useState,
+  useRef,
+  useLayoutEffect
+} from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { Typography, Icon, Flex, Box, themed } from '@etvas/etvaskit'
@@ -181,9 +187,12 @@ const Grid = ({
 const ItemWrapper = ({ children, scroll }) => {
   const viewRef = useRef()
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (viewRef.current && scroll) {
-      viewRef.current.scrollIntoView({ behavior: 'smooth' })
+      // wait for next tick (after render)
+      setTimeout(() => {
+        viewRef.current.scrollIntoView({ behavior: 'smooth' })
+      }, 0)
     }
   }, [viewRef, scroll])
 

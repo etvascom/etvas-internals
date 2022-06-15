@@ -4,7 +4,7 @@ function _taggedTemplateLiteralLoose(strings, raw) { if (!raw) { raw = strings.s
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
-import React, { useEffect, useMemo, useState, useRef } from 'react';
+import React, { useEffect, useMemo, useState, useRef, useLayoutEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Typography, Icon, Flex, Box, themed } from '@etvas/etvaskit';
@@ -185,11 +185,14 @@ var ItemWrapper = function ItemWrapper(_ref2) {
   var children = _ref2.children,
       scroll = _ref2.scroll;
   var viewRef = useRef();
-  useEffect(function () {
+  useLayoutEffect(function () {
     if (viewRef.current && scroll) {
-      viewRef.current.scrollIntoView({
-        behavior: 'smooth'
-      });
+      // wait for next tick (after render)
+      setTimeout(function () {
+        viewRef.current.scrollIntoView({
+          behavior: 'smooth'
+        });
+      }, 0);
     }
   }, [viewRef, scroll]);
   return /*#__PURE__*/React.createElement("div", {
