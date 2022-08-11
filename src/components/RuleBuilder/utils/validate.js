@@ -1,3 +1,5 @@
+import { getRuleDetails } from './rule'
+
 export const validateRuleBuilder = (
   field,
   combinedRuleOptions,
@@ -31,26 +33,26 @@ export const validateRuleBuilder = (
 
 const generateRuleErrors = (rules, options) =>
   rules.reduce((acc, rule, ruleIndex) => {
-    const { type } = rule
-    const operator = `${type}Operator`
-    const value = `${type}Value`
+    const { type, operator, value, operatorKey, valueKey } = getRuleDetails(
+      rule
+    )
 
     const failedOperatorValidator = options[type].operator.validate.find(item =>
-      item.validator(rule[operator])
+      item.validator(operator)
     )
 
     if (failedOperatorValidator) {
       acc[ruleIndex] = acc[ruleIndex] ?? {}
-      acc[ruleIndex][operator] = failedOperatorValidator.error
+      acc[ruleIndex][operatorKey] = failedOperatorValidator.error
     }
 
     const failedValueValidator = options[type].value.validate.find(item =>
-      item.validator(rule[value])
+      item.validator(value)
     )
 
     if (failedValueValidator) {
       acc[ruleIndex] = acc[ruleIndex] ?? {}
-      acc[ruleIndex][value] = failedValueValidator.error
+      acc[ruleIndex][valueKey] = failedValueValidator.error
     }
 
     return acc

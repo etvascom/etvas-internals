@@ -6,6 +6,7 @@ import { cloneDeep } from 'lodash'
 import { Box, Typography, Button } from '@etvas/etvaskit'
 import { Group } from './Group'
 import { Combinator } from './Combinator'
+import { getRuleDetails } from './utils/rule'
 
 export const RuleBuilder = ({
   name,
@@ -27,13 +28,12 @@ export const RuleBuilder = ({
 
     const defaultOperatorValues = Object.keys(combinedRuleOptions).reduce(
       (acc, type) => {
-        const operator = `${type}Operator`
-        const value = `${type}Value`
+        const { operatorKey, valueKey } = getRuleDetails({ type })
 
         return {
           ...acc,
-          [operator]: combinedRuleOptions[type].operator.options[0].value,
-          [value]: null
+          [operatorKey]: combinedRuleOptions[type].operator.options[0].value,
+          [valueKey]: null
         }
       },
       {}
@@ -49,13 +49,13 @@ export const RuleBuilder = ({
   const createAbsoluteRules = useCallback(
     () =>
       Object.keys(absoluteRuleOptions).map(type => {
-        const operator = `${type}Operator`
-        const value = `${type}Value`
+        const { operatorKey, valueKey } = getRuleDetails({ type })
+
         return {
           id: uuid(),
           type,
-          [operator]: absoluteRuleOptions[type].operator.options[0].value,
-          [value]: null
+          [operatorKey]: absoluteRuleOptions[type].operator.options[0].value,
+          [valueKey]: null
         }
       }),
     [absoluteRuleOptions]
