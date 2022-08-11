@@ -1,16 +1,19 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Button, Box } from '@etvas/etvaskit'
+import { Button, Box, Flex, CheckboxField } from '@etvas/etvaskit'
 import { Rule } from './Rule'
 import { Combinator } from './Combinator'
 
 export const Group = ({
   disabled,
   group,
+  advancedTargeting,
   name,
-  options,
+  combinedRuleOptions,
+  absoluteRuleOptions,
   removeRuleIcon,
   addRuleLabel,
+  advancedTargetingLabel,
   onRemoveRule,
   onAddRule
 }) => (
@@ -22,7 +25,7 @@ export const Group = ({
           name={`${name}.combined[${ruleIndex}]`}
           removeRuleIcon={removeRuleIcon}
           rule={rule}
-          options={options}
+          options={combinedRuleOptions}
           onRemove={onRemoveRule(group.id, rule.id)}
         />
         {ruleIndex < group.combined.length - 1 && (
@@ -34,19 +37,46 @@ export const Group = ({
         )}
       </>
     ))}
-    <Button
-      variant='link'
-      mt={4}
-      disabled={disabled}
-      onClick={onAddRule(group.id)}>
-      {addRuleLabel}
-    </Button>
+
+    <Flex my={4}>
+      <Button
+        variant='link'
+        disabled={disabled}
+        onClick={onAddRule(group.id)}
+        mr={8}>
+        {addRuleLabel}
+      </Button>
+
+      <CheckboxField
+        label={advancedTargetingLabel}
+        name={`${name}.advancedTargeting`}
+      />
+    </Flex>
+
+    {advancedTargeting &&
+      group.absolute.map((rule, ruleIndex) => (
+        <>
+          <Rule
+            key={rule.id}
+            name={`${name}.absolute[${ruleIndex}]`}
+            rule={rule}
+            options={absoluteRuleOptions}
+            onRemove={onRemoveRule(group.id, rule.id)}
+          />
+          {ruleIndex < group.absolute.length - 1 && (
+            <Combinator options={andCombinatorOptions} mb={4} />
+          )}
+        </>
+      ))}
   </Box>
 )
 
 Group.propTypes = {
-  options: PropTypes.object,
+  advancedTargeting: PropTypes.bool,
+  combinedRuleOptions: PropTypes.object,
+  absoluteRuleOptions: PropTypes.object,
   addRuleLabel: PropTypes.node,
+  advancedTargetingLabel: PropTypes.node,
   onRemoveRule: PropTypes.func,
   onAddRule: PropTypes.func,
   disabled: PropTypes.bool,
@@ -54,6 +84,8 @@ Group.propTypes = {
   removeRuleIcon: PropTypes.string,
   group: PropTypes.object
 }
+
+const andCombinatorOptions = [{ value: 'and', label: 'AND' }]
 
 const completeCombinatorOptions = [
   { value: 'and', label: 'AND' },

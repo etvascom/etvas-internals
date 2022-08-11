@@ -1,6 +1,13 @@
 import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
-import { Flex, DropdownField, TextField, Button, Icon } from '@etvas/etvaskit'
+import {
+  Flex,
+  DropdownField,
+  TextField,
+  Button,
+  Icon,
+  Box
+} from '@etvas/etvaskit'
 
 export const Rule = ({
   disabled,
@@ -25,7 +32,7 @@ export const Rule = ({
   return (
     <Flex width={1} justifyContent='space-between' alignItems='center'>
       <DropdownField
-        disabled={disabled}
+        disabled={disabled || !removeRuleIcon}
         options={typeOptions}
         name={`${name}.type`}
         placeholder={placeholder}
@@ -50,10 +57,12 @@ export const Rule = ({
         placeholder={value.placeholder}
         required
       />
-      {!disabled && (
+      {!disabled && removeRuleIcon ? (
         <Button variant='link' ml={4} onClick={onRemove}>
           <Icon name={removeRuleIcon} size='large' />
         </Button>
+      ) : (
+        <Box ml={12} bg='red' />
       )}
     </Flex>
   )

@@ -18,7 +18,7 @@ const numPositive = {
   error: 'Number must be positive'
 }
 
-const options = {
+const combinedRuleOptions = {
   merchant: {
     label: 'Merchant',
     placeholder: 'Merchant',
@@ -61,6 +61,49 @@ const options = {
   }
 }
 
+const absoluteRuleOptions = {
+  timespan: {
+    label: 'Timespan',
+    placeholder: 'Timespan',
+    validate: [required],
+    operator: {
+      label: 'Timespan Condition',
+      placeholder: 'Timespan Condition',
+      validate: [required],
+      options: [
+        { label: 'lower than', value: '<' },
+        { label: 'greater than', value: '>' }
+      ]
+    },
+    value: {
+      label: 'Timespan value',
+      placeholder: 'Timespan value',
+      type: 'number',
+      validate: [required, numPositive]
+    }
+  },
+  count: {
+    label: 'Transaction Number',
+    placeholder: 'Transaction Number',
+    validate: [required],
+    operator: {
+      label: 'Transaction Number Condition',
+      placeholder: 'Transaction Number Condition',
+      validate: [required],
+      options: [
+        { label: 'Greater than', value: '>' },
+        { label: 'Less than', value: '<' }
+      ]
+    },
+    value: {
+      label: 'Transaction Number Value',
+      placeholder: 'Transaction Number Value',
+      type: 'number',
+      validate: [required, numPositive]
+    }
+  }
+}
+
 const FormikContextViewer = () => {
   const [context] = useField('cashbacks')
 
@@ -69,14 +112,16 @@ const FormikContextViewer = () => {
 
 export const RuleBuilderExample = () => (
   <Box p={4} bg='white'>
-    <Form initialValues={{ cashbacks: [] }}>
+    <Form initialValues={{ cashbacks: {} }}>
       <RuleBuilder
         name='cashbacks'
         label='CASHBACK CONDITIONS'
         addRuleLabel='Add rule'
         addGroupLabel='Add group'
+        advancedTargetingLabel='Advanced targeting'
         removeRuleIcon='trash'
-        options={options}
+        combinedRuleOptions={combinedRuleOptions}
+        absoluteRuleOptions={absoluteRuleOptions}
       />
 
       <FormikContextViewer />

@@ -12,42 +12,74 @@ export const RuleBuilder = ({
   label,
   addRuleLabel,
   addGroupLabel,
+  advancedTargetingLabel,
   removeRuleIcon,
-  options,
+  combinedRuleOptions,
+  absoluteRuleOptions,
   disabled,
   ...rest
 }) => {
   // eslint-disable-next-line no-unused-vars
-  const [{ value: groups }, meta, { setValue: setGroups }] = useField(name)
+  const [{ value: data }, meta, { setValue: setData }] = useField(name)
 
-  const createNewRule = useCallback(
-    () => ({
+  const createNewRule = useCallback(() => {
+    const [type] = Object.keys(combinedRuleOptions)
+
+    const defaultOperatorValues = Object.keys(combinedRuleOptions).reduce(
+      (acc, type) => {
+        const operator = `${type}Operator`
+        return {
+          ...acc,
+          [operator]: combinedRuleOptions[type].operator.options[0].value
+        }
+      },
+      {}
+    )
+
+    return {
       id: uuid(),
-      type: Object.keys(options)[0]
-    }),
-    [options]
+      type,
+      ...defaultOperatorValues
+    }
+  }, [combinedRuleOptions])
+
+  const createAbsoluteRules = useCallback(
+    () =>
+      Object.keys(absoluteRuleOptions).map(type => {
+        const operator = `${type}Operator`
+        return {
+          id: uuid(),
+          type,
+          [operator]: absoluteRuleOptions[type].operator.options[0].value
+        }
+      }),
+    [absoluteRuleOptions]
   )
 
-  const handleAddGroup = useCallback(() => {
-    const newGroup = {
+  const createNewGroup = useCallback(
+    () => ({
       id: uuid(),
       not: false,
-      absolute: [],
+      advancedTargeting: false,
+      absolute: createAbsoluteRules(),
       combined: [createNewRule()],
       combinator: 'and'
-    }
+    }),
+    [createNewRule, createAbsoluteRules]
+  )
 
-    setGroups([...groups, newGroup])
-  }, [groups, setGroups, createNewRule])
+  const handleAddGroup = () => {
+    setData({ ...data, groups: [...data.groups, createNewGroup()] })
+  }
 
   useEffect(() => {
-    if (!groups.length) {
-      handleAddGroup()
+    if (!Object.keys(data).length) {
+      setData({ combinator: 'and', groups: [createNewGroup()] })
     }
-  }, [groups, setGroups, handleAddGroup])
+  }, [data, setData, createNewGroup])
 
   const handleRemoveRule = (groupId, ruleId) => () => {
-    const groupsClone = cloneDeep(groups).map(group => {
+    const groups = cloneDeep(data.groups).map(group => {
       if (group.id === groupId) {
         group.combined = group.combined.filter(rule => rule.id !== ruleId)
       }
@@ -55,11 +87,11 @@ export const RuleBuilder = ({
       return group
     })
 
-    setGroups(groupsClone)
+    setData({ ...data, groups })
   }
 
   const handleAddRule = groupId => () => {
-    const groupsClone = cloneDeep(groups).map(group => {
+    const groups = cloneDeep(data.groups).map(group => {
       if (group.id === groupId) {
         group.combined.push(createNewRule())
       }
@@ -67,7 +99,7 @@ export const RuleBuilder = ({
       return group
     })
 
-    setGroups(groupsClone)
+    setData({ ...data, groups })
   }
 
   return (
@@ -76,22 +108,29 @@ export const RuleBuilder = ({
         {label}
       </Typography>
 
-      {groups.map((group, index) => (
+      {data.groups?.map((group, index) => (
         <>
           <Group
             key={group.id}
             disabled={disabled}
             group={group}
-            name={`${name}[${index}]`}
-            options={options}
+            name={`${name}.groups[${index}]`}
+            advancedTargeting={group.advancedTargeting}
+            combinedRuleOptions={combinedRuleOptions}
+            absoluteRuleOptions={absoluteRuleOptions}
             removeRuleIcon={removeRuleIcon}
             addRuleLabel={addRuleLabel}
+            advancedTargetingLabel={advancedTargetingLabel}
             onRemove={() => {}}
             onRemoveRule={handleRemoveRule}
             onAddRule={handleAddRule}
           />
-          {index < groups.length - 1 && (
-            <Combinator options={andCombinatorOptions} my={4} />
+          {index < data.groups.length - 1 && (
+            <Combinator
+              name={`${name}.combinator`}
+              options={completeCombinatorOptions}
+              my={4}
+            />
           )}
         </>
       ))}
@@ -112,41 +151,48 @@ const validatorProps = PropTypes.shape({
   error: PropTypes.node
 })
 
+const ruleOptionsProps = PropTypes.objectOf(
+  PropTypes.shape({
+    label: PropTypes.node,
+    placeholder: PropTypes.string,
+    validate: PropTypes.arrayOf(validatorProps),
+    operator: PropTypes.shape({
+      label: PropTypes.node,
+      placeholder: PropTypes.string,
+      validate: PropTypes.arrayOf(validatorProps),
+      options: PropTypes.arrayOf(
+        PropTypes.shape({
+          label: PropTypes.node,
+          value: PropTypes.oneOf(PropTypes.string, PropTypes.number)
+        })
+      )
+    }),
+    value: PropTypes.shape({
+      label: PropTypes.node,
+      placeholder: PropTypes.string,
+      type: PropTypes.string,
+      validate: PropTypes.arrayOf(validatorProps)
+    })
+  })
+).isRequired
+
 RuleBuilder.propTypes = {
   name: PropTypes.string.isRequired,
   label: PropTypes.node.isRequired,
   addRuleLabel: PropTypes.node.isRequired,
   addGroupLabel: PropTypes.node.isRequired,
+  advancedTargetingLabel: PropTypes.node.isRequired,
   removeRuleIcon: PropTypes.string.isRequired,
   disabled: PropTypes.bool,
-  options: PropTypes.objectOf(
-    PropTypes.shape({
-      label: PropTypes.node,
-      placeholder: PropTypes.string,
-      validate: PropTypes.arrayOf(validatorProps),
-      operator: PropTypes.shape({
-        label: PropTypes.node,
-        placeholder: PropTypes.string,
-        validate: PropTypes.arrayOf(validatorProps),
-        options: PropTypes.arrayOf(
-          PropTypes.shape({
-            label: PropTypes.node,
-            value: PropTypes.oneOf(PropTypes.string, PropTypes.number)
-          })
-        )
-      }),
-      value: PropTypes.shape({
-        label: PropTypes.node,
-        placeholder: PropTypes.string,
-        type: PropTypes.string,
-        validate: PropTypes.arrayOf(validatorProps)
-      })
-    })
-  ).isRequired
+  combinedRuleOptions: ruleOptionsProps,
+  absoluteRuleOptions: ruleOptionsProps
 }
 
 RuleBuilder.defaultProps = {
   disabled: false
 }
 
-const andCombinatorOptions = [{ value: 'and', label: 'AND' }]
+const completeCombinatorOptions = [
+  { value: 'and', label: 'AND' },
+  { value: 'or', label: 'OR' }
+]
