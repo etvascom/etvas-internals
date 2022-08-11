@@ -1,7 +1,8 @@
 import React from 'react'
-import { Form, Box } from '@etvas/etvaskit'
-import { RuleBuilder } from '../src'
+import { Form, Box, Button } from '@etvas/etvaskit'
 import { useField } from 'formik'
+import { action } from '@storybook/addon-actions'
+import { RuleBuilder, validateRuleBuilder } from '../src'
 
 export default {
   title: 'Components/RuleBuilder'
@@ -112,7 +113,14 @@ const FormikContextViewer = () => {
 
 export const RuleBuilderExample = () => (
   <Box p={4} bg='white'>
-    <Form initialValues={{ cashbacks: {} }}>
+    <Form
+      onSubmit={action('form submitted')}
+      initialValues={{ cashbacks: {} }}
+      validate={validateRuleBuilder(
+        'cashbacks',
+        combinedRuleOptions,
+        absoluteRuleOptions
+      )}>
       <RuleBuilder
         name='cashbacks'
         label='CASHBACK CONDITIONS'
@@ -123,6 +131,10 @@ export const RuleBuilderExample = () => (
         combinedRuleOptions={combinedRuleOptions}
         absoluteRuleOptions={absoluteRuleOptions}
       />
+
+      <Button variant='primary' type='submit'>
+        Submit
+      </Button>
 
       <FormikContextViewer />
     </Form>

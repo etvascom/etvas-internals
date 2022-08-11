@@ -28,9 +28,12 @@ export const RuleBuilder = ({
     const defaultOperatorValues = Object.keys(combinedRuleOptions).reduce(
       (acc, type) => {
         const operator = `${type}Operator`
+        const value = `${type}Value`
+
         return {
           ...acc,
-          [operator]: combinedRuleOptions[type].operator.options[0].value
+          [operator]: combinedRuleOptions[type].operator.options[0].value,
+          [value]: null
         }
       },
       {}
@@ -47,10 +50,12 @@ export const RuleBuilder = ({
     () =>
       Object.keys(absoluteRuleOptions).map(type => {
         const operator = `${type}Operator`
+        const value = `${type}Value`
         return {
           id: uuid(),
           type,
-          [operator]: absoluteRuleOptions[type].operator.options[0].value
+          [operator]: absoluteRuleOptions[type].operator.options[0].value,
+          [value]: null
         }
       }),
     [absoluteRuleOptions]
@@ -79,7 +84,7 @@ export const RuleBuilder = ({
   }, [data, setData, createNewGroup])
 
   const handleRemoveRule = (groupId, ruleId) => () => {
-    const groups = cloneDeep(data.groups).reduce((acc, group) => {
+    const groups = cloneDeep(data.groups).reduce((acc, group, index) => {
       if (group.id === groupId) {
         group.combined = group.combined.filter(rule => rule.id !== ruleId)
       }
