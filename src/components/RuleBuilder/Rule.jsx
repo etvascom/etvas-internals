@@ -15,6 +15,7 @@ export const Rule = ({
   name,
   options,
   removeRuleIcon,
+  isAbsolute,
   onRemove
 }) => {
   const typeOptions = Object.keys(options).map(type => ({
@@ -32,7 +33,7 @@ export const Rule = ({
   return (
     <Flex width={1} justifyContent='space-between' alignItems='center'>
       <DropdownField
-        disabled={disabled || !removeRuleIcon}
+        disabled={disabled || isAbsolute}
         options={typeOptions}
         name={`${name}.type`}
         placeholder={placeholder}
@@ -72,6 +73,7 @@ Rule.propTypes = {
   options: PropTypes.object,
   onRemove: PropTypes.func,
   disabled: PropTypes.bool,
+  isAbsolute: PropTypes.bool,
   name: PropTypes.string,
   removeRuleIcon: PropTypes.string,
   rule: PropTypes.object

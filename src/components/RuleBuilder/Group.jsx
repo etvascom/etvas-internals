@@ -23,6 +23,7 @@ export const Group = ({
       <>
         <Rule
           key={rule.id}
+          disabled={disabled}
           name={`${name}.combined[${ruleIndex}]`}
           removeRuleIcon={canDelete && removeRuleIcon}
           rule={rule}
@@ -59,10 +60,12 @@ export const Group = ({
         <>
           <Rule
             key={rule.id}
+            disabled={disabled}
             name={`${name}.absolute[${ruleIndex}]`}
             rule={rule}
             options={absoluteRuleOptions}
             onRemove={onRemoveRule(group.id, rule.id)}
+            isAbsolute
           />
           {ruleIndex < group.absolute.length - 1 && (
             <Combinator options={andCombinatorOptions} mb={4} />
