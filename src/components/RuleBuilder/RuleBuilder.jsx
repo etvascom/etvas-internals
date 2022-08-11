@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { v4 as uuid } from 'uuid'
 import { useField } from 'formik'
@@ -108,6 +108,11 @@ export const RuleBuilder = ({
     setData({ ...data, groups })
   }
 
+  const canDelete = useMemo(
+    () => data.groups?.length > 1 || data.groups?.[0].combined.length > 1,
+    [data]
+  )
+
   return (
     <Box {...rest}>
       <Typography variant='base12Bold' color='baseGrayLight' mb={1}>
@@ -121,6 +126,7 @@ export const RuleBuilder = ({
             disabled={disabled}
             group={group}
             name={`${name}.groups[${index}]`}
+            canDelete={canDelete}
             advancedTargeting={group.advancedTargeting}
             combinedRuleOptions={combinedRuleOptions}
             absoluteRuleOptions={absoluteRuleOptions}

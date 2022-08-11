@@ -6,6 +6,7 @@ import { Combinator } from './Combinator'
 
 export const Group = ({
   disabled,
+  canDelete,
   group,
   advancedTargeting,
   name,
@@ -23,7 +24,7 @@ export const Group = ({
         <Rule
           key={rule.id}
           name={`${name}.combined[${ruleIndex}]`}
-          removeRuleIcon={removeRuleIcon}
+          removeRuleIcon={canDelete && removeRuleIcon}
           rule={rule}
           options={combinedRuleOptions}
           onRemove={onRemoveRule(group.id, rule.id)}
@@ -80,6 +81,7 @@ Group.propTypes = {
   onRemoveRule: PropTypes.func,
   onAddRule: PropTypes.func,
   disabled: PropTypes.bool,
+  canDelete: PropTypes.bool,
   name: PropTypes.string,
   removeRuleIcon: PropTypes.string,
   group: PropTypes.object
