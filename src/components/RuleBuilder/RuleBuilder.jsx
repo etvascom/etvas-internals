@@ -79,13 +79,19 @@ export const RuleBuilder = ({
   }, [data, setData, createNewGroup])
 
   const handleRemoveRule = (groupId, ruleId) => () => {
-    const groups = cloneDeep(data.groups).map(group => {
+    const groups = cloneDeep(data.groups).reduce((acc, group) => {
       if (group.id === groupId) {
         group.combined = group.combined.filter(rule => rule.id !== ruleId)
       }
 
-      return group
-    })
+      // only add groups with at least one condition
+      // (delete group on last rule delete)
+      if (group.combined.length) {
+        acc.push(group)
+      }
+
+      return acc
+    }, [])
 
     setData({ ...data, groups })
   }
