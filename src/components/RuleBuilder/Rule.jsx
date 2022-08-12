@@ -19,10 +19,22 @@ export const Rule = ({
   isAbsolute,
   onRemove
 }) => {
-  const typeOptions = Object.keys(options).map(type => ({
-    label: options[type].label,
-    value: type
-  }))
+  const allTypeOptions = useMemo(
+    () =>
+      Object.keys(options).map(type => ({
+        label: options[type].label,
+        value: type
+      })),
+    [options]
+  )
+
+  const typeOptions = useMemo(
+    () =>
+      isAbsolute
+        ? allTypeOptions.filter(option => option.value === rule.type)
+        : allTypeOptions,
+    [allTypeOptions, isAbsolute, rule]
+  )
 
   const type = useMemo(() => rule.type, [rule])
 
@@ -36,7 +48,7 @@ export const Rule = ({
   return (
     <Flex width={1} justifyContent='space-between' alignItems='center'>
       <DropdownField
-        disabled={disabled || isAbsolute}
+        disabled={disabled}
         options={typeOptions}
         name={`${name}.type`}
         placeholder={placeholder}
