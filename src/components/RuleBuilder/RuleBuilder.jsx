@@ -35,7 +35,7 @@ export const RuleBuilder = ({
         return {
           ...acc,
           [operatorKey]: combinedRuleOptions[type].operator.options[0].value,
-          [valueKey]: null
+          [valueKey]: ''
         }
       },
       {}
@@ -57,7 +57,7 @@ export const RuleBuilder = ({
           id: uuid(),
           type,
           [operatorKey]: absoluteRuleOptions[type].operator.options[0].value,
-          [valueKey]: null
+          [valueKey]: ''
         }
       }),
     [absoluteRuleOptions]
@@ -135,9 +135,8 @@ export const RuleBuilder = ({
       </Typography>
 
       {data.groups?.map((group, index) => (
-        <>
+        <Box key={group.id}>
           <Group
-            key={group.id}
             disabled={disabled}
             group={group}
             name={`${name}.groups[${index}]`}
@@ -161,7 +160,7 @@ export const RuleBuilder = ({
               my={4}
             />
           )}
-        </>
+        </Box>
       ))}
 
       <Button
@@ -192,7 +191,7 @@ const ruleOptionsProps = PropTypes.objectOf(
       options: PropTypes.arrayOf(
         PropTypes.shape({
           label: PropTypes.node,
-          value: PropTypes.oneOf(PropTypes.string, PropTypes.number)
+          value: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
         })
       )
     }),

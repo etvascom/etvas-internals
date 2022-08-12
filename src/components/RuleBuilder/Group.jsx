@@ -37,9 +37,8 @@ export const Group = ({
   return (
     <Box bg='baseGrayLightest' p={4}>
       {group.combined.map((rule, ruleIndex) => (
-        <>
+        <Box key={rule.id}>
           <Rule
-            key={rule.id}
             disabled={disabled}
             name={`${name}.combined[${ruleIndex}]`}
             removeRuleIcon={canDelete && removeRuleIcon}
@@ -54,7 +53,7 @@ export const Group = ({
               mb={4}
             />
           )}
-        </>
+        </Box>
       ))}
 
       <Flex my={4}>
@@ -74,9 +73,8 @@ export const Group = ({
 
       {advancedTargeting &&
         group.absolute.map((rule, ruleIndex) => (
-          <>
+          <Box key={rule.id}>
             <Rule
-              key={rule.id}
               disabled={disabled}
               name={`${name}.absolute[${ruleIndex}]`}
               rule={rule}
@@ -87,7 +85,7 @@ export const Group = ({
             {ruleIndex < group.absolute.length - 1 && (
               <Combinator options={andCombinatorOptions} value='and' mb={4} />
             )}
-          </>
+          </Box>
         ))}
     </Box>
   )

@@ -30,7 +30,7 @@ const importCombinedRules = (rules, options) =>
       return {
         ...acc,
         [operatorKey]: options[type].operator.options[0].value,
-        [valueKey]: null
+        [valueKey]: ''
       }
     }, {})
 
@@ -55,7 +55,7 @@ const importAbsoluteRules = (rules, options) =>
           id: uuid(),
           type,
           [operatorKey]: options[type].operator.options[0].value,
-          [valueKey]: null
+          [valueKey]: ''
         }
       })
     : null

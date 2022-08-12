@@ -75,6 +75,6 @@ Rule.propTypes = {
   disabled: PropTypes.bool,
   isAbsolute: PropTypes.bool,
   name: PropTypes.string,
-  removeRuleIcon: PropTypes.string,
+  removeRuleIcon: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   rule: PropTypes.object
 }
