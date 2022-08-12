@@ -124,7 +124,9 @@ export const RuleBuilderExample = () => (
     <Form
       onSubmit={({ cashbacks }) => {
         // eslint-disable-next-line no-console
-        console.log(exportRuleBuilder(cashbacks))
+        console.log(
+          exportRuleBuilder(cashbacks, combinedRuleOptions, absoluteRuleOptions)
+        )
         action('form submitted')()
       }}
       initialValues={{ cashbacks: {} }}

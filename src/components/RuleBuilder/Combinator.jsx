@@ -45,7 +45,6 @@ const CustomChip = styled.div(({ isSelected, disabled }) =>
 )
 
 Combinator.propTypes = {
-  name: PropTypes.string.isRequired,
   disabled: PropTypes.bool,
   options: PropTypes.arrayOf(
     PropTypes.shape({
