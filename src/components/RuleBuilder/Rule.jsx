@@ -6,7 +6,8 @@ import {
   TextField,
   Button,
   Icon,
-  Box
+  Box,
+  SubdomainField
 } from '@etvas/etvaskit'
 
 export const Rule = ({
@@ -30,6 +31,8 @@ export const Rule = ({
   const operator = useMemo(() => options[type].operator, [options, type])
   const value = useMemo(() => options[type].value, [options, type])
 
+  const isSuffixType = useMemo(() => value.suffix, [value])
+
   return (
     <Flex width={1} justifyContent='space-between' alignItems='center'>
       <DropdownField
@@ -50,14 +53,29 @@ export const Rule = ({
         required
         mr={4}
       />
-      <TextField
-        disabled={disabled}
-        name={`${name}.${type}Value`}
-        type={value.type}
-        label={value.label}
-        placeholder={value.placeholder}
-        required
-      />
+
+      {isSuffixType ? (
+        <SubdomainField
+          disabled={disabled}
+          name={`${name}.${type}Value`}
+          type={value.type}
+          label={value.label}
+          placeholder={value.placeholder}
+          suffix={value.suffix}
+          prefix=''
+          required
+        />
+      ) : (
+        <TextField
+          disabled={disabled}
+          name={`${name}.${type}Value`}
+          type={value.type}
+          label={value.label}
+          placeholder={value.placeholder}
+          required
+        />
+      )}
+
       {!disabled && removeRuleIcon ? (
         <Button variant='link' ml={4} onClick={onRemove}>
           <Icon name={removeRuleIcon} size='large' />

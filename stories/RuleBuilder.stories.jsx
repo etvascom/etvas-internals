@@ -40,7 +40,7 @@ const combinedRuleOptions = {
     },
     value: {
       label: 'Merchant name',
-      placeholder: 'Merchant name',
+      placeholder: 'Adidas',
       type: 'string',
       validate: [required]
     }
@@ -60,8 +60,9 @@ const combinedRuleOptions = {
     },
     value: {
       label: 'Amount value',
-      placeholder: 'Amount value',
+      placeholder: '10',
       type: 'number',
+      suffix: '€',
       validate: [required, numPositive]
     }
   }
@@ -83,8 +84,9 @@ const absoluteRuleOptions = {
     },
     value: {
       label: 'Timespan value',
-      placeholder: 'Timespan value',
+      placeholder: '30',
       type: 'number',
+      suffix: 'days',
       validate: [required, numPositive]
     }
   },
@@ -94,7 +96,7 @@ const absoluteRuleOptions = {
     validate: [required],
     operator: {
       label: 'Transaction Number Condition',
-      placeholder: 'Transaction Number Condition',
+      placeholder: '1',
       validate: [required],
       options: [
         { label: 'Greater than', value: '>' },
@@ -103,8 +105,9 @@ const absoluteRuleOptions = {
     },
     value: {
       label: 'Transaction Number Value',
-      placeholder: 'Transaction Number Value',
+      placeholder: '10',
       type: 'number',
+      suffix: '€',
       validate: [required, numPositive]
     }
   }
@@ -149,7 +152,7 @@ export const RuleBuilderExample = () => (
         absoluteRuleOptions={absoluteRuleOptions}
       />
 
-      <Button variant='primary' type='submit'>
+      <Button variant='primary' type='submit' mt={4}>
         Submit
       </Button>
 

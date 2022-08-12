@@ -5,7 +5,7 @@ import { Combinator } from './Combinator'
 
 export const CombinatorField = ({ name, options, ...rest }) => {
   // eslint-disable-next-line no-unused-vars
-  const [{ value }, meta, { setValue }] = useField(name)
+  const [{ value }, _, { setValue }] = useField(name)
 
   return (
     <Combinator value={value} onChange={setValue} options={options} {...rest} />
