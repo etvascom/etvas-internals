@@ -2,23 +2,23 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import css from '@styled-system/css'
-import { useField } from 'formik'
 import { Touchable, Typography } from '@etvas/etvaskit'
 
-export const Combinator = ({ name, options, ...rest }) => {
-  // eslint-disable-next-line no-unused-vars
-  const [{ value: currentValue }, meta, { setValue }] = useField(name)
-
-  return options.map(({ value, label }) => (
-    <Touchable key={value} onClick={() => name && setValue(value)} {...rest}>
-      <CustomChip isSelected={!name || value === currentValue}>
+export const Combinator = ({
+  options,
+  value: currentValue,
+  onChange,
+  ...rest
+}) =>
+  options.map(({ value, label }) => (
+    <Touchable key={value} onClick={() => onChange(value)} {...rest}>
+      <CustomChip isSelected={value === currentValue}>
         <Typography variant='base12Bold' color='inherit'>
           {label}
         </Typography>
       </CustomChip>
     </Touchable>
   ))
-}
 
 const CustomChip = styled.div(({ isSelected }) =>
   css({
@@ -43,8 +43,4 @@ Combinator.propTypes = {
       label: PropTypes.node
     })
   ).isRequired
-}
-
-Combinator.defaultProps = {
-  options: ['and', 'or']
 }

@@ -5,7 +5,7 @@ import { useField } from 'formik'
 import { cloneDeep } from 'lodash'
 import { Box, Typography, Button } from '@etvas/etvaskit'
 import { Group } from './Group'
-import { Combinator } from './Combinator'
+import { CombinatorField } from './CombinatorField'
 import { getRuleDetails } from './utils/rule'
 
 export const RuleBuilder = ({
@@ -143,7 +143,7 @@ export const RuleBuilder = ({
             onAddRule={handleAddRule}
           />
           {index < data.groups.length - 1 && (
-            <Combinator
+            <CombinatorField
               name={`${name}.combinator`}
               options={completeCombinatorOptions}
               my={4}

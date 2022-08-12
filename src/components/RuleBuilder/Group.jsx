@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Button, Box, Flex, CheckboxField } from '@etvas/etvaskit'
 import { Rule } from './Rule'
 import { Combinator } from './Combinator'
+import { CombinatorField } from './CombinatorField'
 
 export const Group = ({
   disabled,
@@ -31,7 +32,7 @@ export const Group = ({
           onRemove={onRemoveRule(group.id, rule.id)}
         />
         {ruleIndex < group.combined.length - 1 && (
-          <Combinator
+          <CombinatorField
             name={`${name}.combinator`}
             options={completeCombinatorOptions}
             mb={4}
@@ -68,7 +69,7 @@ export const Group = ({
             isAbsolute
           />
           {ruleIndex < group.absolute.length - 1 && (
-            <Combinator options={andCombinatorOptions} mb={4} />
+            <Combinator options={andCombinatorOptions} value='and' mb={4} />
           )}
         </>
       ))}
