@@ -2,7 +2,12 @@ import React from 'react'
 import { Form, Box, Button } from '@etvas/etvaskit'
 import { useField } from 'formik'
 import { action } from '@storybook/addon-actions'
-import { exportRuleBuilder, RuleBuilder, validateRuleBuilder } from '../src'
+import {
+  exportRuleBuilder,
+  importRuleBuilder,
+  RuleBuilder,
+  validateRuleBuilder
+} from '../src'
 
 export default {
   title: 'Components/RuleBuilder'
@@ -116,7 +121,13 @@ export const RuleBuilderExample = () => (
     <Form
       onSubmit={({ cashbacks }) => {
         // eslint-disable-next-line no-console
-        console.log(exportRuleBuilder(cashbacks))
+        console.log(
+          importRuleBuilder(
+            exportRuleBuilder(cashbacks),
+            combinedRuleOptions,
+            absoluteRuleOptions
+          )
+        )
         action('form submitted')()
       }}
       initialValues={{ cashbacks: {} }}

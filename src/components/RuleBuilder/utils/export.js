@@ -1,7 +1,7 @@
 import { getRuleDetails } from './rule'
 
 // this accepts the formik field data as input
-// and returns a common formatted version
+// and returns a common version
 export const exportRuleBuilder = ({ combinator, groups }) => ({
   combinator,
   groups: exportGroups(groups)
