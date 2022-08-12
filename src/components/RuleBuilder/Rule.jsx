@@ -74,6 +74,7 @@ export const Rule = ({
           label={value.label}
           placeholder={value.placeholder}
           suffix={value.suffix}
+          suffixSpace={value.suffixSpace || 0}
           prefix=''
           required
         />

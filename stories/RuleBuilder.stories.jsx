@@ -87,6 +87,7 @@ const absoluteRuleOptions = {
       placeholder: '30',
       type: 'number',
       suffix: 'days',
+      suffixSpace: 1,
       validate: [required, numPositive]
     }
   },
@@ -108,6 +109,7 @@ const absoluteRuleOptions = {
       placeholder: '10',
       type: 'number',
       suffix: 'transactions',
+      suffixSpace: 1,
       validate: [required, numPositive]
     }
   }

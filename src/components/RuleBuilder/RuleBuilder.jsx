@@ -115,6 +115,7 @@ export const RuleBuilder = ({
     setData({ ...data, groups })
   }
 
+  // can't delete the last rule from the last group
   const canDelete = useMemo(
     () => data.groups?.length > 1 || data.groups?.[0].combined.length > 1,
     [data]
@@ -202,6 +203,7 @@ const ruleOptionsProps = PropTypes.objectOf(
       placeholder: PropTypes.string,
       type: PropTypes.string,
       suffix: PropTypes.string,
+      suffixSpace: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
       validate: PropTypes.arrayOf(validatorProps)
     })
   })
