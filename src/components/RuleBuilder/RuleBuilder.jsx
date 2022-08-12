@@ -10,20 +10,20 @@ import { getRuleDetails } from './utils/rule'
 
 export const RuleBuilder = ({
   name,
+  disabled,
   label,
+  andLabel,
+  orLabel,
   addRuleLabel,
   addGroupLabel,
   advancedTargetingLabel,
-  andLabel,
-  orLabel,
   removeRuleIcon,
   combinedRuleOptions,
   absoluteRuleOptions,
-  disabled,
   ...rest
 }) => {
   // eslint-disable-next-line no-unused-vars
-  const [{ value: data }, meta, { setValue: setData }] = useField(name)
+  const [{ value: data }, _, { setValue: setData }] = useField(name)
 
   const createNewRule = useCallback(() => {
     const [type] = Object.keys(combinedRuleOptions)
@@ -86,7 +86,7 @@ export const RuleBuilder = ({
   }, [data, setData, createNewGroup])
 
   const handleRemoveRule = (groupId, ruleId) => () => {
-    const groups = cloneDeep(data.groups).reduce((acc, group, index) => {
+    const groups = cloneDeep(data.groups).reduce((acc, group) => {
       if (group.id === groupId) {
         group.combined = group.combined.filter(rule => rule.id !== ruleId)
       }
@@ -149,7 +149,6 @@ export const RuleBuilder = ({
             advancedTargetingLabel={advancedTargetingLabel}
             andLabel={andLabel}
             orLabel={orLabel}
-            onRemove={() => {}}
             onRemoveRule={handleRemoveRule}
             onAddRule={handleAddRule}
           />
@@ -157,19 +156,22 @@ export const RuleBuilder = ({
             <CombinatorField
               name={`${name}.combinator`}
               options={combinatorOptions}
+              disabled={disabled}
               my={4}
             />
           )}
         </Box>
       ))}
 
-      <Button
-        variant='link'
-        mt={4}
-        disabled={disabled}
-        onClick={handleAddGroup}>
-        {addGroupLabel}
-      </Button>
+      {!disabled && (
+        <Button
+          variant='link'
+          mt={4}
+          disabled={disabled}
+          onClick={handleAddGroup}>
+          {addGroupLabel}
+        </Button>
+      )}
     </Box>
   )
 }
@@ -199,6 +201,7 @@ const ruleOptionsProps = PropTypes.objectOf(
       label: PropTypes.node,
       placeholder: PropTypes.string,
       type: PropTypes.string,
+      suffix: PropTypes.string,
       validate: PropTypes.arrayOf(validatorProps)
     })
   })
@@ -206,14 +209,14 @@ const ruleOptionsProps = PropTypes.objectOf(
 
 RuleBuilder.propTypes = {
   name: PropTypes.string.isRequired,
+  disabled: PropTypes.bool,
   label: PropTypes.node.isRequired,
+  andLabel: PropTypes.node.isRequired,
+  orLabel: PropTypes.node.isRequired,
   addRuleLabel: PropTypes.node.isRequired,
   addGroupLabel: PropTypes.node.isRequired,
   advancedTargetingLabel: PropTypes.node.isRequired,
-  andLabel: PropTypes.node.isRequired,
-  orLabel: PropTypes.node.isRequired,
   removeRuleIcon: PropTypes.string.isRequired,
-  disabled: PropTypes.bool,
   combinedRuleOptions: ruleOptionsProps,
   absoluteRuleOptions: ruleOptionsProps
 }

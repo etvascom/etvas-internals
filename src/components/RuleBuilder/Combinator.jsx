@@ -6,13 +6,18 @@ import { Touchable, Typography } from '@etvas/etvaskit'
 
 export const Combinator = ({
   options,
+  disabled,
   value: currentValue,
   onChange,
   ...rest
 }) =>
   options.map(({ value, label }) => (
-    <Touchable key={value} onClick={() => onChange(value)} {...rest}>
-      <CustomChip isSelected={value === currentValue}>
+    <Touchable
+      key={value}
+      onClick={() => onChange(value)}
+      disabled={disabled}
+      {...rest}>
+      <CustomChip isSelected={value === currentValue} disabled={disabled}>
         <Typography variant='base12Bold' color='inherit'>
           {label}
         </Typography>
@@ -20,7 +25,7 @@ export const Combinator = ({
     </Touchable>
   ))
 
-const CustomChip = styled.div(({ isSelected }) =>
+const CustomChip = styled.div(({ isSelected, disabled }) =>
   css({
     py: 1,
     px: 2,
@@ -29,7 +34,11 @@ const CustomChip = styled.div(({ isSelected }) =>
     alignItems: 'center',
     width: 'fit-content',
     borderRadius: 3,
-    backgroundColor: isSelected ? 'etvasLight' : 'transparent',
+    backgroundColor: isSelected
+      ? disabled
+        ? 'baseGrayLight'
+        : 'etvasLight'
+      : 'transparent',
     color: isSelected ? 'baseWhite' : 'etvasDark',
     opacity: isSelected ? 1 : 0.2
   })
@@ -37,6 +46,7 @@ const CustomChip = styled.div(({ isSelected }) =>
 
 Combinator.propTypes = {
   name: PropTypes.string.isRequired,
+  disabled: PropTypes.bool,
   options: PropTypes.arrayOf(
     PropTypes.shape({
       value: PropTypes.string,

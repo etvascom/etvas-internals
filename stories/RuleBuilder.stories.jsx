@@ -107,7 +107,7 @@ const absoluteRuleOptions = {
       label: 'Transaction Number Value',
       placeholder: '10',
       type: 'number',
-      suffix: '€',
+      suffix: 'transactions',
       validate: [required, numPositive]
     }
   }
@@ -124,13 +124,7 @@ export const RuleBuilderExample = () => (
     <Form
       onSubmit={({ cashbacks }) => {
         // eslint-disable-next-line no-console
-        console.log(
-          importRuleBuilder(
-            exportRuleBuilder(cashbacks),
-            combinedRuleOptions,
-            absoluteRuleOptions
-          )
-        )
+        console.log(exportRuleBuilder(cashbacks))
         action('form submitted')()
       }}
       initialValues={{ cashbacks: {} }}
@@ -156,6 +150,90 @@ export const RuleBuilderExample = () => (
         Submit
       </Button>
 
+      <FormikContextViewer />
+    </Form>
+  </Box>
+)
+
+const cashbacksData = {
+  combinator: 'or',
+  groups: [
+    {
+      not: false,
+      combinator: 'and',
+      combined: [
+        {
+          keypath: 'merchant',
+          operator: '~',
+          value: 'Uber'
+        },
+        {
+          keypath: 'amount',
+          operator: '<',
+          value: '20'
+        },
+        {
+          keypath: 'amount',
+          operator: '>',
+          value: '10'
+        }
+      ],
+      absolute: []
+    },
+    {
+      not: false,
+      combinator: 'and',
+      combined: [
+        {
+          keypath: 'merchant',
+          operator: '~',
+          value: 'Bolt'
+        },
+        {
+          keypath: 'amount',
+          operator: '>',
+          value: '100'
+        }
+      ],
+      absolute: [
+        {
+          keypath: 'timespan',
+          operator: '<',
+          value: '25'
+        },
+        {
+          keypath: 'count',
+          operator: '>',
+          value: '1'
+        }
+      ]
+    }
+  ]
+}
+
+export const RuleBuilderDisabled = () => (
+  <Box p={4} bg='white'>
+    <Form
+      initialValues={{
+        cashbacks: importRuleBuilder(
+          cashbacksData,
+          combinedRuleOptions,
+          absoluteRuleOptions
+        )
+      }}>
+      <RuleBuilder
+        name='cashbacks'
+        label='CASHBACK CONDITIONS'
+        addRuleLabel='Add rule'
+        addGroupLabel='Add group'
+        advancedTargetingLabel='Advanced targeting'
+        andLabel='AND'
+        orLabel='OR'
+        removeRuleIcon='trash'
+        combinedRuleOptions={combinedRuleOptions}
+        absoluteRuleOptions={absoluteRuleOptions}
+        disabled
+      />
       <FormikContextViewer />
     </Form>
   </Box>

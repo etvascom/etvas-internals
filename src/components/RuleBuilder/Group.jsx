@@ -50,26 +50,39 @@ export const Group = ({
             <CombinatorField
               name={`${name}.combinator`}
               options={completeCombinatorOptions}
+              disabled={disabled}
               mb={4}
             />
           )}
         </Box>
       ))}
 
-      <Flex my={4}>
-        <Button
-          variant='link'
-          disabled={disabled}
-          onClick={onAddRule(group.id)}
-          mr={8}>
-          {addRuleLabel}
-        </Button>
+      {disabled ? (
+        advancedTargeting ? (
+          <Combinator
+            options={andCombinatorOptions}
+            value='and'
+            disabled={disabled}
+            mb={4}
+          />
+        ) : null
+      ) : (
+        <Flex my={4}>
+          <Button
+            variant='link'
+            disabled={disabled}
+            onClick={onAddRule(group.id)}
+            mr={8}>
+            {addRuleLabel}
+          </Button>
 
-        <CheckboxField
-          label={advancedTargetingLabel}
-          name={`${name}.advancedTargeting`}
-        />
-      </Flex>
+          <CheckboxField
+            label={advancedTargetingLabel}
+            name={`${name}.advancedTargeting`}
+            disabled={disabled}
+          />
+        </Flex>
+      )}
 
       {advancedTargeting &&
         group.absolute.map((rule, ruleIndex) => (
@@ -83,7 +96,12 @@ export const Group = ({
               isAbsolute
             />
             {ruleIndex < group.absolute.length - 1 && (
-              <Combinator options={andCombinatorOptions} value='and' mb={4} />
+              <Combinator
+                options={andCombinatorOptions}
+                value='and'
+                disabled={disabled}
+                mb={4}
+              />
             )}
           </Box>
         ))}
