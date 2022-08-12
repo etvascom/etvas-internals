@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { Button, Box, Flex, CheckboxField } from '@etvas/etvaskit'
 import { Rule } from './Rule'
@@ -16,65 +16,82 @@ export const Group = ({
   removeRuleIcon,
   addRuleLabel,
   advancedTargetingLabel,
+  andLabel,
+  orLabel,
   onRemoveRule,
   onAddRule
-}) => (
-  <Box bg='baseGrayLightest' p={4}>
-    {group.combined.map((rule, ruleIndex) => (
-      <>
-        <Rule
-          key={rule.id}
-          disabled={disabled}
-          name={`${name}.combined[${ruleIndex}]`}
-          removeRuleIcon={canDelete && removeRuleIcon}
-          rule={rule}
-          options={combinedRuleOptions}
-          onRemove={onRemoveRule(group.id, rule.id)}
-        />
-        {ruleIndex < group.combined.length - 1 && (
-          <CombinatorField
-            name={`${name}.combinator`}
-            options={completeCombinatorOptions}
-            mb={4}
-          />
-        )}
-      </>
-    ))}
+}) => {
+  const andCombinatorOptions = useMemo(
+    () => [{ value: 'and', label: andLabel }],
+    [andLabel]
+  )
 
-    <Flex my={4}>
-      <Button
-        variant='link'
-        disabled={disabled}
-        onClick={onAddRule(group.id)}
-        mr={8}>
-        {addRuleLabel}
-      </Button>
+  const completeCombinatorOptions = useMemo(
+    () => [
+      { value: 'and', label: andLabel },
+      { value: 'or', label: orLabel }
+    ],
+    [andLabel, orLabel]
+  )
 
-      <CheckboxField
-        label={advancedTargetingLabel}
-        name={`${name}.advancedTargeting`}
-      />
-    </Flex>
-
-    {advancedTargeting &&
-      group.absolute.map((rule, ruleIndex) => (
+  return (
+    <Box bg='baseGrayLightest' p={4}>
+      {group.combined.map((rule, ruleIndex) => (
         <>
           <Rule
             key={rule.id}
             disabled={disabled}
-            name={`${name}.absolute[${ruleIndex}]`}
+            name={`${name}.combined[${ruleIndex}]`}
+            removeRuleIcon={canDelete && removeRuleIcon}
             rule={rule}
-            options={absoluteRuleOptions}
+            options={combinedRuleOptions}
             onRemove={onRemoveRule(group.id, rule.id)}
-            isAbsolute
           />
-          {ruleIndex < group.absolute.length - 1 && (
-            <Combinator options={andCombinatorOptions} value='and' mb={4} />
+          {ruleIndex < group.combined.length - 1 && (
+            <CombinatorField
+              name={`${name}.combinator`}
+              options={completeCombinatorOptions}
+              mb={4}
+            />
           )}
         </>
       ))}
-  </Box>
-)
+
+      <Flex my={4}>
+        <Button
+          variant='link'
+          disabled={disabled}
+          onClick={onAddRule(group.id)}
+          mr={8}>
+          {addRuleLabel}
+        </Button>
+
+        <CheckboxField
+          label={advancedTargetingLabel}
+          name={`${name}.advancedTargeting`}
+        />
+      </Flex>
+
+      {advancedTargeting &&
+        group.absolute.map((rule, ruleIndex) => (
+          <>
+            <Rule
+              key={rule.id}
+              disabled={disabled}
+              name={`${name}.absolute[${ruleIndex}]`}
+              rule={rule}
+              options={absoluteRuleOptions}
+              onRemove={onRemoveRule(group.id, rule.id)}
+              isAbsolute
+            />
+            {ruleIndex < group.absolute.length - 1 && (
+              <Combinator options={andCombinatorOptions} value='and' mb={4} />
+            )}
+          </>
+        ))}
+    </Box>
+  )
+}
 
 Group.propTypes = {
   advancedTargeting: PropTypes.bool,
@@ -82,6 +99,8 @@ Group.propTypes = {
   absoluteRuleOptions: PropTypes.object,
   addRuleLabel: PropTypes.node,
   advancedTargetingLabel: PropTypes.node,
+  andLabel: PropTypes.node,
+  orLabel: PropTypes.node,
   onRemoveRule: PropTypes.func,
   onAddRule: PropTypes.func,
   disabled: PropTypes.bool,
@@ -90,10 +109,3 @@ Group.propTypes = {
   removeRuleIcon: PropTypes.string,
   group: PropTypes.object
 }
-
-const andCombinatorOptions = [{ value: 'and', label: 'AND' }]
-
-const completeCombinatorOptions = [
-  { value: 'and', label: 'AND' },
-  { value: 'or', label: 'OR' }
-]

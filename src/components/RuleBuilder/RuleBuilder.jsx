@@ -14,6 +14,8 @@ export const RuleBuilder = ({
   addRuleLabel,
   addGroupLabel,
   advancedTargetingLabel,
+  andLabel,
+  orLabel,
   removeRuleIcon,
   combinedRuleOptions,
   absoluteRuleOptions,
@@ -118,6 +120,14 @@ export const RuleBuilder = ({
     [data]
   )
 
+  const combinatorOptions = useMemo(
+    () => [
+      { value: 'and', label: andLabel },
+      { value: 'or', label: orLabel }
+    ],
+    [andLabel, orLabel]
+  )
+
   return (
     <Box {...rest}>
       <Typography variant='base12Bold' color='baseGrayLight' mb={1}>
@@ -138,6 +148,8 @@ export const RuleBuilder = ({
             removeRuleIcon={removeRuleIcon}
             addRuleLabel={addRuleLabel}
             advancedTargetingLabel={advancedTargetingLabel}
+            andLabel={andLabel}
+            orLabel={orLabel}
             onRemove={() => {}}
             onRemoveRule={handleRemoveRule}
             onAddRule={handleAddRule}
@@ -145,7 +157,7 @@ export const RuleBuilder = ({
           {index < data.groups.length - 1 && (
             <CombinatorField
               name={`${name}.combinator`}
-              options={completeCombinatorOptions}
+              options={combinatorOptions}
               my={4}
             />
           )}
@@ -199,6 +211,8 @@ RuleBuilder.propTypes = {
   addRuleLabel: PropTypes.node.isRequired,
   addGroupLabel: PropTypes.node.isRequired,
   advancedTargetingLabel: PropTypes.node.isRequired,
+  andLabel: PropTypes.node.isRequired,
+  orLabel: PropTypes.node.isRequired,
   removeRuleIcon: PropTypes.string.isRequired,
   disabled: PropTypes.bool,
   combinedRuleOptions: ruleOptionsProps,
@@ -208,8 +222,3 @@ RuleBuilder.propTypes = {
 RuleBuilder.defaultProps = {
   disabled: false
 }
-
-const completeCombinatorOptions = [
-  { value: 'and', label: 'AND' },
-  { value: 'or', label: 'OR' }
-]

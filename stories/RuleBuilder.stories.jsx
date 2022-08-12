@@ -142,6 +142,8 @@ export const RuleBuilderExample = () => (
         addRuleLabel='Add rule'
         addGroupLabel='Add group'
         advancedTargetingLabel='Advanced targeting'
+        andLabel='AND'
+        orLabel='OR'
         removeRuleIcon='trash'
         combinedRuleOptions={combinedRuleOptions}
         absoluteRuleOptions={absoluteRuleOptions}
