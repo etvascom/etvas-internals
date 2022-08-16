@@ -8,6 +8,7 @@ export var Rule = function Rule(_ref) {
       options = _ref.options,
       removeRuleIcon = _ref.removeRuleIcon,
       isAbsolute = _ref.isAbsolute,
+      typeLabel = _ref.typeLabel,
       onRemove = _ref.onRemove;
   var allTypeOptions = useMemo(function () {
     return Object.keys(options).map(function (type) {
@@ -25,9 +26,6 @@ export var Rule = function Rule(_ref) {
   var type = useMemo(function () {
     return rule.type;
   }, [rule]);
-  var label = useMemo(function () {
-    return options[type].label;
-  }, [options, type]);
   var placeholder = useMemo(function () {
     return options[type].placeholder;
   }, [options, type]);
@@ -49,7 +47,7 @@ export var Rule = function Rule(_ref) {
     options: typeOptions,
     name: name + ".type",
     placeholder: placeholder,
-    label: label,
+    label: typeLabel,
     required: true,
     mr: 4
   }), /*#__PURE__*/React.createElement(DropdownField, {
@@ -96,5 +94,6 @@ Rule.propTypes = process.env.NODE_ENV !== "production" ? {
   isAbsolute: PropTypes.bool,
   name: PropTypes.string,
   removeRuleIcon: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  typeLabel: PropTypes.node,
   rule: PropTypes.object
 } : {};

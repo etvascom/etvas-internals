@@ -14,6 +14,7 @@ export var Group = function Group(_ref) {
       absoluteRuleOptions = _ref.absoluteRuleOptions,
       removeRuleIcon = _ref.removeRuleIcon,
       addRuleLabel = _ref.addRuleLabel,
+      typeLabel = _ref.typeLabel,
       advancedTargetingLabel = _ref.advancedTargetingLabel,
       andLabel = _ref.andLabel,
       orLabel = _ref.orLabel,
@@ -46,7 +47,8 @@ export var Group = function Group(_ref) {
       removeRuleIcon: canDelete && removeRuleIcon,
       rule: rule,
       options: combinedRuleOptions,
-      onRemove: onRemoveRule(group.id, rule.id)
+      onRemove: onRemoveRule(group.id, rule.id),
+      typeLabel: typeLabel
     }), ruleIndex < group.combined.length - 1 && /*#__PURE__*/React.createElement(CombinatorField, {
       name: name + ".combinator",
       options: completeCombinatorOptions,
@@ -78,6 +80,7 @@ export var Group = function Group(_ref) {
       rule: rule,
       options: absoluteRuleOptions,
       onRemove: onRemoveRule(group.id, rule.id),
+      typeLabel: typeLabel,
       isAbsolute: true
     }), ruleIndex < group.absolute.length - 1 && /*#__PURE__*/React.createElement(Combinator, {
       options: andCombinatorOptions,
@@ -92,6 +95,7 @@ Group.propTypes = process.env.NODE_ENV !== "production" ? {
   combinedRuleOptions: PropTypes.object,
   absoluteRuleOptions: PropTypes.object,
   addRuleLabel: PropTypes.node,
+  typeLabel: PropTypes.node,
   advancedTargetingLabel: PropTypes.node,
   andLabel: PropTypes.node,
   orLabel: PropTypes.node,

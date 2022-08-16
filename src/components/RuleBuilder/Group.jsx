@@ -15,6 +15,7 @@ export const Group = ({
   absoluteRuleOptions,
   removeRuleIcon,
   addRuleLabel,
+  typeLabel,
   advancedTargetingLabel,
   andLabel,
   orLabel,
@@ -45,6 +46,7 @@ export const Group = ({
             rule={rule}
             options={combinedRuleOptions}
             onRemove={onRemoveRule(group.id, rule.id)}
+            typeLabel={typeLabel}
           />
           {ruleIndex < group.combined.length - 1 && (
             <CombinatorField
@@ -93,6 +95,7 @@ export const Group = ({
               rule={rule}
               options={absoluteRuleOptions}
               onRemove={onRemoveRule(group.id, rule.id)}
+              typeLabel={typeLabel}
               isAbsolute
             />
             {ruleIndex < group.absolute.length - 1 && (
@@ -114,6 +117,7 @@ Group.propTypes = {
   combinedRuleOptions: PropTypes.object,
   absoluteRuleOptions: PropTypes.object,
   addRuleLabel: PropTypes.node,
+  typeLabel: PropTypes.node,
   advancedTargetingLabel: PropTypes.node,
   andLabel: PropTypes.node,
   orLabel: PropTypes.node,

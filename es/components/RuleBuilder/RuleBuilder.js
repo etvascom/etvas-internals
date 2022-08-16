@@ -1,4 +1,4 @@
-var _excluded = ["name", "disabled", "label", "andLabel", "orLabel", "addRuleLabel", "addGroupLabel", "advancedTargetingLabel", "removeRuleIcon", "combinedRuleOptions", "absoluteRuleOptions"];
+var _excluded = ["name", "disabled", "label", "andLabel", "orLabel", "addRuleLabel", "addGroupLabel", "typeLabel", "advancedTargetingLabel", "removeRuleIcon", "combinedRuleOptions", "absoluteRuleOptions"];
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
@@ -23,6 +23,7 @@ export var RuleBuilder = function RuleBuilder(_ref) {
       orLabel = _ref.orLabel,
       addRuleLabel = _ref.addRuleLabel,
       addGroupLabel = _ref.addGroupLabel,
+      typeLabel = _ref.typeLabel,
       advancedTargetingLabel = _ref.advancedTargetingLabel,
       removeRuleIcon = _ref.removeRuleIcon,
       combinedRuleOptions = _ref.combinedRuleOptions,
@@ -167,6 +168,7 @@ export var RuleBuilder = function RuleBuilder(_ref) {
       absoluteRuleOptions: absoluteRuleOptions,
       removeRuleIcon: removeRuleIcon,
       addRuleLabel: addRuleLabel,
+      typeLabel: typeLabel,
       advancedTargetingLabel: advancedTargetingLabel,
       andLabel: andLabel,
       orLabel: orLabel,
@@ -219,6 +221,7 @@ RuleBuilder.propTypes = process.env.NODE_ENV !== "production" ? {
   orLabel: PropTypes.node.isRequired,
   addRuleLabel: PropTypes.node.isRequired,
   addGroupLabel: PropTypes.node.isRequired,
+  typeLabel: PropTypes.node.isRequired,
   advancedTargetingLabel: PropTypes.node.isRequired,
   removeRuleIcon: PropTypes.string.isRequired,
   combinedRuleOptions: ruleOptionsProps,

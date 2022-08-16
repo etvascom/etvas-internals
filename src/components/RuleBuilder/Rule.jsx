@@ -17,6 +17,7 @@ export const Rule = ({
   options,
   removeRuleIcon,
   isAbsolute,
+  typeLabel,
   onRemove
 }) => {
   const allTypeOptions = useMemo(
@@ -38,7 +39,6 @@ export const Rule = ({
 
   const type = useMemo(() => rule.type, [rule])
 
-  const label = useMemo(() => options[type].label, [options, type])
   const placeholder = useMemo(() => options[type].placeholder, [options, type])
   const operator = useMemo(() => options[type].operator, [options, type])
   const value = useMemo(() => options[type].value, [options, type])
@@ -52,7 +52,7 @@ export const Rule = ({
         options={typeOptions}
         name={`${name}.type`}
         placeholder={placeholder}
-        label={label}
+        label={typeLabel}
         required
         mr={4}
       />
@@ -107,5 +107,6 @@ Rule.propTypes = {
   isAbsolute: PropTypes.bool,
   name: PropTypes.string,
   removeRuleIcon: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  typeLabel: PropTypes.node,
   rule: PropTypes.object
 }

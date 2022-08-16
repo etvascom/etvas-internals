@@ -16,6 +16,7 @@ export const RuleBuilder = ({
   orLabel,
   addRuleLabel,
   addGroupLabel,
+  typeLabel,
   advancedTargetingLabel,
   removeRuleIcon,
   combinedRuleOptions,
@@ -147,6 +148,7 @@ export const RuleBuilder = ({
             absoluteRuleOptions={absoluteRuleOptions}
             removeRuleIcon={removeRuleIcon}
             addRuleLabel={addRuleLabel}
+            typeLabel={typeLabel}
             advancedTargetingLabel={advancedTargetingLabel}
             andLabel={andLabel}
             orLabel={orLabel}
@@ -217,6 +219,7 @@ RuleBuilder.propTypes = {
   orLabel: PropTypes.node.isRequired,
   addRuleLabel: PropTypes.node.isRequired,
   addGroupLabel: PropTypes.node.isRequired,
+  typeLabel: PropTypes.node.isRequired,
   advancedTargetingLabel: PropTypes.node.isRequired,
   removeRuleIcon: PropTypes.string.isRequired,
   combinedRuleOptions: ruleOptionsProps,
