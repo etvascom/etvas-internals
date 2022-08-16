@@ -4,3 +4,4 @@ export * from './Grid';
 export * from './Charts';
 export * from './Counter';
 export * from './Divider';
+export * from './RuleBuilder';
