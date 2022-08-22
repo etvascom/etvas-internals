@@ -54,7 +54,7 @@ const importAbsoluteRules = (rules, options) =>
         return {
           id: uuid(),
           type,
-          [operatorKey]: options[type].operator.options[0].value,
+          [operatorKey]: rules.find(rule => rule.keypath === type)?.operator,
           [valueKey]: rules.find(rule => rule.keypath === type)?.value
         }
       })

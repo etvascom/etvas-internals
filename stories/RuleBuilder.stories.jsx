@@ -203,7 +203,7 @@ const cashbacksData = {
       absolute: [
         {
           keypath: 'timespan',
-          operator: '<',
+          operator: '>',
           value: '25'
         },
         {
