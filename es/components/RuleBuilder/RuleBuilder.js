@@ -1,4 +1,4 @@
-var _excluded = ["name", "disabled", "label", "andLabel", "orLabel", "addRuleLabel", "addGroupLabel", "typeLabel", "advancedTargetingLabel", "removeRuleIcon", "combinedRuleOptions", "absoluteRuleOptions"];
+var _excluded = ["name", "disabled", "label", "andLabel", "orLabel", "addRuleLabel", "addGroupLabel", "typeLabel", "advancedTargetingLabel", "removeRuleIcon", "combinedRuleOptions", "absoluteRuleOptions", "hideAdvancedTargeting"];
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
@@ -28,6 +28,7 @@ export var RuleBuilder = function RuleBuilder(_ref) {
       removeRuleIcon = _ref.removeRuleIcon,
       combinedRuleOptions = _ref.combinedRuleOptions,
       absoluteRuleOptions = _ref.absoluteRuleOptions,
+      hideAdvancedTargeting = _ref.hideAdvancedTargeting,
       rest = _objectWithoutPropertiesLoose(_ref, _excluded);
 
   // eslint-disable-next-line no-unused-vars
@@ -170,6 +171,7 @@ export var RuleBuilder = function RuleBuilder(_ref) {
       addRuleLabel: addRuleLabel,
       typeLabel: typeLabel,
       advancedTargetingLabel: advancedTargetingLabel,
+      hideAdvancedTargeting: hideAdvancedTargeting,
       andLabel: andLabel,
       orLabel: orLabel,
       onRemoveRule: handleRemoveRule,
@@ -225,8 +227,10 @@ RuleBuilder.propTypes = process.env.NODE_ENV !== "production" ? {
   advancedTargetingLabel: PropTypes.node.isRequired,
   removeRuleIcon: PropTypes.string.isRequired,
   combinedRuleOptions: ruleOptionsProps,
-  absoluteRuleOptions: ruleOptionsProps
+  absoluteRuleOptions: ruleOptionsProps,
+  hideAdvancedTargeting: PropTypes.bool
 } : {};
 RuleBuilder.defaultProps = {
-  disabled: false
+  disabled: false,
+  hideAdvancedTargeting: false
 };

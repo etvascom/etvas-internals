@@ -16,6 +16,7 @@ export var Group = function Group(_ref) {
       addRuleLabel = _ref.addRuleLabel,
       typeLabel = _ref.typeLabel,
       advancedTargetingLabel = _ref.advancedTargetingLabel,
+      hideAdvancedTargeting = _ref.hideAdvancedTargeting,
       andLabel = _ref.andLabel,
       orLabel = _ref.orLabel,
       onRemoveRule = _ref.onRemoveRule,
@@ -67,7 +68,7 @@ export var Group = function Group(_ref) {
     disabled: disabled,
     onClick: onAddRule(group.id),
     mr: 8
-  }, addRuleLabel), /*#__PURE__*/React.createElement(CheckboxField, {
+  }, addRuleLabel), !hideAdvancedTargeting && /*#__PURE__*/React.createElement(CheckboxField, {
     label: advancedTargetingLabel,
     name: name + ".advancedTargeting",
     disabled: disabled
@@ -97,6 +98,7 @@ Group.propTypes = process.env.NODE_ENV !== "production" ? {
   addRuleLabel: PropTypes.node,
   typeLabel: PropTypes.node,
   advancedTargetingLabel: PropTypes.node,
+  hideAdvancedTargeting: PropTypes.bool,
   andLabel: PropTypes.node,
   orLabel: PropTypes.node,
   onRemoveRule: PropTypes.func,
