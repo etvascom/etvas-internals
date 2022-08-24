@@ -17,6 +17,7 @@ export const Group = ({
   addRuleLabel,
   typeLabel,
   advancedTargetingLabel,
+  hideAdvancedTargeting,
   andLabel,
   orLabel,
   onRemoveRule,
@@ -78,11 +79,13 @@ export const Group = ({
             {addRuleLabel}
           </Button>
 
-          <CheckboxField
-            label={advancedTargetingLabel}
-            name={`${name}.advancedTargeting`}
-            disabled={disabled}
-          />
+          {!hideAdvancedTargeting && (
+            <CheckboxField
+              label={advancedTargetingLabel}
+              name={`${name}.advancedTargeting`}
+              disabled={disabled}
+            />
+          )}
         </Flex>
       )}
 
@@ -119,6 +122,7 @@ Group.propTypes = {
   addRuleLabel: PropTypes.node,
   typeLabel: PropTypes.node,
   advancedTargetingLabel: PropTypes.node,
+  hideAdvancedTargeting: PropTypes.bool,
   andLabel: PropTypes.node,
   orLabel: PropTypes.node,
   onRemoveRule: PropTypes.func,

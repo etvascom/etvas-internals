@@ -21,6 +21,7 @@ export const RuleBuilder = ({
   removeRuleIcon,
   combinedRuleOptions,
   absoluteRuleOptions,
+  hideAdvancedTargeting,
   ...rest
 }) => {
   // eslint-disable-next-line no-unused-vars
@@ -150,6 +151,7 @@ export const RuleBuilder = ({
             addRuleLabel={addRuleLabel}
             typeLabel={typeLabel}
             advancedTargetingLabel={advancedTargetingLabel}
+            hideAdvancedTargeting={hideAdvancedTargeting}
             andLabel={andLabel}
             orLabel={orLabel}
             onRemoveRule={handleRemoveRule}
@@ -223,9 +225,11 @@ RuleBuilder.propTypes = {
   advancedTargetingLabel: PropTypes.node.isRequired,
   removeRuleIcon: PropTypes.string.isRequired,
   combinedRuleOptions: ruleOptionsProps,
-  absoluteRuleOptions: ruleOptionsProps
+  absoluteRuleOptions: ruleOptionsProps,
+  hideAdvancedTargeting: PropTypes.bool
 }
 
 RuleBuilder.defaultProps = {
-  disabled: false
+  disabled: false,
+  hideAdvancedTargeting: false
 }
