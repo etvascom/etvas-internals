@@ -35,12 +35,18 @@ const combinedRuleOptions = {
       validate: [required],
       options: [
         { label: 'contains', value: '~' },
-        { label: 'exact match', value: '=' }
+        { label: 'exact match', value: '=' },
+        { label: 'includes one of', value: '~~' },
+        { label: 'is one of', value: '~=' }
       ]
     },
     value: {
       label: 'Merchant name',
       placeholder: 'Adidas',
+      customPlaceholder: {
+        '~~': 'Adidas, Nike, Puma',
+        '~=': 'Adidas, Nike, Puma'
+      },
       type: 'string',
       validate: [required]
     }
