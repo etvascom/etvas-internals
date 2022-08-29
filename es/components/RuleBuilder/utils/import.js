@@ -31,7 +31,7 @@ var importGroups = function importGroups(groups, combinedRuleOptions, absoluteRu
 };
 
 var importCombinedRules = function importCombinedRules(rules, options) {
-  return rules.map(function (_ref3) {
+  return Object.fromEntries(rules.map(function (_ref3) {
     var _extends3;
 
     var keypath = _ref3.keypath,
@@ -50,15 +50,14 @@ var importCombinedRules = function importCombinedRules(rules, options) {
     }, {});
     var operatorKey = keypath + "Operator";
     var valueKey = keypath + "Value";
-    return _extends({
-      id: uuid(),
+    return [uuid(), _extends({
       type: keypath
-    }, defaultValues, (_extends3 = {}, _extends3[operatorKey] = operator, _extends3[valueKey] = value, _extends3));
-  });
+    }, defaultValues, (_extends3 = {}, _extends3[operatorKey] = operator, _extends3[valueKey] = value, _extends3))];
+  }));
 };
 
 var importAbsoluteRules = function importAbsoluteRules(rules, options) {
-  return rules.length ? Object.keys(options).map(function (type) {
+  return rules.length ? Object.fromEntries(Object.keys(options).map(function (type) {
     var _rules$find, _rules$find2, _ref4;
 
     var _getRuleDetails2 = getRuleDetails({
@@ -67,13 +66,12 @@ var importAbsoluteRules = function importAbsoluteRules(rules, options) {
         operatorKey = _getRuleDetails2.operatorKey,
         valueKey = _getRuleDetails2.valueKey;
 
-    return _ref4 = {
-      id: uuid(),
+    return [uuid(), (_ref4 = {
       type: type
     }, _ref4[operatorKey] = (_rules$find = rules.find(function (rule) {
       return rule.keypath === type;
     })) === null || _rules$find === void 0 ? void 0 : _rules$find.operator, _ref4[valueKey] = (_rules$find2 = rules.find(function (rule) {
       return rule.keypath === type;
-    })) === null || _rules$find2 === void 0 ? void 0 : _rules$find2.value, _ref4;
-  }) : null;
+    })) === null || _rules$find2 === void 0 ? void 0 : _rules$find2.value, _ref4)];
+  })) : null;
 };

@@ -52,13 +52,12 @@ export var RuleBuilder = function RuleBuilder(_ref) {
 
       return _extends({}, acc, (_extends2 = {}, _extends2[operatorKey] = combinedRuleOptions[type].operator.options[0].value, _extends2[valueKey] = '', _extends2));
     }, {});
-    return _extends({
-      id: uuid(),
+    return Object.fromEntries([[uuid(), _extends({
       type: type
-    }, defaultOperatorValues);
+    }, defaultOperatorValues)]]);
   }, [combinedRuleOptions]);
   var createAbsoluteRules = useCallback(function () {
-    return Object.keys(absoluteRuleOptions).map(function (type) {
+    return Object.fromEntries(Object.keys(absoluteRuleOptions).map(function (type) {
       var _ref2;
 
       var _getRuleDetails2 = getRuleDetails({
@@ -67,11 +66,10 @@ export var RuleBuilder = function RuleBuilder(_ref) {
           operatorKey = _getRuleDetails2.operatorKey,
           valueKey = _getRuleDetails2.valueKey;
 
-      return _ref2 = {
-        id: uuid(),
+      return [uuid(), (_ref2 = {
         type: type
-      }, _ref2[operatorKey] = absoluteRuleOptions[type].operator.options[0].value, _ref2[valueKey] = '', _ref2;
-    });
+      }, _ref2[operatorKey] = absoluteRuleOptions[type].operator.options[0].value, _ref2[valueKey] = '', _ref2)];
+    }));
   }, [absoluteRuleOptions]);
   var createNewGroup = useCallback(function () {
     return {
@@ -79,7 +77,7 @@ export var RuleBuilder = function RuleBuilder(_ref) {
       not: false,
       advancedTargeting: false,
       absolute: createAbsoluteRules(),
-      combined: [createNewRule()],
+      combined: _extends({}, createNewRule()),
       combinator: 'and'
     };
   }, [createNewRule, createAbsoluteRules]);
@@ -103,14 +101,12 @@ export var RuleBuilder = function RuleBuilder(_ref) {
     return function () {
       var groups = cloneDeep(data.groups).reduce(function (acc, group) {
         if (group.id === groupId) {
-          group.combined = group.combined.filter(function (rule) {
-            return rule.id !== ruleId;
-          });
+          delete group.combined[ruleId];
         } // only add groups with at least one condition
         // (delete group on last rule delete)
 
 
-        if (group.combined.length) {
+        if (Object.keys(group.combined).length) {
           acc.push(group);
         }
 
@@ -126,7 +122,7 @@ export var RuleBuilder = function RuleBuilder(_ref) {
     return function () {
       var groups = cloneDeep(data.groups).map(function (group) {
         if (group.id === groupId) {
-          group.combined.push(createNewRule());
+          group.combined = _extends({}, group.combined, createNewRule());
         }
 
         return group;
@@ -139,9 +135,9 @@ export var RuleBuilder = function RuleBuilder(_ref) {
 
 
   var canDelete = useMemo(function () {
-    var _data$groups, _data$groups2;
+    var _data$groups, _data$groups$0$combin, _data$groups2, _data$groups2$;
 
-    return ((_data$groups = data.groups) === null || _data$groups === void 0 ? void 0 : _data$groups.length) > 1 || ((_data$groups2 = data.groups) === null || _data$groups2 === void 0 ? void 0 : _data$groups2[0].combined.length) > 1;
+    return ((_data$groups = data.groups) === null || _data$groups === void 0 ? void 0 : _data$groups.length) > 1 || Object.keys((_data$groups$0$combin = (_data$groups2 = data.groups) === null || _data$groups2 === void 0 ? void 0 : (_data$groups2$ = _data$groups2[0]) === null || _data$groups2$ === void 0 ? void 0 : _data$groups2$.combined) !== null && _data$groups$0$combin !== void 0 ? _data$groups$0$combin : {}).length > 1;
   }, [data]);
   var combinatorOptions = useMemo(function () {
     return [{

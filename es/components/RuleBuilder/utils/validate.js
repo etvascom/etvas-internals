@@ -29,7 +29,9 @@ export var validateRuleBuilder = function validateRuleBuilder(field, combinedRul
 };
 
 var generateRuleErrors = function generateRuleErrors(rules, options) {
-  return rules.reduce(function (acc, rule, ruleIndex) {
+  return Object.keys(rules).reduce(function (acc, ruleId) {
+    var rule = rules[ruleId];
+
     var _getRuleDetails = getRuleDetails(rule),
         type = _getRuleDetails.type,
         operator = _getRuleDetails.operator,
@@ -42,10 +44,10 @@ var generateRuleErrors = function generateRuleErrors(rules, options) {
     });
 
     if (failedOperatorValidator) {
-      var _acc$ruleIndex;
+      var _acc$ruleId;
 
-      acc[ruleIndex] = (_acc$ruleIndex = acc[ruleIndex]) !== null && _acc$ruleIndex !== void 0 ? _acc$ruleIndex : {};
-      acc[ruleIndex][operatorKey] = failedOperatorValidator.error;
+      acc[ruleId] = (_acc$ruleId = acc[ruleId]) !== null && _acc$ruleId !== void 0 ? _acc$ruleId : {};
+      acc[ruleId][operatorKey] = failedOperatorValidator.error;
     }
 
     var failedValueValidator = options[type].value.validate.find(function (item) {
@@ -53,12 +55,12 @@ var generateRuleErrors = function generateRuleErrors(rules, options) {
     });
 
     if (failedValueValidator) {
-      var _acc$ruleIndex2;
+      var _acc$ruleId2;
 
-      acc[ruleIndex] = (_acc$ruleIndex2 = acc[ruleIndex]) !== null && _acc$ruleIndex2 !== void 0 ? _acc$ruleIndex2 : {};
-      acc[ruleIndex][valueKey] = failedValueValidator.error;
+      acc[ruleId] = (_acc$ruleId2 = acc[ruleId]) !== null && _acc$ruleId2 !== void 0 ? _acc$ruleId2 : {};
+      acc[ruleId][valueKey] = failedValueValidator.error;
     }
 
     return acc;
-  }, []);
+  }, {});
 };

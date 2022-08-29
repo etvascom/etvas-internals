@@ -27,7 +27,9 @@ var exportGroups = function exportGroups(groups, combinedRuleOptions, absoluteRu
 };
 
 var exportRules = function exportRules(rules, options) {
-  return rules.map(function (rule) {
+  return Object.keys(rules).map(function (ruleId) {
+    var rule = rules[ruleId];
+
     var _getRuleDetails = getRuleDetails(rule),
         type = _getRuleDetails.type,
         operator = _getRuleDetails.operator,
