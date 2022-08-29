@@ -39,18 +39,18 @@ export var Group = function Group(_ref) {
   return /*#__PURE__*/React.createElement(Box, {
     bg: "baseGrayLightest",
     p: 4
-  }, group.combined.map(function (rule, ruleIndex) {
+  }, Object.keys(group.combined).map(function (ruleId, ruleIndex) {
     return /*#__PURE__*/React.createElement(Box, {
-      key: rule.id
+      key: ruleId
     }, /*#__PURE__*/React.createElement(Rule, {
       disabled: disabled,
-      name: name + ".combined[" + ruleIndex + "]",
+      name: name + ".combined." + ruleId,
       removeRuleIcon: canDelete && removeRuleIcon,
-      rule: rule,
+      rule: group.combined[ruleId],
       options: combinedRuleOptions,
-      onRemove: onRemoveRule(group.id, rule.id),
+      onRemove: onRemoveRule(group.id, ruleId),
       typeLabel: typeLabel
-    }), ruleIndex < group.combined.length - 1 && /*#__PURE__*/React.createElement(CombinatorField, {
+    }), ruleIndex < Object.keys(group.combined).length - 1 && /*#__PURE__*/React.createElement(CombinatorField, {
       name: name + ".combinator",
       options: completeCombinatorOptions,
       disabled: disabled,
@@ -72,18 +72,18 @@ export var Group = function Group(_ref) {
     label: advancedTargetingLabel,
     name: name + ".advancedTargeting",
     disabled: disabled
-  })), advancedTargeting && group.absolute.map(function (rule, ruleIndex) {
+  })), advancedTargeting && Object.keys(group.absolute).map(function (ruleId, ruleIndex) {
     return /*#__PURE__*/React.createElement(Box, {
-      key: rule.id
+      key: ruleId
     }, /*#__PURE__*/React.createElement(Rule, {
       disabled: disabled,
-      name: name + ".absolute[" + ruleIndex + "]",
-      rule: rule,
+      name: name + ".absolute." + ruleId,
+      rule: group.absolute[ruleId],
       options: absoluteRuleOptions,
-      onRemove: onRemoveRule(group.id, rule.id),
+      onRemove: onRemoveRule(group.id, ruleId),
       typeLabel: typeLabel,
       isAbsolute: true
-    }), ruleIndex < group.absolute.length - 1 && /*#__PURE__*/React.createElement(Combinator, {
+    }), ruleIndex < Object.keys(group.absolute).length - 1 && /*#__PURE__*/React.createElement(Combinator, {
       options: andCombinatorOptions,
       value: "and",
       disabled: disabled,

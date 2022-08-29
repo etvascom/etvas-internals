@@ -43,25 +43,34 @@ export const RuleBuilder = ({
       {}
     )
 
-    return {
-      id: uuid(),
-      type,
-      ...defaultOperatorValues
-    }
+    return Object.fromEntries([
+      [
+        uuid(),
+        {
+          type,
+          ...defaultOperatorValues
+        }
+      ]
+    ])
   }, [combinedRuleOptions])
 
   const createAbsoluteRules = useCallback(
     () =>
-      Object.keys(absoluteRuleOptions).map(type => {
-        const { operatorKey, valueKey } = getRuleDetails({ type })
+      Object.fromEntries(
+        Object.keys(absoluteRuleOptions).map(type => {
+          const { operatorKey, valueKey } = getRuleDetails({ type })
 
-        return {
-          id: uuid(),
-          type,
-          [operatorKey]: absoluteRuleOptions[type].operator.options[0].value,
-          [valueKey]: ''
-        }
-      }),
+          return [
+            uuid(),
+            {
+              type,
+              [operatorKey]:
+                absoluteRuleOptions[type].operator.options[0].value,
+              [valueKey]: ''
+            }
+          ]
+        })
+      ),
     [absoluteRuleOptions]
   )
 
@@ -71,7 +80,7 @@ export const RuleBuilder = ({
       not: false,
       advancedTargeting: false,
       absolute: createAbsoluteRules(),
-      combined: [createNewRule()],
+      combined: { ...createNewRule() },
       combinator: 'and'
     }),
     [createNewRule, createAbsoluteRules]
@@ -90,12 +99,12 @@ export const RuleBuilder = ({
   const handleRemoveRule = (groupId, ruleId) => () => {
     const groups = cloneDeep(data.groups).reduce((acc, group) => {
       if (group.id === groupId) {
-        group.combined = group.combined.filter(rule => rule.id !== ruleId)
+        delete group.combined[ruleId]
       }
 
       // only add groups with at least one condition
       // (delete group on last rule delete)
-      if (group.combined.length) {
+      if (Object.keys(group.combined).length) {
         acc.push(group)
       }
 
@@ -108,7 +117,7 @@ export const RuleBuilder = ({
   const handleAddRule = groupId => () => {
     const groups = cloneDeep(data.groups).map(group => {
       if (group.id === groupId) {
-        group.combined.push(createNewRule())
+        group.combined = { ...group.combined, ...createNewRule() }
       }
 
       return group
@@ -119,7 +128,9 @@ export const RuleBuilder = ({
 
   // can't delete the last rule from the last group
   const canDelete = useMemo(
-    () => data.groups?.length > 1 || data.groups?.[0].combined.length > 1,
+    () =>
+      data.groups?.length > 1 ||
+      Object.keys(data.groups?.[0]?.combined ?? {}).length > 1,
     [data]
   )
 

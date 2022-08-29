@@ -22,7 +22,9 @@ const exportGroups = (groups, combinedRuleOptions, absoluteRuleOptions) =>
   }))
 
 const exportRules = (rules, options) =>
-  rules.map(rule => {
+  Object.keys(rules).map(ruleId => {
+    const rule = rules[ruleId]
+
     const { type, operator, value } = getRuleDetails(rule)
 
     const parsedValue =
