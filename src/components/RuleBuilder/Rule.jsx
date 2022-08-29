@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
+import { useField } from 'formik'
 import {
   Flex,
   DropdownField,
@@ -39,9 +40,21 @@ export const Rule = ({
 
   const type = useMemo(() => rule.type, [rule])
 
-  const placeholder = useMemo(() => options[type].placeholder, [options, type])
+  const operatorName = useMemo(() => `${name}.${type}Operator`, [name, type])
+  const [{ value: operatorValue }] = useField(operatorName)
+
   const operator = useMemo(() => options[type].operator, [options, type])
   const value = useMemo(() => options[type].value, [options, type])
+
+  const typePlaceholder = useMemo(() => options[type].placeholder, [
+    options,
+    type
+  ])
+
+  const valuePlaceholder = useMemo(
+    () => (value.customPlaceholder ?? {})[operatorValue] ?? value.placeholder,
+    [operatorValue, value]
+  )
 
   const isSuffixType = useMemo(() => value.suffix, [value])
 
@@ -51,7 +64,7 @@ export const Rule = ({
         disabled={disabled}
         options={typeOptions}
         name={`${name}.type`}
-        placeholder={placeholder}
+        placeholder={typePlaceholder}
         label={typeLabel}
         required
         mr={4}
@@ -72,7 +85,7 @@ export const Rule = ({
           name={`${name}.${type}Value`}
           type={value.type}
           label={value.label}
-          placeholder={value.placeholder}
+          placeholder={valuePlaceholder}
           suffix={value.suffix}
           suffixSpace={value.suffixSpace || 0}
           prefix=''
@@ -84,7 +97,7 @@ export const Rule = ({
           name={`${name}.${type}Value`}
           type={value.type}
           label={value.label}
-          placeholder={value.placeholder}
+          placeholder={valuePlaceholder}
           required
         />
       )}
