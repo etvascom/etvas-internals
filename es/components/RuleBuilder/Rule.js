@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
+import { useField } from 'formik';
 import { Flex, DropdownField, TextField, Button, Icon, Box, SubdomainField } from '@etvas/etvaskit';
 export var Rule = function Rule(_ref) {
   var disabled = _ref.disabled,
@@ -26,15 +27,27 @@ export var Rule = function Rule(_ref) {
   var type = useMemo(function () {
     return rule.type;
   }, [rule]);
-  var placeholder = useMemo(function () {
-    return options[type].placeholder;
-  }, [options, type]);
+  var operatorName = useMemo(function () {
+    return name + "." + type + "Operator";
+  }, [name, type]);
+
+  var _useField = useField(operatorName),
+      operatorValue = _useField[0].value;
+
   var operator = useMemo(function () {
     return options[type].operator;
   }, [options, type]);
   var value = useMemo(function () {
     return options[type].value;
   }, [options, type]);
+  var typePlaceholder = useMemo(function () {
+    return options[type].placeholder;
+  }, [options, type]);
+  var valuePlaceholder = useMemo(function () {
+    var _operatorValue, _value$customPlacehol;
+
+    return (_operatorValue = ((_value$customPlacehol = value.customPlaceholder) !== null && _value$customPlacehol !== void 0 ? _value$customPlacehol : {})[operatorValue]) !== null && _operatorValue !== void 0 ? _operatorValue : value.placeholder;
+  }, [operatorValue, value]);
   var isSuffixType = useMemo(function () {
     return value.suffix;
   }, [value]);
@@ -46,7 +59,7 @@ export var Rule = function Rule(_ref) {
     disabled: disabled,
     options: typeOptions,
     name: name + ".type",
-    placeholder: placeholder,
+    placeholder: typePlaceholder,
     label: typeLabel,
     required: true,
     mr: 4
@@ -63,7 +76,7 @@ export var Rule = function Rule(_ref) {
     name: name + "." + type + "Value",
     type: value.type,
     label: value.label,
-    placeholder: value.placeholder,
+    placeholder: valuePlaceholder,
     suffix: value.suffix,
     suffixSpace: value.suffixSpace || 0,
     prefix: "",
@@ -73,7 +86,7 @@ export var Rule = function Rule(_ref) {
     name: name + "." + type + "Value",
     type: value.type,
     label: value.label,
-    placeholder: value.placeholder,
+    placeholder: valuePlaceholder,
     required: true
   }), !disabled && removeRuleIcon ? /*#__PURE__*/React.createElement(Button, {
     variant: "link",

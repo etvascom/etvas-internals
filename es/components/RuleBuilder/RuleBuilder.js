@@ -205,6 +205,7 @@ var ruleOptionsProps = process.env.NODE_ENV !== "production" ? PropTypes.objectO
   value: PropTypes.shape({
     label: PropTypes.node,
     placeholder: PropTypes.string,
+    customPlaceholder: PropTypes.object,
     type: PropTypes.string,
     suffix: PropTypes.string,
     suffixSpace: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
