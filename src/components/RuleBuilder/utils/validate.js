@@ -32,7 +32,9 @@ export const validateRuleBuilder = (
 }
 
 const generateRuleErrors = (rules, options) =>
-  rules.reduce((acc, rule, ruleIndex) => {
+  Object.keys(rules).reduce((acc, ruleId) => {
+    const rule = rules[ruleId]
+
     const { type, operator, value, operatorKey, valueKey } = getRuleDetails(
       rule
     )
@@ -42,8 +44,8 @@ const generateRuleErrors = (rules, options) =>
     )
 
     if (failedOperatorValidator) {
-      acc[ruleIndex] = acc[ruleIndex] ?? {}
-      acc[ruleIndex][operatorKey] = failedOperatorValidator.error
+      acc[ruleId] = acc[ruleId] ?? {}
+      acc[ruleId][operatorKey] = failedOperatorValidator.error
     }
 
     const failedValueValidator = options[type].value.validate.find(item =>
@@ -51,9 +53,9 @@ const generateRuleErrors = (rules, options) =>
     )
 
     if (failedValueValidator) {
-      acc[ruleIndex] = acc[ruleIndex] ?? {}
-      acc[ruleIndex][valueKey] = failedValueValidator.error
+      acc[ruleId] = acc[ruleId] ?? {}
+      acc[ruleId][valueKey] = failedValueValidator.error
     }
 
     return acc
-  }, [])
+  }, {})

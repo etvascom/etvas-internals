@@ -23,39 +23,48 @@ const importGroups = (groups, combinedRuleOptions, absoluteRuleOptions) =>
   }))
 
 const importCombinedRules = (rules, options) =>
-  rules.map(({ keypath, operator, value }) => {
-    const defaultValues = Object.keys(options).reduce((acc, type) => {
-      const { operatorKey, valueKey } = getRuleDetails({ type })
-
-      return {
-        ...acc,
-        [operatorKey]: options[type].operator.options[0].value,
-        [valueKey]: ''
-      }
-    }, {})
-
-    const operatorKey = `${keypath}Operator`
-    const valueKey = `${keypath}Value`
-
-    return {
-      id: uuid(),
-      type: keypath,
-      ...defaultValues,
-      [operatorKey]: operator,
-      [valueKey]: value
-    }
-  })
-
-const importAbsoluteRules = (rules, options) =>
-  rules.length
-    ? Object.keys(options).map(type => {
+  Object.fromEntries(
+    rules.map(({ keypath, operator, value }) => {
+      const defaultValues = Object.keys(options).reduce((acc, type) => {
         const { operatorKey, valueKey } = getRuleDetails({ type })
 
         return {
-          id: uuid(),
-          type,
-          [operatorKey]: rules.find(rule => rule.keypath === type)?.operator,
-          [valueKey]: rules.find(rule => rule.keypath === type)?.value
+          ...acc,
+          [operatorKey]: options[type].operator.options[0].value,
+          [valueKey]: ''
         }
-      })
+      }, {})
+
+      const operatorKey = `${keypath}Operator`
+      const valueKey = `${keypath}Value`
+
+      return [
+        uuid(),
+        {
+          type: keypath,
+          ...defaultValues,
+          [operatorKey]: operator,
+          [valueKey]: value
+        }
+      ]
+    })
+  )
+
+const importAbsoluteRules = (rules, options) =>
+  rules.length
+    ? Object.fromEntries(
+        Object.keys(options).map(type => {
+          const { operatorKey, valueKey } = getRuleDetails({ type })
+
+          return [
+            uuid(),
+            {
+              type,
+              [operatorKey]: rules.find(rule => rule.keypath === type)
+                ?.operator,
+              [valueKey]: rules.find(rule => rule.keypath === type)?.value
+            }
+          ]
+        })
+      )
     : null

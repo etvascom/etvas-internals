@@ -38,18 +38,18 @@ export const Group = ({
 
   return (
     <Box bg='baseGrayLightest' p={4}>
-      {group.combined.map((rule, ruleIndex) => (
-        <Box key={rule.id}>
+      {Object.keys(group.combined).map((ruleId, ruleIndex) => (
+        <Box key={ruleId}>
           <Rule
             disabled={disabled}
-            name={`${name}.combined[${ruleIndex}]`}
+            name={`${name}.combined.${ruleId}`}
             removeRuleIcon={canDelete && removeRuleIcon}
-            rule={rule}
+            rule={group.combined[ruleId]}
             options={combinedRuleOptions}
-            onRemove={onRemoveRule(group.id, rule.id)}
+            onRemove={onRemoveRule(group.id, ruleId)}
             typeLabel={typeLabel}
           />
-          {ruleIndex < group.combined.length - 1 && (
+          {ruleIndex < Object.keys(group.combined).length - 1 && (
             <CombinatorField
               name={`${name}.combinator`}
               options={completeCombinatorOptions}
@@ -90,18 +90,18 @@ export const Group = ({
       )}
 
       {advancedTargeting &&
-        group.absolute.map((rule, ruleIndex) => (
-          <Box key={rule.id}>
+        Object.keys(group.absolute).map((ruleId, ruleIndex) => (
+          <Box key={ruleId}>
             <Rule
               disabled={disabled}
-              name={`${name}.absolute[${ruleIndex}]`}
-              rule={rule}
+              name={`${name}.absolute.${ruleId}`}
+              rule={group.absolute[ruleId]}
               options={absoluteRuleOptions}
-              onRemove={onRemoveRule(group.id, rule.id)}
+              onRemove={onRemoveRule(group.id, ruleId)}
               typeLabel={typeLabel}
               isAbsolute
             />
-            {ruleIndex < group.absolute.length - 1 && (
+            {ruleIndex < Object.keys(group.absolute).length - 1 && (
               <Combinator
                 options={andCombinatorOptions}
                 value='and'
