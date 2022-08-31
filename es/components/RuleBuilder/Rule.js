@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useField } from 'formik';
 import { Flex, DropdownField, TextField, Button, Icon, Box, SubdomainField } from '@etvas/etvaskit';
+import { TagField } from '../TagInput/TagField';
 export var Rule = function Rule(_ref) {
   var disabled = _ref.disabled,
       rule = _ref.rule,
@@ -38,23 +39,23 @@ export var Rule = function Rule(_ref) {
     return options[type].operator;
   }, [options, type]);
   var value = useMemo(function () {
-    return options[type].value;
-  }, [options, type]);
+    var _options$type$operato, _options$type, _options$type$operato2;
+
+    return (_options$type$operato = (_options$type = options[type]) === null || _options$type === void 0 ? void 0 : (_options$type$operato2 = _options$type.operatorValue) === null || _options$type$operato2 === void 0 ? void 0 : _options$type$operato2[operatorValue]) !== null && _options$type$operato !== void 0 ? _options$type$operato : options[type].value;
+  }, [options, type, operatorValue]);
   var typePlaceholder = useMemo(function () {
     return options[type].placeholder;
   }, [options, type]);
   var valuePlaceholder = useMemo(function () {
-    var _operatorValue, _value$customPlacehol;
-
-    return (_operatorValue = ((_value$customPlacehol = value.customPlaceholder) !== null && _value$customPlacehol !== void 0 ? _value$customPlacehol : {})[operatorValue]) !== null && _operatorValue !== void 0 ? _operatorValue : value.placeholder;
-  }, [operatorValue, value]);
+    return value.placeholder;
+  }, [value]);
   var isSuffixType = useMemo(function () {
     return value.suffix;
   }, [value]);
   return /*#__PURE__*/React.createElement(Flex, {
     width: 1,
     justifyContent: "space-between",
-    alignItems: "center"
+    alignItems: "flex-start"
   }, /*#__PURE__*/React.createElement(DropdownField, {
     disabled: disabled,
     options: typeOptions,
@@ -81,6 +82,14 @@ export var Rule = function Rule(_ref) {
     suffixSpace: value.suffixSpace || 0,
     prefix: "",
     required: true
+  }) : /*#__PURE__*/React.createElement(React.Fragment, null, value.type === 'tag' ? /*#__PURE__*/React.createElement(TagField, {
+    disabled: disabled,
+    name: name + "." + type + "Value",
+    type: "text",
+    label: value.label,
+    placeholder: valuePlaceholder,
+    separator: ",",
+    required: true
   }) : /*#__PURE__*/React.createElement(TextField, {
     disabled: disabled,
     name: name + "." + type + "Value",
@@ -88,9 +97,10 @@ export var Rule = function Rule(_ref) {
     label: value.label,
     placeholder: valuePlaceholder,
     required: true
-  }), !disabled && removeRuleIcon ? /*#__PURE__*/React.createElement(Button, {
+  })), !disabled && removeRuleIcon ? /*#__PURE__*/React.createElement(Button, {
     variant: "link",
     ml: 4,
+    mt: 6,
     onClick: onRemove
   }, /*#__PURE__*/React.createElement(Icon, {
     name: removeRuleIcon,

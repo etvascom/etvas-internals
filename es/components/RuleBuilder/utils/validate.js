@@ -30,6 +30,8 @@ export var validateRuleBuilder = function validateRuleBuilder(field, combinedRul
 
 var generateRuleErrors = function generateRuleErrors(rules, options) {
   return Object.keys(rules).reduce(function (acc, ruleId) {
+    var _options$type$operato, _options$type, _options$type$operato2;
+
     var rule = rules[ruleId];
 
     var _getRuleDetails = getRuleDetails(rule),
@@ -50,7 +52,8 @@ var generateRuleErrors = function generateRuleErrors(rules, options) {
       acc[ruleId][operatorKey] = failedOperatorValidator.error;
     }
 
-    var failedValueValidator = options[type].value.validate.find(function (item) {
+    var optionValue = (_options$type$operato = (_options$type = options[type]) === null || _options$type === void 0 ? void 0 : (_options$type$operato2 = _options$type.operatorValue) === null || _options$type$operato2 === void 0 ? void 0 : _options$type$operato2[operator]) !== null && _options$type$operato !== void 0 ? _options$type$operato : options[type].value;
+    var failedValueValidator = optionValue.validate.find(function (item) {
       return item.validator(value);
     });
 
