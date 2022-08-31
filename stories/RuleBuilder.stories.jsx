@@ -158,21 +158,11 @@ export const RuleBuilderExample = () => (
         action('form submitted')()
       }}
       initialValues={{ cashbacks: {} }}
-      validate={val => {
-        // eslint-disable-next-line no-console
-        console.log(
-          validateRuleBuilder(
-            'cashbacks',
-            combinedRuleOptions,
-            absoluteRuleOptions
-          )(val)
-        )
-        return validateRuleBuilder(
-          'cashbacks',
-          combinedRuleOptions,
-          absoluteRuleOptions
-        )(val)
-      }}>
+      validate={validateRuleBuilder(
+        'cashbacks',
+        combinedRuleOptions,
+        absoluteRuleOptions
+      )}>
       <RuleBuilder
         name='cashbacks'
         label='CASHBACK CONDITIONS'
