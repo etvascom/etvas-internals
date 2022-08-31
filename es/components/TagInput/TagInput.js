@@ -75,10 +75,13 @@ export var TagInput = forwardRef(function (_ref, ref) {
   }, []);
 
   var handleInputKeyPress = function handleInputKeyPress(event) {
-    if ([].concat(forceAddTagKeys, ['Enter']).includes(event.key) && inputValue.trim()) {
+    if ([].concat(forceAddTagKeys, ['Enter']).includes(event.key)) {
       event.preventDefault();
-      handleTagAdd();
-      setInputValue('');
+
+      if (inputValue.trim()) {
+        handleTagAdd();
+        setInputValue('');
+      }
     }
   };
 

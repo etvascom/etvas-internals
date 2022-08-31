@@ -71,13 +71,13 @@ export const TagInput = forwardRef(
     )
 
     const handleInputKeyPress = event => {
-      if (
-        [...forceAddTagKeys, 'Enter'].includes(event.key) &&
-        inputValue.trim()
-      ) {
+      if ([...forceAddTagKeys, 'Enter'].includes(event.key)) {
         event.preventDefault()
-        handleTagAdd()
-        setInputValue('')
+
+        if (inputValue.trim()) {
+          handleTagAdd()
+          setInputValue('')
+        }
       }
     }
 

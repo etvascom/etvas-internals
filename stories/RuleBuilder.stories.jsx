@@ -61,7 +61,7 @@ const combinedRuleOptions = {
         label: 'Merchant name tag',
         placeholder: 'Adidas, Nike, Puma',
         type: 'tag',
-        validate: [required, minTags(3)]
+        validate: [required]
       },
       '~=': {
         label: 'Merchant name tag',
