@@ -197,6 +197,15 @@ const validatorProps = PropTypes.shape({
   error: PropTypes.node
 })
 
+const valueProps = PropTypes.shape({
+  label: PropTypes.node,
+  placeholder: PropTypes.string,
+  type: PropTypes.string,
+  suffix: PropTypes.string,
+  suffixSpace: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  validate: PropTypes.arrayOf(validatorProps)
+})
+
 const ruleOptionsProps = PropTypes.objectOf(
   PropTypes.shape({
     label: PropTypes.node,
@@ -213,15 +222,8 @@ const ruleOptionsProps = PropTypes.objectOf(
         })
       )
     }),
-    value: PropTypes.shape({
-      label: PropTypes.node,
-      placeholder: PropTypes.string,
-      customPlaceholder: PropTypes.object,
-      type: PropTypes.string,
-      suffix: PropTypes.string,
-      suffixSpace: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-      validate: PropTypes.arrayOf(validatorProps)
-    })
+    value: valueProps,
+    operatorValue: PropTypes.objectOf(valueProps)
   })
 ).isRequired
 

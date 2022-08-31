@@ -189,6 +189,14 @@ var validatorProps = process.env.NODE_ENV !== "production" ? PropTypes.shape({
   validator: PropTypes.func,
   error: PropTypes.node
 }) : {};
+var valueProps = process.env.NODE_ENV !== "production" ? PropTypes.shape({
+  label: PropTypes.node,
+  placeholder: PropTypes.string,
+  type: PropTypes.string,
+  suffix: PropTypes.string,
+  suffixSpace: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  validate: PropTypes.arrayOf(validatorProps)
+}) : {};
 var ruleOptionsProps = process.env.NODE_ENV !== "production" ? PropTypes.objectOf(PropTypes.shape({
   label: PropTypes.node,
   placeholder: PropTypes.string,
@@ -202,15 +210,8 @@ var ruleOptionsProps = process.env.NODE_ENV !== "production" ? PropTypes.objectO
       value: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
     }))
   }),
-  value: PropTypes.shape({
-    label: PropTypes.node,
-    placeholder: PropTypes.string,
-    customPlaceholder: PropTypes.object,
-    type: PropTypes.string,
-    suffix: PropTypes.string,
-    suffixSpace: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    validate: PropTypes.arrayOf(validatorProps)
-  })
+  value: valueProps,
+  operatorValue: PropTypes.objectOf(valueProps)
 })).isRequired : {};
 RuleBuilder.propTypes = process.env.NODE_ENV !== "production" ? {
   name: PropTypes.string.isRequired,

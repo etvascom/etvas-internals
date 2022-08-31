@@ -48,7 +48,10 @@ const generateRuleErrors = (rules, options) =>
       acc[ruleId][operatorKey] = failedOperatorValidator.error
     }
 
-    const failedValueValidator = options[type].value.validate.find(item =>
+    const optionValue =
+      options[type]?.operatorValue?.[operator] ?? options[type].value
+
+    const failedValueValidator = optionValue.validate.find(item =>
       item.validator(value)
     )
 
