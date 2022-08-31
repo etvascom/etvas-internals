@@ -6,10 +6,9 @@ const DEFAULT_DISABLED_STYLE = {
 }
 
 const DEFAULT_STYLE = {
-  minHeight: etvasTheme.sizes.inputHeight,
-  background: 'backgroundLightGray',
-  paddingLeft: 2,
-  paddingRight: 10,
+  minHeight: '32px',
+  background: etvasTheme.colors.backgroundLightGray,
+  paddingX: 2,
   borderSize: `${etvasTheme.borders[1]}`,
   borderColor: 'inputBorderGray',
   borderStyle: 'solid',

@@ -71,14 +71,11 @@ export const TagInput = forwardRef(
     )
 
     const handleInputKeyPress = event => {
-      if (forceAddTagKeys.includes(event.key)) {
-        event.preventDefault()
-      }
-
       if (
         [...forceAddTagKeys, 'Enter'].includes(event.key) &&
         inputValue.trim()
       ) {
+        event.preventDefault()
         handleTagAdd()
         setInputValue('')
       }
@@ -118,7 +115,8 @@ export const TagInput = forwardRef(
             {tags.map((tag, index) => (
               <Tag
                 value={tag}
-                key={tag}
+                // eslint-disable-next-line react/no-array-index-key
+                key={index}
                 disabled={disabled}
                 onRemove={handleTagRemove(index)}
                 my={1}
@@ -182,7 +180,8 @@ const StyledInputContainer = styled.div(
   css({
     display: 'flex',
     flexWrap: 'wrap',
-    py: 1
+    alignItems: 'center',
+    py: '3px'
   })
 )
 
@@ -196,7 +195,7 @@ TagInput.propTypes = {
   ...tagShape,
   loading: PropTypes.bool,
   readOnly: PropTypes.bool,
-  error: PropTypes.string,
+  error: PropTypes.node,
   warning: PropTypes.bool,
   valid: PropTypes.bool,
   variant: PropTypes.string,

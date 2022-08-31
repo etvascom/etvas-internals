@@ -17,7 +17,6 @@ const Container = styled.span(({ disabled, rest }) =>
   css({
     display: 'inline-flex',
     justifyContent: 'space-between',
-    py: 1,
     px: 2,
     mr: 2,
     whiteSpace: 'nowrap',

@@ -19,6 +19,16 @@ const required = {
   error: 'Required'
 }
 
+const minTags = num => ({
+  validator: value =>
+    !value ||
+    value
+      .split(',')
+      .filter(val => !!val)
+      .map(val => val.trim()).length < num,
+  error: `Min ${num} tags needed`
+})
+
 const numPositive = {
   validator: value => isNaN(value) || parseFloat(value) < 0 || value.length < 1,
   error: 'Number must be positive'
@@ -43,12 +53,22 @@ const combinedRuleOptions = {
     value: {
       label: 'Merchant name',
       placeholder: 'Adidas',
-      customPlaceholder: {
-        '~~': 'Adidas, Nike, Puma',
-        '~=': 'Adidas, Nike, Puma'
-      },
       type: 'string',
       validate: [required]
+    },
+    operatorValue: {
+      '~~': {
+        label: 'Merchant name tag',
+        placeholder: 'Adidas, Nike, Puma',
+        type: 'tag',
+        validate: [required, minTags(3)]
+      },
+      '~=': {
+        label: 'Merchant name tag',
+        placeholder: 'Adidas, Nike, Puma',
+        type: 'tag',
+        validate: [required, minTags(3)]
+      }
     }
   },
   amount: {
@@ -138,11 +158,21 @@ export const RuleBuilderExample = () => (
         action('form submitted')()
       }}
       initialValues={{ cashbacks: {} }}
-      validate={validateRuleBuilder(
-        'cashbacks',
-        combinedRuleOptions,
-        absoluteRuleOptions
-      )}>
+      validate={val => {
+        // eslint-disable-next-line no-console
+        console.log(
+          validateRuleBuilder(
+            'cashbacks',
+            combinedRuleOptions,
+            absoluteRuleOptions
+          )(val)
+        )
+        return validateRuleBuilder(
+          'cashbacks',
+          combinedRuleOptions,
+          absoluteRuleOptions
+        )(val)
+      }}>
       <RuleBuilder
         name='cashbacks'
         label='CASHBACK CONDITIONS'

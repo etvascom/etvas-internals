@@ -7,7 +7,7 @@ const DEFAULT_STYLE = {
   background: 'transparent',
   color: 'textInputActive',
   outline: 'none',
-  height: '32px',
+  height: '24px',
   my: 1,
   border: 'none',
   minWidth: '100px',

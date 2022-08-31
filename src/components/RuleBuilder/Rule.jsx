@@ -10,6 +10,7 @@ import {
   Box,
   SubdomainField
 } from '@etvas/etvaskit'
+import { TagField } from '../TagInput/TagField'
 
 export const Rule = ({
   disabled,
@@ -44,22 +45,22 @@ export const Rule = ({
   const [{ value: operatorValue }] = useField(operatorName)
 
   const operator = useMemo(() => options[type].operator, [options, type])
-  const value = useMemo(() => options[type].value, [options, type])
+  const value = useMemo(
+    () => options[type]?.operatorValue?.[operatorValue] ?? options[type].value,
+    [options, type, operatorValue]
+  )
 
   const typePlaceholder = useMemo(() => options[type].placeholder, [
     options,
     type
   ])
 
-  const valuePlaceholder = useMemo(
-    () => (value.customPlaceholder ?? {})[operatorValue] ?? value.placeholder,
-    [operatorValue, value]
-  )
+  const valuePlaceholder = useMemo(() => value.placeholder, [value])
 
   const isSuffixType = useMemo(() => value.suffix, [value])
 
   return (
-    <Flex width={1} justifyContent='space-between' alignItems='center'>
+    <Flex width={1} justifyContent='space-between' alignItems='flex-start'>
       <DropdownField
         disabled={disabled}
         options={typeOptions}
@@ -92,18 +93,32 @@ export const Rule = ({
           required
         />
       ) : (
-        <TextField
-          disabled={disabled}
-          name={`${name}.${type}Value`}
-          type={value.type}
-          label={value.label}
-          placeholder={valuePlaceholder}
-          required
-        />
+        <>
+          {value.type === 'tag' ? (
+            <TagField
+              disabled={disabled}
+              name={`${name}.${type}Value`}
+              type='text'
+              label={value.label}
+              placeholder={valuePlaceholder}
+              separator=','
+              required
+            />
+          ) : (
+            <TextField
+              disabled={disabled}
+              name={`${name}.${type}Value`}
+              type={value.type}
+              label={value.label}
+              placeholder={valuePlaceholder}
+              required
+            />
+          )}
+        </>
       )}
 
       {!disabled && removeRuleIcon ? (
-        <Button variant='link' ml={4} onClick={onRemove}>
+        <Button variant='link' ml={4} mt={6} onClick={onRemove}>
           <Icon name={removeRuleIcon} size='large' />
         </Button>
       ) : (
