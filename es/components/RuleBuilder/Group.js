@@ -5,6 +5,8 @@ import { Rule } from './Rule';
 import { Combinator } from './Combinator';
 import { CombinatorField } from './CombinatorField';
 export var Group = function Group(_ref) {
+  var _Object$keys;
+
   var disabled = _ref.disabled,
       canDelete = _ref.canDelete,
       group = _ref.group,
@@ -36,6 +38,24 @@ export var Group = function Group(_ref) {
       label: orLabel
     }];
   }, [andLabel, orLabel]);
+
+  var getProcessedCombinedRuleOptions = function getProcessedCombinedRuleOptions(ruleIndex, currentType) {
+    return Object.fromEntries(Object.keys(combinedRuleOptions).filter(function (type) {
+      var rule = combinedRuleOptions[type];
+      var count = Object.entries(group.combined).reduce(function (acc, _ref2) {
+        var _ = _ref2[0],
+            existingRule = _ref2[1];
+        return acc + Number(existingRule.type === type);
+      }, 0);
+      var isCountAllowed = rule.allowCount ? rule.allowCount(count + 1) : true;
+      return isCountAllowed || type === currentType;
+    }).map(function (type) {
+      return [type, combinedRuleOptions[type]];
+    }));
+  };
+
+  var canAddRule = Object.keys(getProcessedCombinedRuleOptions(Object.keys(group.combined).length)).length > 0;
+  var addType = (_Object$keys = Object.keys(getProcessedCombinedRuleOptions(Object.keys(group.combined).length))) === null || _Object$keys === void 0 ? void 0 : _Object$keys.shift();
   return /*#__PURE__*/React.createElement(Box, {
     bg: "baseGrayLightest",
     p: 4
@@ -47,7 +67,7 @@ export var Group = function Group(_ref) {
       name: name + ".combined." + ruleId,
       removeRuleIcon: canDelete && removeRuleIcon,
       rule: group.combined[ruleId],
-      options: combinedRuleOptions,
+      options: getProcessedCombinedRuleOptions(ruleIndex, group.combined[ruleId].type),
       onRemove: onRemoveRule(group.id, ruleId),
       typeLabel: typeLabel
     }), ruleIndex < Object.keys(group.combined).length - 1 && /*#__PURE__*/React.createElement(CombinatorField, {
@@ -65,8 +85,8 @@ export var Group = function Group(_ref) {
     my: 4
   }, /*#__PURE__*/React.createElement(Button, {
     variant: "link",
-    disabled: disabled,
-    onClick: onAddRule(group.id),
+    disabled: disabled || !canAddRule,
+    onClick: onAddRule(group.id, addType),
     mr: 8
   }, addRuleLabel), !hideAdvancedTargeting && /*#__PURE__*/React.createElement(CheckboxField, {
     label: advancedTargetingLabel,
