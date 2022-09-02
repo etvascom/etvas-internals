@@ -83,7 +83,8 @@ const combinedRuleOptions = {
       validate: [required],
       options: [
         { label: 'Greater than', value: '>' },
-        { label: 'Less than', value: '<' }
+        { label: 'Less than', value: '<' },
+        { label: 'is between', value: '><' }
       ]
     },
     value: {
@@ -92,6 +93,17 @@ const combinedRuleOptions = {
       type: 'number',
       suffix: '€',
       validate: [required, numPositive]
+    },
+    operatorValue: {
+      '><': {
+        label: 'Between tag',
+        placeholder: '5-100',
+        type: 'between',
+        intervalType: 'suffix',
+        suffix: '€',
+        suffixSpace: 1,
+        validate: [required]
+      }
     }
   }
 }

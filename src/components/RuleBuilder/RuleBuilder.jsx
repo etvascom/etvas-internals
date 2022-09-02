@@ -206,6 +206,7 @@ const valueProps = PropTypes.shape({
   type: PropTypes.string,
   suffix: PropTypes.string,
   suffixSpace: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  intervalType: PropTypes.oneOf('text', 'suffix'),
   validate: PropTypes.arrayOf(validatorProps)
 })
 

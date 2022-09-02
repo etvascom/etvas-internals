@@ -11,6 +11,7 @@ import {
   SubdomainField
 } from '@etvas/etvaskit'
 import { TagField } from '../TagInput/TagField'
+import { IntervalField } from '../IntervalField'
 
 export const Rule = ({
   disabled,
@@ -57,7 +58,9 @@ export const Rule = ({
 
   const valuePlaceholder = useMemo(() => value.placeholder, [value])
 
-  const isSuffixType = useMemo(() => value.suffix, [value])
+  const isSuffixType = useMemo(() => value.suffix && value.type === 'text', [
+    value
+  ])
 
   return (
     <Flex width={1} justifyContent='space-between' alignItems='flex-start'>
@@ -104,6 +107,17 @@ export const Rule = ({
               separator=','
               required
             />
+          ) : value.type === 'between' ? (
+            <IntervalField
+              disabled={disabled}
+              name={`${name}.${type}Value`}
+              type={value.intervalType ?? 'text'}
+              label={value.label}
+              placeholder={valuePlaceholder}
+              suffix={value.suffix}
+              suffixSpace={value.suffixSpace || 0}
+              required
+            />
           ) : (
             <TextField
               disabled={disabled}
@@ -111,6 +125,8 @@ export const Rule = ({
               type={value.type}
               label={value.label}
               placeholder={valuePlaceholder}
+              suffix={value.suffix}
+              suffixSpace={value.suffixSpace || 0}
               required
             />
           )}

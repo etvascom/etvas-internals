@@ -8,10 +8,10 @@ import css from '@styled-system/css'
 import { Typography, Box, Flex } from '@etvas/etvaskit'
 
 import { default as containerVariants } from './variants.container'
-import { default as sublabelVariants } from './variants.sublabel'
 import { default as inputVariants } from './variants.input'
 import { tagShape } from './shape'
 import { Tag } from './Tag'
+import { SubLabel } from './SubLabel'
 
 export const TagInput = forwardRef(
   (
@@ -168,11 +168,6 @@ const Container = styled(Flex)`
       color: ${themeGet('colors.textInputFocused')};
     }
   }
-`
-
-const SubLabel = styled(Typography)`
-  min-height: ${({ noPreserveSpace }) => (noPreserveSpace ? 0 : '16px')};
-  ${variant({ variants: sublabelVariants })}
 `
 
 const StyledInputContainer = styled.div(
