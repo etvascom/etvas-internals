@@ -27,32 +27,35 @@ export const RuleBuilder = ({
   // eslint-disable-next-line no-unused-vars
   const [{ value: data }, _, { setValue: setData }] = useField(name)
 
-  const createNewRule = useCallback(() => {
-    const [type] = Object.keys(combinedRuleOptions)
+  const createNewRule = useCallback(
+    specificType => {
+      const type = specificType ?? [...Object.keys(combinedRuleOptions)].shift()
 
-    const defaultOperatorValues = Object.keys(combinedRuleOptions).reduce(
-      (acc, type) => {
-        const { operatorKey, valueKey } = getRuleDetails({ type })
+      const defaultOperatorValues = Object.keys(combinedRuleOptions).reduce(
+        (acc, type) => {
+          const { operatorKey, valueKey } = getRuleDetails({ type })
 
-        return {
-          ...acc,
-          [operatorKey]: combinedRuleOptions[type].operator.options[0].value,
-          [valueKey]: ''
-        }
-      },
-      {}
-    )
+          return {
+            ...acc,
+            [operatorKey]: combinedRuleOptions[type].operator.options[0].value,
+            [valueKey]: ''
+          }
+        },
+        {}
+      )
 
-    return Object.fromEntries([
-      [
-        uuid(),
-        {
-          type,
-          ...defaultOperatorValues
-        }
-      ]
-    ])
-  }, [combinedRuleOptions])
+      return Object.fromEntries([
+        [
+          uuid(),
+          {
+            type,
+            ...defaultOperatorValues
+          }
+        ]
+      ])
+    },
+    [combinedRuleOptions]
+  )
 
   const createAbsoluteRules = useCallback(
     () =>
@@ -114,10 +117,10 @@ export const RuleBuilder = ({
     setData({ ...data, groups })
   }
 
-  const handleAddRule = groupId => () => {
+  const handleAddRule = (groupId, type) => () => {
     const groups = cloneDeep(data.groups).map(group => {
       if (group.id === groupId) {
-        group.combined = { ...group.combined, ...createNewRule() }
+        group.combined = { ...group.combined, ...createNewRule(type) }
       }
 
       return group
@@ -210,6 +213,7 @@ const ruleOptionsProps = PropTypes.objectOf(
   PropTypes.shape({
     label: PropTypes.node,
     placeholder: PropTypes.string,
+    allowCount: PropTypes.func,
     validate: PropTypes.arrayOf(validatorProps),
     operator: PropTypes.shape({
       label: PropTypes.node,
