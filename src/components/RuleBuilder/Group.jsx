@@ -36,6 +36,36 @@ export const Group = ({
     [andLabel, orLabel]
   )
 
+  const getProcessedCombinedRuleOptions = (ruleIndex, currentType) =>
+    Object.fromEntries(
+      Object.keys(combinedRuleOptions)
+        .filter(type => {
+          const rule = combinedRuleOptions[type]
+
+          const count = Object.entries(group.combined).reduce(
+            (acc, [_, existingRule]) =>
+              acc + Number(existingRule.type === type),
+            0
+          )
+
+          const isCountAllowed = rule.allowCount
+            ? rule.allowCount(count + 1)
+            : true
+
+          return isCountAllowed || type === currentType
+        })
+        .map(type => [type, combinedRuleOptions[type]])
+    )
+
+  const canAddRule =
+    Object.keys(
+      getProcessedCombinedRuleOptions(Object.keys(group.combined).length)
+    ).length > 0
+
+  const addType = Object.keys(
+    getProcessedCombinedRuleOptions(Object.keys(group.combined).length)
+  )?.shift()
+
   return (
     <Box bg='baseGrayLightest' p={4}>
       {Object.keys(group.combined).map((ruleId, ruleIndex) => (
@@ -45,7 +75,10 @@ export const Group = ({
             name={`${name}.combined.${ruleId}`}
             removeRuleIcon={canDelete && removeRuleIcon}
             rule={group.combined[ruleId]}
-            options={combinedRuleOptions}
+            options={getProcessedCombinedRuleOptions(
+              ruleIndex,
+              group.combined[ruleId].type
+            )}
             onRemove={onRemoveRule(group.id, ruleId)}
             typeLabel={typeLabel}
           />
@@ -73,8 +106,8 @@ export const Group = ({
         <Flex my={4}>
           <Button
             variant='link'
-            disabled={disabled}
-            onClick={onAddRule(group.id)}
+            disabled={disabled || !canAddRule}
+            onClick={onAddRule(group.id, addType)}
             mr={8}>
             {addRuleLabel}
           </Button>
