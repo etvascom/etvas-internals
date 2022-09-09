@@ -1,10 +1,12 @@
 import React, { useEffect, useMemo, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { useField } from 'formik'
+import { v4 } from 'uuid'
 import { Flex, Input, Typography, SubdomainInput } from '@etvas/etvaskit'
 import { SubLabel } from './TagInput/SubLabel'
 
 export const IntervalField = ({
+  id,
   name,
   label,
   placeholder,
@@ -14,10 +16,14 @@ export const IntervalField = ({
   separator,
   type,
   suffix,
-  suffixSpace,
-  ...rest
+  suffixSpace
 }) => {
   const [{ value }, , { setValue }] = useField(name)
+
+  const [idLeft, idRight] = useMemo(() => {
+    const idOrNameId = id || `${name}-${v4()}`
+    return [`${idOrNameId}-left`, `${idOrNameId}-right`]
+  }, [id, name])
 
   useEffect(() => {
     if (!value.includes('-')) {
@@ -25,16 +31,15 @@ export const IntervalField = ({
     }
   }, [value, setValue])
 
-  const placeholderLeft = useMemo(() => placeholder?.split('-')?.shift(), [
-    placeholder
-  ])
+  const [placeholderLeft, placeholderRight] = useMemo(() => {
+    const split = placeholder?.split('-')
+    return [split?.shift(), split?.pop()]
+  }, [placeholder])
 
-  const placeholderRight = useMemo(() => placeholder?.split('-')?.pop(), [
-    placeholder
-  ])
-
-  const leftValue = useMemo(() => value?.split('-')?.shift(), [value])
-  const rightValue = useMemo(() => value?.split('-')?.pop(), [value])
+  const [leftValue, rightValue] = useMemo(() => {
+    const split = value?.split('-')
+    return [split?.shift(), split?.pop()]
+  }, [value])
 
   const handleLeftChange = useCallback(
     event => {
@@ -53,10 +58,15 @@ export const IntervalField = ({
   )
 
   return (
-    <>
+    <Flex
+      width={1}
+      flexDirection='column'
+      justifyContent='center'
+      alignItems='center'>
       <Flex width={1} justifyContent='space-between' alignItems='flex-end'>
         {type === 'text' ? (
           <Input
+            id={idLeft}
             placeholder={placeholderLeft}
             label={label}
             value={leftValue}
@@ -67,6 +77,7 @@ export const IntervalField = ({
           />
         ) : (
           <SubdomainInput
+            id={idLeft}
             label={label}
             disabled={disabled}
             type='text'
@@ -85,6 +96,7 @@ export const IntervalField = ({
         </Typography>
         {type === 'text' ? (
           <Input
+            id={idRight}
             placeholder={placeholderRight}
             value={rightValue}
             onChange={handleRightChange}
@@ -94,6 +106,7 @@ export const IntervalField = ({
           />
         ) : (
           <SubdomainInput
+            id={idRight}
             disabled={disabled}
             type='text'
             placeholder={placeholderRight}
@@ -110,11 +123,12 @@ export const IntervalField = ({
       <SubLabel noPreserveSpace={noPreserveSpace} variant='error' mt={1}>
         {error}
       </SubLabel>
-    </>
+    </Flex>
   )
 }
 
 IntervalField.propTypes = {
+  id: PropTypes.string,
   name: PropTypes.string,
   label: PropTypes.string,
   placeholder: PropTypes.string,
@@ -124,7 +138,7 @@ IntervalField.propTypes = {
   separator: PropTypes.string,
   suffix: PropTypes.string,
   suffixSpace: PropTypes.number,
-  type: PropTypes.oneOf('text', 'suffix')
+  type: PropTypes.oneOf(['text', 'suffix'])
 }
 
 IntervalField.defaultProps = {

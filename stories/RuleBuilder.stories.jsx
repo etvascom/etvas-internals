@@ -76,7 +76,7 @@ const combinedRuleOptions = {
     label: 'Amount',
     placeholder: 'Amount',
     validate: [required],
-    allowCount: num => num < 3,
+    allowCount: num => num < 2,
     operator: {
       label: 'Amount Condition',
       placeholder: 'Amount Condition',
