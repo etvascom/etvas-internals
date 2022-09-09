@@ -38,7 +38,7 @@ const combinedRuleOptions = {
   merchant: {
     label: 'Merchant',
     placeholder: 'Merchant',
-    allowCount: num => num < 2,
+    allowCount: num => num <= 1,
     validate: [required],
     operator: {
       label: 'Merchant Condition',
@@ -76,7 +76,7 @@ const combinedRuleOptions = {
     label: 'Amount',
     placeholder: 'Amount',
     validate: [required],
-    allowCount: num => num < 2,
+    allowCount: num => num <= 1,
     operator: {
       label: 'Amount Condition',
       placeholder: 'Amount Condition',

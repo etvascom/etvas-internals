@@ -25,17 +25,18 @@ export const IntervalField = ({
   }, [id, name])
 
   useEffect(() => {
-    if (!value.includes('-')) {
+    if (!value.toString().includes('-')) {
       setValue(`${value}-`)
     }
   }, [value, setValue])
+
   const [placeholderLeft, placeholderRight] = useMemo(() => {
     const split = placeholder?.split('-')
     return [split?.shift(), split?.pop()]
   }, [placeholder])
 
   const [leftValue, rightValue] = useMemo(() => {
-    const split = value?.split('-')
+    const split = value?.toString().split('-')
     return [split?.shift(), split?.pop()]
   }, [value])
 
