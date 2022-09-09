@@ -96,10 +96,9 @@ const combinedRuleOptions = {
     },
     operatorValue: {
       '><': {
-        label: 'Between tag',
+        label: 'Between',
         placeholder: '5-100',
         type: 'between',
-        intervalType: 'suffix',
         suffix: '€',
         suffixSpace: 1,
         validate: [required]

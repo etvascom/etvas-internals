@@ -111,7 +111,6 @@ export const Rule = ({
             <IntervalField
               disabled={disabled}
               name={`${name}.${type}Value`}
-              type={value.intervalType ?? 'text'}
               label={value.label}
               placeholder={valuePlaceholder}
               suffix={value.suffix}
