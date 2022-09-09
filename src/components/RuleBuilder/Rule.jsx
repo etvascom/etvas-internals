@@ -58,9 +58,7 @@ export const Rule = ({
 
   const valuePlaceholder = useMemo(() => value.placeholder, [value])
 
-  const isSuffixType = useMemo(() => value.suffix && value.type === 'text', [
-    value
-  ])
+  const isSuffixType = useMemo(() => value.suffix, [value])
 
   return (
     <Flex width={1} justifyContent='space-between' alignItems='flex-start'>
