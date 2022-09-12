@@ -30,15 +30,14 @@ export const IntervalField = ({
     }
   }, [value, setValue])
 
-  const [placeholderLeft, placeholderRight] = useMemo(() => {
-    const split = placeholder?.split('-')
-    return [split?.shift(), split?.pop()]
-  }, [placeholder])
+  const placeholderSplit = placeholder?.split('-')
+  const [placeholderLeft, placeholderRight] = [
+    placeholderSplit?.shift(),
+    placeholderSplit?.pop()
+  ]
 
-  const [leftValue, rightValue] = useMemo(() => {
-    const split = value?.toString().split('-')
-    return [split?.shift(), split?.pop()]
-  }, [value])
+  const valueSplit = value?.toString().split('-')
+  const [leftValue, rightValue] = [valueSplit?.shift(), valueSplit?.pop()]
 
   const handleLeftChange = useCallback(
     event => {
