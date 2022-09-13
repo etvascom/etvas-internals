@@ -1,4 +1,4 @@
-var _templateObject, _templateObject2;
+var _templateObject;
 
 var _excluded = ["label", "placeholder", "loading", "required", "disabled", "readOnly", "error", "warning", "valid", "variant", "id", "name", "value", "onChange", "autoComplete", "autoFocus", "onInputClick", "importHandler", "exportHandler", "noPreserveSpace", "forceAddTagKeys", "maxTags"];
 
@@ -17,10 +17,10 @@ import propTypes from '@styled-system/prop-types';
 import css from '@styled-system/css';
 import { Typography, Box, Flex } from '@etvas/etvaskit';
 import { default as containerVariants } from './variants.container';
-import { default as sublabelVariants } from './variants.sublabel';
 import { default as inputVariants } from './variants.input';
 import { tagShape } from './shape';
 import { Tag } from './Tag';
+import { SubLabel } from './SubLabel';
 export var TagInput = forwardRef(function (_ref, ref) {
   var label = _ref.label,
       placeholder = _ref.placeholder,
@@ -153,12 +153,6 @@ export var TagInput = forwardRef(function (_ref, ref) {
   }, error));
 });
 var Container = styled(Flex)(_templateObject || (_templateObject = _taggedTemplateLiteralLoose(["\n  user-select: none;\n  overflow: hidden;\n  &:focus-within {\n    label {\n      color: ", ";\n    }\n  }\n"])), themeGet('colors.textInputFocused'));
-var SubLabel = styled(Typography)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteralLoose(["\n  min-height: ", ";\n  ", "\n"])), function (_ref2) {
-  var noPreserveSpace = _ref2.noPreserveSpace;
-  return noPreserveSpace ? 0 : '16px';
-}, variant({
-  variants: sublabelVariants
-}));
 var StyledInputContainer = styled.div(variant({
   variants: containerVariants
 }), css({

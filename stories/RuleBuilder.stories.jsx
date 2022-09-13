@@ -19,6 +19,24 @@ const required = {
   error: 'Required'
 }
 
+const betweenRequired = {
+  validator: value => {
+    const split = value.split('.')
+    const [leftValue, rightValue] = [split?.shift(), split?.pop()]
+    return !leftValue || !rightValue
+  },
+  error: 'Both values are required'
+}
+
+const betweenPositive = {
+  validator: value => {
+    const split = value.split('.')
+    const [leftValue, rightValue] = [split?.shift(), split?.pop()]
+    return numPositive.validator(leftValue) || numPositive.validator(rightValue)
+  },
+  error: 'Both numbers must be positive'
+}
+
 const minTags = num => ({
   validator: value =>
     !value ||
@@ -38,7 +56,7 @@ const combinedRuleOptions = {
   merchant: {
     label: 'Merchant',
     placeholder: 'Merchant',
-    allowCount: num => num < 2,
+    allowCount: num => num <= 1,
     validate: [required],
     operator: {
       label: 'Merchant Condition',
@@ -76,14 +94,15 @@ const combinedRuleOptions = {
     label: 'Amount',
     placeholder: 'Amount',
     validate: [required],
-    allowCount: num => num < 3,
+    allowCount: num => num <= 1,
     operator: {
       label: 'Amount Condition',
       placeholder: 'Amount Condition',
       validate: [required],
       options: [
         { label: 'Greater than', value: '>' },
-        { label: 'Less than', value: '<' }
+        { label: 'Less than', value: '<' },
+        { label: 'is between', value: '><' }
       ]
     },
     value: {
@@ -92,6 +111,16 @@ const combinedRuleOptions = {
       type: 'number',
       suffix: '€',
       validate: [required, numPositive]
+    },
+    operatorValue: {
+      '><': {
+        label: 'Between',
+        placeholder: '5-100',
+        type: 'between',
+        suffix: '€',
+        suffixSpace: 1,
+        validate: [required, betweenRequired, betweenPositive]
+      }
     }
   }
 }
