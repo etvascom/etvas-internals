@@ -4,7 +4,7 @@ import { v4 } from 'uuid'
 import { useField, useFormikContext } from 'formik'
 
 import { tagShape } from './shape'
-import { TagInput } from './TagInput.jsx'
+import { TagInput } from './TagInput'
 
 export const TagField = forwardRef((props, ref) => {
   const { submitCount } = useFormikContext()

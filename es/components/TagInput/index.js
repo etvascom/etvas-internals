@@ -1,1 +1,1 @@
-export * from './TagInput.jsx';
+export * from './TagInput';
