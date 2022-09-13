@@ -27,8 +27,20 @@ const exportRules = (rules, options) =>
 
     const { type, operator, value } = getRuleDetails(rule)
 
-    const parsedValue =
-      options[type].value.type === 'number' ? parseInt(value, 10) : value
+    const parse = value => {
+      if (options[type].value.type !== 'number') {
+        return value
+      }
+
+      if (options[type].operatorValue[operator].type !== 'between') {
+        return parseInt(value, 10)
+      }
+
+      const split = value.split('.')
+      return [parseInt(split?.shift(), 10), parseInt(split?.pop(), 10)]
+    }
+
+    const parsedValue = parse(value)
 
     return {
       keypath: type,

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useField } from 'formik'
 import {
@@ -59,6 +59,16 @@ export const Rule = ({
   const valuePlaceholder = useMemo(() => value.placeholder, [value])
 
   const isSuffixType = useMemo(() => value.suffix, [value])
+  const [{ value: ruleValue }, , { setValue: setRuleValue }] = useField(
+    `${name}.${type}Value`
+  )
+
+  useEffect(() => {
+    if (!ruleValue.includes('.')) {
+      return
+    }
+    setRuleValue(ruleValue.replace('.', ''))
+  }, [operatorValue])
 
   return (
     <Flex width={1} justifyContent='space-between' alignItems='flex-start'>
