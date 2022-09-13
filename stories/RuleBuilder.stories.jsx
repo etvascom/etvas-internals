@@ -19,6 +19,24 @@ const required = {
   error: 'Required'
 }
 
+const betweenRequired = {
+  validator: value => {
+    const split = value.split('.')
+    const [leftValue, rightValue] = [split?.shift(), split?.pop()]
+    return !leftValue || !rightValue
+  },
+  error: 'Both values are required'
+}
+
+const betweenPositive = {
+  validator: value => {
+    const split = value.split('.')
+    const [leftValue, rightValue] = [split?.shift(), split?.pop()]
+    return numPositive.validator(leftValue) || numPositive.validator(rightValue)
+  },
+  error: 'Both numbers must be positive'
+}
+
 const minTags = num => ({
   validator: value =>
     !value ||
@@ -101,7 +119,7 @@ const combinedRuleOptions = {
         type: 'between',
         suffix: '€',
         suffixSpace: 1,
-        validate: [required]
+        validate: [required, betweenRequired, betweenPositive]
       }
     }
   }

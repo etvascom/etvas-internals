@@ -81,7 +81,27 @@ export const Rule = ({
         mr={4}
       />
 
-      {isSuffixType ? (
+      {value.type === 'tag' ? (
+        <TagField
+          disabled={disabled}
+          name={`${name}.${type}Value`}
+          type='text'
+          label={value.label}
+          placeholder={valuePlaceholder}
+          separator=','
+          required
+        />
+      ) : value.type === 'between' ? (
+        <IntervalField
+          disabled={disabled}
+          name={`${name}.${type}Value`}
+          label={value.label}
+          placeholder={valuePlaceholder}
+          suffix={value.suffix}
+          suffixSpace={value.suffixSpace || 0}
+          required
+        />
+      ) : isSuffixType ? (
         <SubdomainField
           disabled={disabled}
           name={`${name}.${type}Value`}
@@ -94,40 +114,16 @@ export const Rule = ({
           required
         />
       ) : (
-        <>
-          {value.type === 'tag' ? (
-            <TagField
-              disabled={disabled}
-              name={`${name}.${type}Value`}
-              type='text'
-              label={value.label}
-              placeholder={valuePlaceholder}
-              separator=','
-              required
-            />
-          ) : value.type === 'between' ? (
-            <IntervalField
-              disabled={disabled}
-              name={`${name}.${type}Value`}
-              label={value.label}
-              placeholder={valuePlaceholder}
-              suffix={value.suffix}
-              suffixSpace={value.suffixSpace || 0}
-              required
-            />
-          ) : (
-            <TextField
-              disabled={disabled}
-              name={`${name}.${type}Value`}
-              type={value.type}
-              label={value.label}
-              placeholder={valuePlaceholder}
-              suffix={value.suffix}
-              suffixSpace={value.suffixSpace || 0}
-              required
-            />
-          )}
-        </>
+        <TextField
+          disabled={disabled}
+          name={`${name}.${type}Value`}
+          type={value.type}
+          label={value.label}
+          placeholder={valuePlaceholder}
+          suffix={value.suffix}
+          suffixSpace={value.suffixSpace || 0}
+          required
+        />
       )}
 
       {!disabled && removeRuleIcon ? (

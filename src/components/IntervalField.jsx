@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useCallback } from 'react'
 import PropTypes from 'prop-types'
-import { useField } from 'formik'
+import { useField, useFormikContext } from 'formik'
 import { v4 } from 'uuid'
 import { Flex, Typography, SubdomainInput } from '@etvas/etvaskit'
 import { SubLabel } from './TagInput/SubLabel'
@@ -10,14 +10,18 @@ export const IntervalField = ({
   name,
   label,
   placeholder,
-  error,
   noPreserveSpace,
   disabled,
   separator,
+  stringSeparator,
   suffix,
   suffixSpace
 }) => {
-  const [{ value }, , { setValue }] = useField(name)
+  const [{ value }, { touched, error }, { setValue }] = useField(name)
+  const { submitCount } = useFormikContext()
+
+  const _error = touched && error
+  const displayedError = submitCount > 0 ? _error : value && _error
 
   const [idLeft, idRight] = useMemo(() => {
     const idOrNameId = id || `${name}-${v4()}`
@@ -25,10 +29,10 @@ export const IntervalField = ({
   }, [id, name])
 
   useEffect(() => {
-    if (!value.toString().includes('-')) {
-      setValue(`${value}-`)
+    if (!value.toString().includes(stringSeparator)) {
+      setValue(`${value}${stringSeparator}`)
     }
-  }, [value, setValue])
+  }, [value, setValue, stringSeparator])
 
   const placeholderSplit = placeholder?.split('-')
   const [placeholderLeft, placeholderRight] = [
@@ -36,23 +40,25 @@ export const IntervalField = ({
     placeholderSplit?.pop()
   ]
 
-  const valueSplit = value?.toString().split('-')
+  const valueSplit = value?.toString().split(stringSeparator)
   const [leftValue, rightValue] = [valueSplit?.shift(), valueSplit?.pop()]
 
   const handleLeftChange = useCallback(
     event => {
       const val = event.target.value
-      setValue(`${val}-${value?.split('-').pop()}`)
+      setValue(`${val}${stringSeparator}${value?.split(stringSeparator).pop()}`)
     },
-    [setValue, value]
+    [setValue, value, stringSeparator]
   )
 
   const handleRightChange = useCallback(
     event => {
       const val = event.target.value
-      setValue(`${value?.split('-').shift()}-${val}`)
+      setValue(
+        `${value?.split(stringSeparator).shift()}${stringSeparator}${val}`
+      )
     },
-    [setValue, value]
+    [setValue, value, stringSeparator]
   )
 
   return (
@@ -73,6 +79,7 @@ export const IntervalField = ({
           prefix=''
           value={leftValue}
           onChange={handleLeftChange}
+          error={!!displayedError}
           noBottomSpace
           required
         />
@@ -89,12 +96,13 @@ export const IntervalField = ({
           prefix=''
           value={rightValue}
           onChange={handleRightChange}
+          error={!!displayedError}
           noBottomSpace
           required
         />
       </Flex>
       <SubLabel noPreserveSpace={noPreserveSpace} variant='error' mt={1}>
-        {error}
+        {displayedError}
       </SubLabel>
     </Flex>
   )
@@ -106,13 +114,14 @@ IntervalField.propTypes = {
   label: PropTypes.string,
   placeholder: PropTypes.string,
   noPreserveSpace: PropTypes.bool,
-  error: PropTypes.string,
   disabled: PropTypes.bool,
   separator: PropTypes.string,
+  stringSeparator: PropTypes.string,
   suffix: PropTypes.string,
   suffixSpace: PropTypes.number
 }
 
 IntervalField.defaultProps = {
-  separator: '-'
+  separator: '-',
+  stringSeparator: '.'
 }
