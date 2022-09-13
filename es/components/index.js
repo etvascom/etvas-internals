@@ -6,3 +6,4 @@ export * from './Counter';
 export * from './Divider';
 export * from './RuleBuilder';
 export * from './TagInput';
+export * from './IntervalField';

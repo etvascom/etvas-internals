@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { v4 } from 'uuid';
 import { useField, useFormikContext } from 'formik';
 import { tagShape } from './shape';
-import { TagInput } from './TagInput';
+import { TagInput } from './TagInput.jsx';
 export var TagField = forwardRef(function (props, ref) {
   var _useFormikContext = useFormikContext(),
       submitCount = _useFormikContext.submitCount;

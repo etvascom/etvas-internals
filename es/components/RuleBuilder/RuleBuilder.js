@@ -37,10 +37,8 @@ export var RuleBuilder = function RuleBuilder(_ref) {
       _ = _useField[1],
       setData = _useField[2].setValue;
 
-  var createNewRule = useCallback(function () {
-    var _Object$keys = Object.keys(combinedRuleOptions),
-        type = _Object$keys[0];
-
+  var createNewRule = useCallback(function (specificType) {
+    var type = specificType !== null && specificType !== void 0 ? specificType : [].concat(Object.keys(combinedRuleOptions)).shift();
     var defaultOperatorValues = Object.keys(combinedRuleOptions).reduce(function (acc, type) {
       var _extends2;
 
@@ -118,11 +116,11 @@ export var RuleBuilder = function RuleBuilder(_ref) {
     };
   };
 
-  var handleAddRule = function handleAddRule(groupId) {
+  var handleAddRule = function handleAddRule(groupId, type) {
     return function () {
       var groups = cloneDeep(data.groups).map(function (group) {
         if (group.id === groupId) {
-          group.combined = _extends({}, group.combined, createNewRule());
+          group.combined = _extends({}, group.combined, createNewRule(type));
         }
 
         return group;
@@ -200,6 +198,7 @@ var valueProps = process.env.NODE_ENV !== "production" ? PropTypes.shape({
 var ruleOptionsProps = process.env.NODE_ENV !== "production" ? PropTypes.objectOf(PropTypes.shape({
   label: PropTypes.node,
   placeholder: PropTypes.string,
+  allowCount: PropTypes.func,
   validate: PropTypes.arrayOf(validatorProps),
   operator: PropTypes.shape({
     label: PropTypes.node,

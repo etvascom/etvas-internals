@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useField } from 'formik';
 import { Flex, DropdownField, TextField, Button, Icon, Box, SubdomainField } from '@etvas/etvaskit';
 import { TagField } from '../TagInput/TagField';
+import { IntervalField } from '../IntervalField';
 export var Rule = function Rule(_ref) {
   var disabled = _ref.disabled,
       rule = _ref.rule,
@@ -72,7 +73,23 @@ export var Rule = function Rule(_ref) {
     label: operator.label,
     required: true,
     mr: 4
-  }), isSuffixType ? /*#__PURE__*/React.createElement(SubdomainField, {
+  }), value.type === 'tag' ? /*#__PURE__*/React.createElement(TagField, {
+    disabled: disabled,
+    name: name + "." + type + "Value",
+    type: "text",
+    label: value.label,
+    placeholder: valuePlaceholder,
+    separator: ",",
+    required: true
+  }) : value.type === 'between' ? /*#__PURE__*/React.createElement(IntervalField, {
+    disabled: disabled,
+    name: name + "." + type + "Value",
+    label: value.label,
+    placeholder: valuePlaceholder,
+    suffix: value.suffix,
+    suffixSpace: value.suffixSpace || 0,
+    required: true
+  }) : isSuffixType ? /*#__PURE__*/React.createElement(SubdomainField, {
     disabled: disabled,
     name: name + "." + type + "Value",
     type: value.type,
@@ -82,22 +99,16 @@ export var Rule = function Rule(_ref) {
     suffixSpace: value.suffixSpace || 0,
     prefix: "",
     required: true
-  }) : /*#__PURE__*/React.createElement(React.Fragment, null, value.type === 'tag' ? /*#__PURE__*/React.createElement(TagField, {
-    disabled: disabled,
-    name: name + "." + type + "Value",
-    type: "text",
-    label: value.label,
-    placeholder: valuePlaceholder,
-    separator: ",",
-    required: true
   }) : /*#__PURE__*/React.createElement(TextField, {
     disabled: disabled,
     name: name + "." + type + "Value",
     type: value.type,
     label: value.label,
     placeholder: valuePlaceholder,
+    suffix: value.suffix,
+    suffixSpace: value.suffixSpace || 0,
     required: true
-  })), !disabled && removeRuleIcon ? /*#__PURE__*/React.createElement(Button, {
+  }), !disabled && removeRuleIcon ? /*#__PURE__*/React.createElement(Button, {
     variant: "link",
     ml: 4,
     mt: 6,
