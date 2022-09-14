@@ -12,6 +12,7 @@ import {
 } from '@etvas/etvaskit'
 import { TagField } from '../TagInput/TagField'
 import { IntervalField } from '../IntervalField'
+import { useEventCallback } from '../../hooks'
 
 export const Rule = ({
   disabled,
@@ -59,16 +60,18 @@ export const Rule = ({
   const valuePlaceholder = useMemo(() => value.placeholder, [value])
 
   const isSuffixType = useMemo(() => value.suffix, [value])
-  const [{ value: ruleValue }, , { setValue: setRuleValue }] = useField(
-    `${name}.${type}Value`
-  )
+  const [, , { setValue: setRuleValue }] = useField(`${name}.${type}Value`)
+
+  const onChangeRuleValue = useEventCallback([
+    value => setRuleValue(value),
+    setRuleValue
+  ])
 
   useEffect(() => {
-    if (!ruleValue.includes('.')) {
-      return
+    if (!disabled) {
+      onChangeRuleValue('')
     }
-    setRuleValue(ruleValue.replace('.', ''))
-  }, [operatorValue])
+  }, [operatorValue, disabled, onChangeRuleValue])
 
   return (
     <Flex width={1} justifyContent='space-between' alignItems='flex-start'>

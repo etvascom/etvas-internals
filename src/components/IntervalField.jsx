@@ -29,7 +29,7 @@ export const IntervalField = ({
   }, [id, name])
 
   useEffect(() => {
-    if (!value.toString().includes(stringSeparator)) {
+    if (value && !value?.toString().includes(stringSeparator)) {
       setValue(`${value}${stringSeparator}`)
     }
   }, [value, setValue, stringSeparator])
@@ -46,7 +46,8 @@ export const IntervalField = ({
   const handleLeftChange = useCallback(
     event => {
       const val = event.target.value
-      setValue(`${val}${stringSeparator}${value?.split(stringSeparator).pop()}`)
+      const right = value ? value?.split(stringSeparator).pop() : ''
+      setValue(`${val}${stringSeparator}${right}`)
     },
     [setValue, value, stringSeparator]
   )
@@ -54,9 +55,8 @@ export const IntervalField = ({
   const handleRightChange = useCallback(
     event => {
       const val = event.target.value
-      setValue(
-        `${value?.split(stringSeparator).shift()}${stringSeparator}${val}`
-      )
+      const left = value ? value?.split(stringSeparator).shift() : ''
+      setValue(`${left}${stringSeparator}${val}`)
     },
     [setValue, value, stringSeparator]
   )
