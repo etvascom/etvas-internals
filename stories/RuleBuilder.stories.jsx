@@ -21,7 +21,7 @@ const required = {
 
 const betweenRequired = {
   validator: value => {
-    const split = value.split('.')
+    const split = value?.split('.')
     const [leftValue, rightValue] = [split?.shift(), split?.pop()]
     return !leftValue || !rightValue
   },
@@ -30,11 +30,20 @@ const betweenRequired = {
 
 const betweenPositive = {
   validator: value => {
-    const split = value.split('.')
+    const split = value?.split('.')
     const [leftValue, rightValue] = [split?.shift(), split?.pop()]
     return numPositive.validator(leftValue) || numPositive.validator(rightValue)
   },
   error: 'Both numbers must be positive'
+}
+
+const minMax = {
+  validator: value => {
+    const split = value?.split('.')
+    const [leftValue, rightValue] = [split?.shift(), split?.pop()]
+    return Number(leftValue) >= Number(rightValue)
+  },
+  error: 'The left value must be smaller than the right value'
 }
 
 const minTags = num => ({
@@ -119,7 +128,7 @@ const combinedRuleOptions = {
         type: 'between',
         suffix: '€',
         suffixSpace: 1,
-        validate: [required, betweenRequired, betweenPositive]
+        validate: [betweenRequired, betweenPositive, minMax]
       }
     }
   }
@@ -227,17 +236,17 @@ const cashbacksData = {
         {
           keypath: 'merchant',
           operator: '~',
-          value: 'Uber'
+          value: JSON.stringify('Uber')
         },
         {
           keypath: 'amount',
           operator: '<',
-          value: '20'
+          value: JSON.stringify('20')
         },
         {
           keypath: 'amount',
           operator: '>',
-          value: '10'
+          value: JSON.stringify('10')
         }
       ],
       absolute: []
@@ -249,24 +258,24 @@ const cashbacksData = {
         {
           keypath: 'merchant',
           operator: '~',
-          value: 'Bolt'
+          value: JSON.stringify('Bolt')
         },
         {
           keypath: 'amount',
-          operator: '>',
-          value: '100'
+          operator: '><',
+          value: JSON.stringify([50, 100])
         }
       ],
       absolute: [
         {
           keypath: 'timespan',
           operator: '>',
-          value: '25'
+          value: JSON.stringify('25')
         },
         {
           keypath: 'count',
           operator: '>',
-          value: '1'
+          value: JSON.stringify('1')
         }
       ]
     }

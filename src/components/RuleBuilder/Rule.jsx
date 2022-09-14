@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useField } from 'formik'
 import {
@@ -12,6 +12,7 @@ import {
 } from '@etvas/etvaskit'
 import { TagField } from '../TagInput/TagField'
 import { IntervalField } from '../IntervalField'
+import { useEventCallback } from '../../hooks'
 
 export const Rule = ({
   disabled,
@@ -59,6 +60,18 @@ export const Rule = ({
   const valuePlaceholder = useMemo(() => value.placeholder, [value])
 
   const isSuffixType = useMemo(() => value.suffix, [value])
+  const [, , { setValue: setRuleValue }] = useField(`${name}.${type}Value`)
+
+  const onChangeRuleValue = useEventCallback([
+    value => setRuleValue(value),
+    setRuleValue
+  ])
+
+  useEffect(() => {
+    if (!disabled) {
+      onChangeRuleValue('')
+    }
+  }, [operatorValue, disabled, onChangeRuleValue])
 
   return (
     <Flex width={1} justifyContent='space-between' alignItems='flex-start'>

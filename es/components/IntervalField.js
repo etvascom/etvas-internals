@@ -38,7 +38,7 @@ export var IntervalField = function IntervalField(_ref) {
       idRight = _useMemo[1];
 
   useEffect(function () {
-    if (!value.toString().includes(stringSeparator)) {
+    if (value && !(value === null || value === void 0 ? void 0 : value.toString().includes(stringSeparator))) {
       setValue("" + value + stringSeparator);
     }
   }, [value, setValue, stringSeparator]);
@@ -50,11 +50,13 @@ export var IntervalField = function IntervalField(_ref) {
       rightValue = valueSplit === null || valueSplit === void 0 ? void 0 : valueSplit.pop();
   var handleLeftChange = useCallback(function (event) {
     var val = event.target.value;
-    setValue("" + val + stringSeparator + (value === null || value === void 0 ? void 0 : value.split(stringSeparator).pop()));
+    var right = value ? value === null || value === void 0 ? void 0 : value.split(stringSeparator).pop() : '';
+    setValue("" + val + stringSeparator + right);
   }, [setValue, value, stringSeparator]);
   var handleRightChange = useCallback(function (event) {
     var val = event.target.value;
-    setValue("" + (value === null || value === void 0 ? void 0 : value.split(stringSeparator).shift()) + stringSeparator + val);
+    var left = value ? value === null || value === void 0 ? void 0 : value.split(stringSeparator).shift() : '';
+    setValue("" + left + stringSeparator + val);
   }, [setValue, value, stringSeparator]);
   return /*#__PURE__*/React.createElement(Flex, {
     width: 1,
