@@ -32,7 +32,7 @@ const exportRules = (rules, options) =>
         return value
       }
 
-      if (options[type].operatorValue[operator].type !== 'between') {
+      if (options[type]?.operatorValue[operator]?.type !== 'between') {
         return parseInt(value, 10)
       }
 

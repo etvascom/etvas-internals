@@ -36,11 +36,13 @@ var exportRules = function exportRules(rules, options) {
         value = _getRuleDetails.value;
 
     var parse = function parse(value) {
+      var _options$type, _options$type$operato;
+
       if (options[type].value.type !== 'number') {
         return value;
       }
 
-      if (options[type].operatorValue[operator].type !== 'between') {
+      if (((_options$type = options[type]) === null || _options$type === void 0 ? void 0 : (_options$type$operato = _options$type.operatorValue[operator]) === null || _options$type$operato === void 0 ? void 0 : _options$type$operato.type) !== 'between') {
         return parseInt(value, 10);
       }
 
