@@ -50,15 +50,20 @@ var importCombinedRules = function importCombinedRules(rules, options) {
     }, {});
     var operatorKey = keypath + "Operator";
     var valueKey = keypath + "Value";
+    var parsedValue = parse({
+      keypath: keypath,
+      operator: operator,
+      value: value
+    });
     return [uuid(), _extends({
       type: keypath
-    }, defaultValues, (_extends3 = {}, _extends3[operatorKey] = operator, _extends3[valueKey] = value, _extends3))];
+    }, defaultValues, (_extends3 = {}, _extends3[operatorKey] = operator, _extends3[valueKey] = parsedValue, _extends3))];
   }));
 };
 
 var importAbsoluteRules = function importAbsoluteRules(rules, options) {
   return rules.length ? Object.fromEntries(Object.keys(options).map(function (type) {
-    var _rules$find, _rules$find2, _ref4;
+    var _ref4;
 
     var _getRuleDetails2 = getRuleDetails({
       type: type
@@ -66,12 +71,34 @@ var importAbsoluteRules = function importAbsoluteRules(rules, options) {
         operatorKey = _getRuleDetails2.operatorKey,
         valueKey = _getRuleDetails2.valueKey;
 
+    var rule = rules.find(function (rule) {
+      return rule.keypath === type;
+    });
+    var keypath = rule.keypath,
+        operator = rule.operator,
+        value = rule.value;
+    var parsedValue = rule && parse({
+      keypath: keypath,
+      operator: operator,
+      value: value
+    });
     return [uuid(), (_ref4 = {
       type: type
-    }, _ref4[operatorKey] = (_rules$find = rules.find(function (rule) {
-      return rule.keypath === type;
-    })) === null || _rules$find === void 0 ? void 0 : _rules$find.operator, _ref4[valueKey] = (_rules$find2 = rules.find(function (rule) {
-      return rule.keypath === type;
-    })) === null || _rules$find2 === void 0 ? void 0 : _rules$find2.value, _ref4)];
+    }, _ref4[operatorKey] = rule === null || rule === void 0 ? void 0 : rule.operator, _ref4[valueKey] = parsedValue, _ref4)];
   })) : null;
+};
+
+var parse = function parse(_ref5) {
+  var keypath = _ref5.keypath,
+      operator = _ref5.operator,
+      value = _ref5.value;
+  var parsed = JSON.parse(value);
+
+  if (keypath === 'amount' && operator === '><') {
+    var leftValue = parsed[0],
+        rightValue = parsed[1];
+    return leftValue + "." + rightValue;
+  }
+
+  return parsed;
 };
