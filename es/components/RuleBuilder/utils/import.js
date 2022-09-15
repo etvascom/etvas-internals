@@ -50,11 +50,7 @@ var importCombinedRules = function importCombinedRules(rules, options) {
     }, {});
     var operatorKey = keypath + "Operator";
     var valueKey = keypath + "Value";
-    var parsedValue = parse({
-      keypath: keypath,
-      operator: operator,
-      value: value
-    });
+    var parsedValue = JSON.parse(value);
     return [uuid(), _extends({
       type: keypath
     }, defaultValues, (_extends3 = {}, _extends3[operatorKey] = operator, _extends3[valueKey] = parsedValue, _extends3))];
@@ -74,31 +70,10 @@ var importAbsoluteRules = function importAbsoluteRules(rules, options) {
     var rule = rules.find(function (rule) {
       return rule.keypath === type;
     });
-    var keypath = rule.keypath,
-        operator = rule.operator,
-        value = rule.value;
-    var parsedValue = rule && parse({
-      keypath: keypath,
-      operator: operator,
-      value: value
-    });
+    var value = rule.value;
+    var parsedValue = rule && JSON.parse(value);
     return [uuid(), (_ref4 = {
       type: type
     }, _ref4[operatorKey] = rule === null || rule === void 0 ? void 0 : rule.operator, _ref4[valueKey] = parsedValue, _ref4)];
   })) : null;
-};
-
-var parse = function parse(_ref5) {
-  var keypath = _ref5.keypath,
-      operator = _ref5.operator,
-      value = _ref5.value;
-  var parsed = JSON.parse(value);
-
-  if (keypath === 'amount' && operator === '><') {
-    var leftValue = parsed[0],
-        rightValue = parsed[1];
-    return leftValue + "." + rightValue;
-  }
-
-  return parsed;
 };

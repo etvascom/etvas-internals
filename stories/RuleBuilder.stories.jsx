@@ -263,7 +263,7 @@ const cashbacksData = {
         {
           keypath: 'amount',
           operator: '><',
-          value: JSON.stringify([50, 100])
+          value: JSON.stringify('61,123')
         }
       ],
       absolute: [
