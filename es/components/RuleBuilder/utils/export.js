@@ -10,7 +10,7 @@ export var exportRuleBuilder = function exportRuleBuilder(_ref, combinedRuleOpti
   };
 };
 
-var exportGroups = function exportGroups(groups, combinedRuleOptions, absoluteRuleOptions) {
+var exportGroups = function exportGroups(groups, absoluteRuleOptions) {
   return groups.map(function (_ref2) {
     var not = _ref2.not,
         absolute = _ref2.absolute,
@@ -20,13 +20,13 @@ var exportGroups = function exportGroups(groups, combinedRuleOptions, absoluteRu
     return {
       not: not,
       combinator: combinator,
-      combined: exportRules(combined, combinedRuleOptions),
+      combined: exportRules(combined),
       absolute: advancedTargeting ? exportRules(absolute, absoluteRuleOptions) : []
     };
   });
 };
 
-var exportRules = function exportRules(rules, options) {
+var exportRules = function exportRules(rules) {
   return Object.keys(rules).map(function (ruleId) {
     var rule = rules[ruleId];
 
@@ -35,26 +35,10 @@ var exportRules = function exportRules(rules, options) {
         operator = _getRuleDetails.operator,
         value = _getRuleDetails.value;
 
-    var parse = function parse(value) {
-      var _options$type, _options$type$operato;
-
-      if (options[type].value.type !== 'number') {
-        return value;
-      }
-
-      if (((_options$type = options[type]) === null || _options$type === void 0 ? void 0 : (_options$type$operato = _options$type.operatorValue[operator]) === null || _options$type$operato === void 0 ? void 0 : _options$type$operato.type) !== 'between') {
-        return parseInt(value, 10);
-      }
-
-      var split = value.split(',');
-      return parseInt(split === null || split === void 0 ? void 0 : split.shift(), 10) + "," + parseInt(split === null || split === void 0 ? void 0 : split.pop(), 10);
-    };
-
-    var parsedValue = parse(value);
     return {
       keypath: type,
       operator: operator,
-      value: parsedValue
+      value: value
     };
   });
 };
