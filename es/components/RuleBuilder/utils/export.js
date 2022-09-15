@@ -1,16 +1,16 @@
 import { getRuleDetails } from './rule'; // this accepts the formik field data as input
 // and returns a common version
 
-export var exportRuleBuilder = function exportRuleBuilder(_ref, combinedRuleOptions, absoluteRuleOptions) {
+export var exportRuleBuilder = function exportRuleBuilder(_ref) {
   var combinator = _ref.combinator,
       groups = _ref.groups;
   return {
     combinator: combinator,
-    groups: exportGroups(groups, combinedRuleOptions, absoluteRuleOptions)
+    groups: exportGroups(groups)
   };
 };
 
-var exportGroups = function exportGroups(groups, absoluteRuleOptions) {
+var exportGroups = function exportGroups(groups) {
   return groups.map(function (_ref2) {
     var not = _ref2.not,
         absolute = _ref2.absolute,
@@ -21,7 +21,7 @@ var exportGroups = function exportGroups(groups, absoluteRuleOptions) {
       not: not,
       combinator: combinator,
       combined: exportRules(combined),
-      absolute: advancedTargeting ? exportRules(absolute, absoluteRuleOptions) : []
+      absolute: advancedTargeting ? exportRules(absolute) : []
     };
   });
 };
