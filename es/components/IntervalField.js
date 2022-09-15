@@ -118,5 +118,5 @@ IntervalField.propTypes = process.env.NODE_ENV !== "production" ? {
 } : {};
 IntervalField.defaultProps = {
   separator: '-',
-  stringSeparator: '.'
+  stringSeparator: ','
 };

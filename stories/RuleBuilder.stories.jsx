@@ -21,7 +21,7 @@ const required = {
 
 const betweenRequired = {
   validator: value => {
-    const split = value?.split('.')
+    const split = value?.split(',')
     const [leftValue, rightValue] = [split?.shift(), split?.pop()]
     return !leftValue || !rightValue
   },
@@ -30,7 +30,7 @@ const betweenRequired = {
 
 const betweenPositive = {
   validator: value => {
-    const split = value?.split('.')
+    const split = value?.split(',')
     const [leftValue, rightValue] = [split?.shift(), split?.pop()]
     return numPositive.validator(leftValue) || numPositive.validator(rightValue)
   },
@@ -39,7 +39,7 @@ const betweenPositive = {
 
 const minMax = {
   validator: value => {
-    const split = value?.split('.')
+    const split = value?.split(',')
     const [leftValue, rightValue] = [split?.shift(), split?.pop()]
     return Number(leftValue) >= Number(rightValue)
   },
@@ -192,9 +192,7 @@ export const RuleBuilderExample = () => (
     <Form
       onSubmit={({ cashbacks }) => {
         // eslint-disable-next-line no-console
-        console.log(
-          exportRuleBuilder(cashbacks, combinedRuleOptions, absoluteRuleOptions)
-        )
+        console.log(exportRuleBuilder(cashbacks))
         action('form submitted')()
       }}
       initialValues={{ cashbacks: {} }}
@@ -236,17 +234,17 @@ const cashbacksData = {
         {
           keypath: 'merchant',
           operator: '~',
-          value: JSON.stringify('Uber')
+          value: 'Uber'
         },
         {
           keypath: 'amount',
           operator: '<',
-          value: JSON.stringify('20')
+          value: '20'
         },
         {
           keypath: 'amount',
           operator: '>',
-          value: JSON.stringify('10')
+          value: '10'
         }
       ],
       absolute: []
@@ -258,24 +256,24 @@ const cashbacksData = {
         {
           keypath: 'merchant',
           operator: '~',
-          value: JSON.stringify('Bolt')
+          value: 'Bolt'
         },
         {
           keypath: 'amount',
           operator: '><',
-          value: JSON.stringify([50, 100])
+          value: '61,123'
         }
       ],
       absolute: [
         {
           keypath: 'timespan',
           operator: '>',
-          value: JSON.stringify('25')
+          value: '25'
         },
         {
           keypath: 'count',
           operator: '>',
-          value: JSON.stringify('1')
+          value: '1'
         }
       ]
     }
