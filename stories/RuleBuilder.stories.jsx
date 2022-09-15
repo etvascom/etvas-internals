@@ -21,7 +21,7 @@ const required = {
 
 const betweenRequired = {
   validator: value => {
-    const split = value?.split('.')
+    const split = value?.split(',')
     const [leftValue, rightValue] = [split?.shift(), split?.pop()]
     return !leftValue || !rightValue
   },
@@ -30,7 +30,7 @@ const betweenRequired = {
 
 const betweenPositive = {
   validator: value => {
-    const split = value?.split('.')
+    const split = value?.split(',')
     const [leftValue, rightValue] = [split?.shift(), split?.pop()]
     return numPositive.validator(leftValue) || numPositive.validator(rightValue)
   },
@@ -39,7 +39,7 @@ const betweenPositive = {
 
 const minMax = {
   validator: value => {
-    const split = value?.split('.')
+    const split = value?.split(',')
     const [leftValue, rightValue] = [split?.shift(), split?.pop()]
     return Number(leftValue) >= Number(rightValue)
   },

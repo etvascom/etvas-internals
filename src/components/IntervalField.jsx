@@ -123,5 +123,5 @@ IntervalField.propTypes = {
 
 IntervalField.defaultProps = {
   separator: '-',
-  stringSeparator: '.'
+  stringSeparator: ','
 }

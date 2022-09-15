@@ -36,8 +36,8 @@ const exportRules = (rules, options) =>
         return parseInt(value, 10)
       }
 
-      const split = value.split('.')
-      return [parseInt(split?.shift(), 10), parseInt(split?.pop(), 10)]
+      const split = value.split(',')
+      return `${parseInt(split?.shift(), 10)},${parseInt(split?.pop(), 10)}`
     }
 
     const parsedValue = JSON.stringify(parse(value))
