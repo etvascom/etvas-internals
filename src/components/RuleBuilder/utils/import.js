@@ -37,7 +37,6 @@ const importCombinedRules = (rules, options) =>
 
       const operatorKey = `${keypath}Operator`
       const valueKey = `${keypath}Value`
-      const parsedValue = JSON.parse(value)
 
       return [
         uuid(),
@@ -45,7 +44,7 @@ const importCombinedRules = (rules, options) =>
           type: keypath,
           ...defaultValues,
           [operatorKey]: operator,
-          [valueKey]: parsedValue
+          [valueKey]: value
         }
       ]
     })
@@ -57,15 +56,13 @@ const importAbsoluteRules = (rules, options) =>
         Object.keys(options).map(type => {
           const { operatorKey, valueKey } = getRuleDetails({ type })
           const rule = rules.find(rule => rule.keypath === type)
-          const { value } = rule
-          const parsedValue = rule && JSON.parse(value)
 
           return [
             uuid(),
             {
               type,
               [operatorKey]: rule?.operator,
-              [valueKey]: parsedValue
+              [valueKey]: rule?.value
             }
           ]
         })

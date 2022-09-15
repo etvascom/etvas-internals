@@ -40,7 +40,7 @@ const exportRules = (rules, options) =>
       return `${parseInt(split?.shift(), 10)},${parseInt(split?.pop(), 10)}`
     }
 
-    const parsedValue = JSON.stringify(parse(value))
+    const parsedValue = parse(value)
 
     return {
       keypath: type,

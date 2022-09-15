@@ -236,17 +236,17 @@ const cashbacksData = {
         {
           keypath: 'merchant',
           operator: '~',
-          value: JSON.stringify('Uber')
+          value: 'Uber'
         },
         {
           keypath: 'amount',
           operator: '<',
-          value: JSON.stringify('20')
+          value: '20'
         },
         {
           keypath: 'amount',
           operator: '>',
-          value: JSON.stringify('10')
+          value: '10'
         }
       ],
       absolute: []
@@ -258,24 +258,24 @@ const cashbacksData = {
         {
           keypath: 'merchant',
           operator: '~',
-          value: JSON.stringify('Bolt')
+          value: 'Bolt'
         },
         {
           keypath: 'amount',
           operator: '><',
-          value: JSON.stringify('61,123')
+          value: '61,123'
         }
       ],
       absolute: [
         {
           keypath: 'timespan',
           operator: '>',
-          value: JSON.stringify('25')
+          value: '25'
         },
         {
           keypath: 'count',
           operator: '>',
-          value: JSON.stringify('1')
+          value: '1'
         }
       ]
     }
