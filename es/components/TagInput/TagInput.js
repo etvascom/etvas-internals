@@ -1,6 +1,6 @@
 var _templateObject;
 
-var _excluded = ["label", "placeholder", "loading", "required", "disabled", "readOnly", "error", "warning", "valid", "variant", "id", "name", "value", "onChange", "autoComplete", "autoFocus", "onInputClick", "importHandler", "exportHandler", "noPreserveSpace", "forceAddTagKeys", "maxTags"];
+var _excluded = ["label", "placeholder", "loading", "required", "disabled", "readOnly", "error", "warning", "valid", "variant", "id", "name", "value", "onChange", "onBlur", "autoComplete", "autoFocus", "onInputClick", "importHandler", "exportHandler", "noPreserveSpace", "forceAddTagKeys", "maxTags"];
 
 function _taggedTemplateLiteralLoose(strings, raw) { if (!raw) { raw = strings.slice(0); } strings.raw = raw; return strings; }
 
@@ -36,6 +36,7 @@ export var TagInput = forwardRef(function (_ref, ref) {
       name = _ref.name,
       value = _ref.value,
       onChange = _ref.onChange,
+      onBlur = _ref.onBlur,
       autoComplete = _ref.autoComplete,
       autoFocus = _ref.autoFocus,
       onInputClick = _ref.onInputClick,
@@ -91,7 +92,9 @@ export var TagInput = forwardRef(function (_ref, ref) {
     }
   };
 
-  var handleInputBlur = function handleInputBlur() {
+  var handleInputBlur = function handleInputBlur(event) {
+    onBlur(event);
+
     if (inputValue.trim()) {
       handleTagAdd();
     }

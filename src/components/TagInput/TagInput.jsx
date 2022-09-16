@@ -30,6 +30,7 @@ export const TagInput = forwardRef(
       name,
       value,
       onChange,
+      onBlur,
       autoComplete,
       autoFocus,
       onInputClick,
@@ -87,7 +88,9 @@ export const TagInput = forwardRef(
       }
     }
 
-    const handleInputBlur = () => {
+    const handleInputBlur = event => {
+      onBlur(event)
+
       if (inputValue.trim()) {
         handleTagAdd()
       }

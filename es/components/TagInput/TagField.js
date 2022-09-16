@@ -22,6 +22,7 @@ export var TagField = forwardRef(function (props, ref) {
     exportHandler: exportHandler(props.separator),
     importHandler: importHandler(props.separator),
     onChange: helpers.setValue,
+    onBlur: field.onBlur,
     value: field.value,
     id: id,
     error: displayedError,
