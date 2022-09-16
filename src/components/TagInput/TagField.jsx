@@ -21,6 +21,7 @@ export const TagField = forwardRef((props, ref) => {
       exportHandler={exportHandler(props.separator)}
       importHandler={importHandler(props.separator)}
       onChange={helpers.setValue}
+      onBlur={field.onBlur}
       value={field.value}
       id={id}
       error={displayedError}
