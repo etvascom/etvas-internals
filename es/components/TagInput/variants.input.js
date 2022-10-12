@@ -5,6 +5,7 @@ var DEFAULT_DISABLED_STYLE = {
   pointerEvents: 'none'
 };
 var DEFAULT_STYLE = {
+  fontFamily: 'primary',
   background: 'transparent',
   color: 'textInputActive',
   outline: 'none',
