@@ -4,6 +4,7 @@ const DEFAULT_DISABLED_STYLE = {
 }
 
 const DEFAULT_STYLE = {
+  fontFamily: 'primary',
   background: 'transparent',
   color: 'textInputActive',
   outline: 'none',
