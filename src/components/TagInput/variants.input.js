@@ -5,6 +5,10 @@ const DEFAULT_DISABLED_STYLE = {
 
 const DEFAULT_STYLE = {
   fontFamily: 'primary',
+  fontWeight: '300',
+  fontSize: 2,
+  textTransform: 'unset',
+  lineHeight: '20px',
   background: 'transparent',
   color: 'textInputActive',
   outline: 'none',
