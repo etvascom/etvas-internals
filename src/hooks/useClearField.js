@@ -1,6 +1,6 @@
 import { useCallback, useRef, useEffect } from 'react'
 
-export const useEventCallback = dependencies => {
+export const useClearField = dependencies => {
   const ref = useRef()
 
   useEffect(() => {
@@ -8,8 +8,5 @@ export const useEventCallback = dependencies => {
     ref.current = fn
   }, [dependencies])
 
-  return useCallback(() => {
-    const fn = ref.current
-    return fn()
-  }, [ref])
+  return useCallback(() => ref.current(''), [])
 }

@@ -12,7 +12,7 @@ import {
 } from '@etvas/etvaskit'
 import { TagField } from '../TagInput/TagField'
 import { IntervalField } from '../IntervalField'
-import { useEventCallback } from '../../hooks'
+import { useClearField } from '../../hooks'
 
 export const Rule = ({
   disabled,
@@ -62,14 +62,11 @@ export const Rule = ({
   const isSuffixType = useMemo(() => value.suffix, [value])
   const [, , { setValue: setRuleValue }] = useField(`${name}.${type}Value`)
 
-  const onChangeRuleValue = useEventCallback([
-    value => setRuleValue(value),
-    setRuleValue
-  ])
+  const onChangeRuleValue = useClearField([setRuleValue])
 
   useEffect(() => {
     if (!disabled) {
-      onChangeRuleValue('')
+      onChangeRuleValue()
     }
   }, [operatorValue, disabled, onChangeRuleValue])
 
