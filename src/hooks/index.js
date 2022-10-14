@@ -1,2 +1,2 @@
 export * from './useIsTruncated'
-export * from './useEventCallback'
+export * from './useClearField'

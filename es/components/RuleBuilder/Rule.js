@@ -4,7 +4,7 @@ import { useField } from 'formik';
 import { Flex, DropdownField, TextField, Button, Icon, Box, SubdomainField } from '@etvas/etvaskit';
 import { TagField } from '../TagInput/TagField';
 import { IntervalField } from '../IntervalField';
-import { useEventCallback } from '../../hooks';
+import { useClearField } from '../../hooks';
 export var Rule = function Rule(_ref) {
   var disabled = _ref.disabled,
       rule = _ref.rule,
@@ -58,12 +58,10 @@ export var Rule = function Rule(_ref) {
   var _useField2 = useField(name + "." + type + "Value"),
       setRuleValue = _useField2[2].setValue;
 
-  var onChangeRuleValue = useEventCallback([function (value) {
-    return setRuleValue(value);
-  }, setRuleValue]);
+  var onChangeRuleValue = useClearField([setRuleValue]);
   useEffect(function () {
     if (!disabled) {
-      onChangeRuleValue('');
+      onChangeRuleValue();
     }
   }, [operatorValue, disabled, onChangeRuleValue]);
   return /*#__PURE__*/React.createElement(Flex, {
