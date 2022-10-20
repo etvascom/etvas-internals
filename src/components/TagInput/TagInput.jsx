@@ -82,7 +82,7 @@ export const TagInput = forwardRef(
       }
     }
 
-    const handleInputKeyUp = event => {
+    const handleInputKeyDown = event => {
       if (event.key === 'Backspace' && !inputValue) {
         handleTagRemove(-1)()
       }
@@ -145,7 +145,7 @@ export const TagInput = forwardRef(
                 value={inputValue}
                 onClick={onInputClick}
                 onKeyPress={handleInputKeyPress}
-                onKeyUp={handleInputKeyUp}
+                onKeyDown={handleInputKeyDown}
                 onBlur={handleInputBlur}
               />
             )}

@@ -86,7 +86,7 @@ export var TagInput = forwardRef(function (_ref, ref) {
     }
   };
 
-  var handleInputKeyUp = function handleInputKeyUp(event) {
+  var handleInputKeyDown = function handleInputKeyDown(event) {
     if (event.key === 'Backspace' && !inputValue) {
       handleTagRemove(-1)();
     }
@@ -147,7 +147,7 @@ export var TagInput = forwardRef(function (_ref, ref) {
     value: inputValue,
     onClick: onInputClick,
     onKeyPress: handleInputKeyPress,
-    onKeyUp: handleInputKeyUp,
+    onKeyDown: handleInputKeyDown,
     onBlur: handleInputBlur
   }))), /*#__PURE__*/React.createElement(SubLabel, {
     noPreserveSpace: noPreserveSpace,
