@@ -1,2 +1,0 @@
-export var COMMON_FORMAT = 'YYYY-MM-DD';
-export var CURRENT_MONTH_FORMAT = 'MMMM YYYY';
