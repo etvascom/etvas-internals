@@ -69,5 +69,10 @@
     "@babel/eslint-parser": "^7.19.1",
     "highcharts": "^9.1.2",
     "highcharts-react-official": "^3.0.0"
-  }
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not op_mini all"
+  ]
 }
