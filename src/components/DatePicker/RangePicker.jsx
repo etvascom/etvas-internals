@@ -29,15 +29,15 @@ export const RangePicker = ({
 
   const [currentMonth, setCurrentMonth] = useState(() => {
     const { start } = value || {}
-    const currentMonth = moment(start || moment().startOf('month'))
+    const currentMonth = moment.utc(start || moment.utc().startOf('month'))
     return currentMonth
   })
 
   const resetDateRange = val => {
     const { start, end } = val || {}
 
-    const mStart = moment(start || moment())
-    const mEnd = moment(end || moment())
+    const mStart = moment.utc(start || moment.utc())
+    const mEnd = moment.utc(end || moment.utc())
 
     return { mStart, mEnd }
   }
@@ -59,8 +59,8 @@ export const RangePicker = ({
   }, [])
 
   const rangeStartOfTime = useMemo(() => {
-    const mPast = moment(
-      startOfTime || moment().add(-160, 'year').startOf('year')
+    const mPast = moment.utc(
+      startOfTime || moment.utc().add(-160, 'year').startOf('year')
     )
     if (!isSettingEnd) {
       return mPast
@@ -82,9 +82,10 @@ export const RangePicker = ({
     return eot
   }, [endOfTime, isSettingEnd, mStart, navigationByYear])
 
-  const nextMonth = useMemo(() => currentMonth.clone().add(1, 'month'), [
-    currentMonth
-  ])
+  const nextMonth = useMemo(
+    () => currentMonth.clone().add(1, 'month'),
+    [currentMonth]
+  )
 
   const navigateMonth = dir => {
     setCurrentMonth(currentMonth.clone().add(dir, 'month'))
