@@ -69,7 +69,9 @@ export const RangePicker = ({
   }, [startOfTime, mStart, isSettingEnd])
 
   const rangeEndOfTime = useMemo(() => {
-    const eot = moment(endOfTime || moment().add(160, 'year').endOf('year'))
+    const eot = moment.utc(
+      endOfTime || moment.utc().add(160, 'year').endOf('year')
+    )
 
     if (isSettingEnd && navigationByYear) {
       const eoy = mStart.clone().endOf('year')
@@ -96,7 +98,7 @@ export const RangePicker = ({
 
   const handleCalendarClick = value => {
     if (isSettingEnd) {
-      const _mEnd = moment(value)
+      const _mEnd = moment.utc(value)
       setDateRange({ mStart: mStart.clone(), mEnd: _mEnd })
       if (onChange) {
         onChange({
@@ -108,7 +110,7 @@ export const RangePicker = ({
       setExpanded(false)
       return
     }
-    const _mStart = moment(value)
+    const _mStart = moment.utc(value)
     setDateRange({ mStart: _mStart, mEnd: _mStart })
     setSettingEnd(true)
   }
@@ -129,7 +131,7 @@ export const RangePicker = ({
       ? mStart.isSameOrBefore(day) &&
         currentHover &&
         mStart.isSameOrBefore(currentHover) &&
-        moment(day).isSameOrBefore(currentHover) &&
+        moment.utc(day).isSameOrBefore(currentHover) &&
         rangeEndOfTime.isSameOrAfter(day)
       : mStart.isSameOrBefore(day) && mEnd.isSameOrAfter(day)
 
@@ -162,8 +164,8 @@ export const RangePicker = ({
               placeholder
             ) : (
               <>
-                {moment(value.start).format(displayFormat)} &divide;{' '}
-                {moment(value.end).format(displayFormat)}
+                {moment.utc(value.start).format(displayFormat)} &divide;{' '}
+                {moment.utc(value.end).format(displayFormat)}
               </>
             )}
           </Typography>
