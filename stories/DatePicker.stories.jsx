@@ -120,7 +120,7 @@ export const RangePickerWithLabel = () => {
         yearDisplayStart={2021}
         yearDisplayEnd={2022}
         startOfTime='2021-12-05'
-        endOfTime='2022-03-15'
+        endOfTime='2025-03-15'
         labelYear='Selected Year'
         labelStartDate='Start Date'
         labelEndDate='End Date'
@@ -148,7 +148,7 @@ export const RangePickerWithNavigationByYear = () => {
       yearDisplayStart={2021}
       yearDisplayEnd={2022}
       startOfTime='2021-01-05'
-      endOfTime='2022-03-15'
+      endOfTime='2025-03-15'
       labelYear='Selected Year'
       labelStartDate='Start Date'
       labelEndDate='End Date'

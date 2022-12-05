@@ -94,7 +94,7 @@ export const RangePicker = ({
   }
 
   const handleCanChange = pos => value =>
-    currentMonth.clone().add(pos, 'month').isSame(value, 'month')
+    currentMonth.clone().add(pos, 'month').isSame(moment.utc(value), 'month')
 
   const handleCalendarClick = value => {
     if (isSettingEnd) {
@@ -128,14 +128,15 @@ export const RangePicker = ({
 
   const highlight = day =>
     isSettingEnd
-      ? mStart.isSameOrBefore(day) &&
+      ? mStart.isSameOrBefore(moment.utc(day)) &&
         currentHover &&
         mStart.isSameOrBefore(currentHover) &&
         moment.utc(day).isSameOrBefore(currentHover) &&
-        rangeEndOfTime.isSameOrAfter(day)
-      : mStart.isSameOrBefore(day) && mEnd.isSameOrAfter(day)
+        rangeEndOfTime.isSameOrAfter(moment.utc(day))
+      : mStart.isSameOrBefore(moment.utc(day)) &&
+        mEnd.isSameOrAfter(moment.utc(day))
 
-  const handleHover = day => setCurrentHover(day)
+  const handleHover = day => setCurrentHover(moment.utc(day))
 
   return (
     <Flex flexDirection='column' {...props}>
