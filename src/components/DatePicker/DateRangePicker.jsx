@@ -43,19 +43,13 @@ export const DateRangePicker = ({
     return () => window.removeEventListener('click', listener)
   }, [])
 
-  const mSot = moment.utc(
-    startOfTime || moment.utc().add(-160, 'year').startOf('year')
-  )
-  const mEot = moment.utc(
-    endOfTime || moment.utc().add(160, 'year').endOf('year')
-  )
+  const mSot = moment(startOfTime || moment().add(-160, 'year').startOf('year'))
+  const mEot = moment(endOfTime || moment().add(160, 'year').endOf('year'))
 
   const [mStart, mEnd] = useMemo(() => {
     const { start, end } = value || {}
-    const mStart = moment.utc(
-      start || moment.utc().add(-1, 'month').startOf('month')
-    )
-    const mEnd = moment.utc(end || moment.utc())
+    const mStart = moment(start || moment().add(-1, 'month').startOf('month'))
+    const mEnd = moment(end || moment())
     return [mStart, mEnd]
   }, [value])
 

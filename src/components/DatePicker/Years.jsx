@@ -41,7 +41,7 @@ export const Years = ({
     onChange(cell.value)
   }
 
-  const today = moment.utc().year()
+  const today = moment().year()
 
   return (
     <Box width='224px' {...props}>

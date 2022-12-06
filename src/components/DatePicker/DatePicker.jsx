@@ -33,10 +33,7 @@ export const DatePicker = ({
     return () => window.removeEventListener('click', listener)
   }, [])
 
-  const mDate = useMemo(
-    () => (value ? moment.utc(value) : moment.utc()),
-    [value]
-  )
+  const mDate = useMemo(() => (value ? moment(value) : moment()), [value])
 
   const handleChangeDate = value => {
     if (collapseOnPick) {

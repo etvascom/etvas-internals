@@ -37,16 +37,15 @@ export const Calendar = ({
     setCurrentDate(browseDate || value)
   }, [value, browseDate])
 
-  let m = useMemo(() => moment.utc(currentDate), [currentDate])
-  const mRef = useMemo(() => moment.utc(value), [value])
+  let m = useMemo(() => moment(currentDate), [currentDate])
+  const mRef = useMemo(() => moment(value), [value])
 
   const paleozoic = useMemo(
-    () =>
-      startOfTime ? moment.utc(startOfTime) : moment.utc().add(-160, 'year'),
+    () => (startOfTime ? moment(startOfTime) : moment().add(-160, 'year')),
     [startOfTime]
   )
   const future = useMemo(
-    () => (endOfTime ? moment.utc(endOfTime) : moment.utc().add(160, 'year')),
+    () => (endOfTime ? moment(endOfTime) : moment().add(160, 'year')),
     [endOfTime]
   )
 
@@ -73,7 +72,7 @@ export const Calendar = ({
   )
 
   const [cal, month] = useMemo(() => {
-    const now = moment.utc()
+    const now = moment()
     const start = m.clone().startOf('month')
     const end = m.clone().endOf('month')
 
@@ -129,7 +128,7 @@ export const Calendar = ({
 
   const week = useMemo(() => {
     const week = []
-    const start = moment.utc().startOf('week')
+    const start = moment().startOf('week')
     for (
       let w = start.clone();
       w.isSameOrBefore(start, 'week');
@@ -143,7 +142,7 @@ export const Calendar = ({
   const year = useMemo(() => {
     const year = []
     const startYear = (yearPanel ? yearPanel : mRef.year()) - 12
-    const now = moment.utc()
+    const now = moment()
     for (let i = startYear; i < startYear + 22; i++) {
       year.push({
         key: i,
