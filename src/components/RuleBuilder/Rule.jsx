@@ -65,10 +65,8 @@ export const Rule = ({
   const onChangeRuleValue = useClearField([setRuleValue])
 
   useEffect(() => {
-    if (!disabled) {
-      onChangeRuleValue()
-    }
-  }, [operatorValue, disabled, onChangeRuleValue])
+    onChangeRuleValue()
+  }, [operatorValue, onChangeRuleValue])
 
   return (
     <Flex width={1} justifyContent='space-between' alignItems='flex-start'>
