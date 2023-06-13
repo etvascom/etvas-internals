@@ -63,22 +63,14 @@ export const Rule = ({
   const [, , { setValue: setRuleValue }] = useField(`${name}.${type}Value`)
 
   const onChangeRuleValue = useClearField([setRuleValue])
-  const [shouldReset, setShouldReset] = useState(false)
 
   const handleOperatorChange = newValue => {
     if (operatorValue === newValue) {
       return
     }
     setOperatorValue(newValue)
-    setShouldReset(true)
+    onChangeRuleValue()
   }
-
-  useEffect(() => {
-    if (shouldReset) {
-      onChangeRuleValue()
-      setShouldReset(false)
-    }
-  }, [onChangeRuleValue, shouldReset])
 
   return (
     <Flex width={1} justifyContent='space-between' alignItems='flex-start'>
