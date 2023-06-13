@@ -66,6 +66,9 @@ export const Rule = ({
   const [shouldReset, setShouldReset] = useState(false)
 
   const handleOperatorChange = newValue => {
+    if (operatorValue === newValue) {
+      return
+    }
     setOperatorValue(newValue)
     setShouldReset(true)
   }
