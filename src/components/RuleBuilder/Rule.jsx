@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect } from 'react'
+import React, { useMemo, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { useField } from 'formik'
 import {
@@ -44,18 +44,18 @@ export const Rule = ({
   const type = useMemo(() => rule.type, [rule])
 
   const operatorName = useMemo(() => `${name}.${type}Operator`, [name, type])
-  const [{ value: operatorValue }] = useField(operatorName)
-
+  const [{ value: operatorValue }, , { setValue: setOperatorValue }] =
+    useField(operatorName)
   const operator = useMemo(() => options[type].operator, [options, type])
   const value = useMemo(
     () => options[type]?.operatorValue?.[operatorValue] ?? options[type].value,
     [options, type, operatorValue]
   )
 
-  const typePlaceholder = useMemo(() => options[type].placeholder, [
-    options,
-    type
-  ])
+  const typePlaceholder = useMemo(
+    () => options[type].placeholder,
+    [options, type]
+  )
 
   const valuePlaceholder = useMemo(() => value.placeholder, [value])
 
@@ -63,10 +63,19 @@ export const Rule = ({
   const [, , { setValue: setRuleValue }] = useField(`${name}.${type}Value`)
 
   const onChangeRuleValue = useClearField([setRuleValue])
+  const [shouldReset, setShouldReset] = useState(false)
+
+  const handleOperatorChange = newValue => {
+    setOperatorValue(newValue)
+    setShouldReset(true)
+  }
 
   useEffect(() => {
-    onChangeRuleValue()
-  }, [operatorValue, onChangeRuleValue])
+    if (shouldReset) {
+      onChangeRuleValue()
+      setShouldReset(false)
+    }
+  }, [onChangeRuleValue, shouldReset])
 
   return (
     <Flex width={1} justifyContent='space-between' alignItems='flex-start'>
@@ -85,6 +94,7 @@ export const Rule = ({
         name={`${name}.${type}Operator`}
         placeholder={operator.placeholder}
         label={operator.label}
+        onChange={handleOperatorChange}
         required
         mr={4}
       />
