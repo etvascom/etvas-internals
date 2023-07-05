@@ -1,6 +1,9 @@
 import React from 'react'
+
 import PropTypes from 'prop-types'
+
 import { Flex } from '@etvas/etvaskit'
+
 import { GridButton } from './GridButton'
 
 export const GridButtons = ({ item, actions }) => {

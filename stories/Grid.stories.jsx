@@ -1,7 +1,9 @@
 import React from 'react'
+
 import { action } from '@storybook/addon-actions'
 
-import { Button, Box } from '@etvas/etvaskit'
+import { Box, Button } from '@etvas/etvaskit'
+
 import { Grid, GridMainComponent } from '../src'
 
 export default {

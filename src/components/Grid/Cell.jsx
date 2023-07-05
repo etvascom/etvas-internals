@@ -1,17 +1,20 @@
 import React, { useMemo, useState } from 'react'
+
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
+
 import {
-  Checkbox,
   Box,
+  Button,
+  Checkbox,
   Icon,
   Touchable,
-  themed,
   Typography,
-  Button
+  themed
 } from '@etvas/etvaskit'
-import { TruncateGridInfo } from './index'
+
 import Tooltip from '../Tooltip'
+import { TruncateGridInfo } from './index'
 
 const renderText = renderedValue => (
   <TruncateGridInfo minWidth='0'>

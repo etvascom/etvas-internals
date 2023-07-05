@@ -1,7 +1,9 @@
 import React from 'react'
+
+import css from '@styled-system/css'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import css from '@styled-system/css'
+
 import { Icon, Typography } from '@etvas/etvaskit'
 
 export const Tag = ({ value, disabled, onRemove, ...rest }) => (

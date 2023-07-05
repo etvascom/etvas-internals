@@ -1,7 +1,9 @@
-import PropTypes from 'prop-types'
 import React from 'react'
+
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { BlockSkeleton, ActivityIndicator } from '@etvas/etvaskit'
+
+import { ActivityIndicator, BlockSkeleton } from '@etvas/etvaskit'
 
 export const LoadingGrid = ({ busyVariant, busySkeletonNumber }) =>
   busyVariant === 'blockSkeleton' && busySkeletonNumber > 0 ? (

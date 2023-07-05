@@ -1,20 +1,21 @@
 import React, {
   useEffect,
+  useLayoutEffect,
   useMemo,
-  useState,
   useRef,
-  useLayoutEffect
+  useState
 } from 'react'
+
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { Typography, Icon, Flex, Box, themed } from '@etvas/etvaskit'
 
-import Row from './Row'
-import Header from './GridHeader'
+import { Box, Flex, Icon, Typography, themed } from '@etvas/etvaskit'
 
-import { doSort } from './sorting'
 import GridFooter from './GridFooter'
+import Header from './GridHeader'
 import { LoadingGrid } from './LoadingGrid'
+import Row from './Row'
+import { doSort } from './sorting'
 
 const Grid = ({
   extendedField,

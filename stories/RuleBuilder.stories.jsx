@@ -1,11 +1,14 @@
 import React from 'react'
-import { Form, Box, Button } from '@etvas/etvaskit'
-import { useField } from 'formik'
+
 import { action } from '@storybook/addon-actions'
+import { useField } from 'formik'
+
+import { Box, Button, Form } from '@etvas/etvaskit'
+
 import {
+  RuleBuilder,
   exportRuleBuilder,
   importRuleBuilder,
-  RuleBuilder,
   validateRuleBuilder
 } from '../src'
 

@@ -1,6 +1,8 @@
 import React from 'react'
+
 import PropTypes from 'prop-types'
-import { Flex, Typography, Chip } from '@etvas/etvaskit'
+
+import { Chip, Flex, Typography } from '@etvas/etvaskit'
 
 export const Counter = ({
   label,

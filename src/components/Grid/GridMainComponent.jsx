@@ -1,6 +1,9 @@
 import React, { useLayoutEffect, useRef, useState } from 'react'
-import { Typography, Icon, Flex } from '@etvas/etvaskit'
+
 import PropTypes from 'prop-types'
+
+import { Flex, Icon, Typography } from '@etvas/etvaskit'
+
 import Tooltip from '../Tooltip'
 import { GridDot } from './GridDot'
 

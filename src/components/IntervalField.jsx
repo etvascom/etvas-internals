@@ -1,8 +1,11 @@
-import React, { useEffect, useMemo, useCallback } from 'react'
-import PropTypes from 'prop-types'
+import React, { useCallback, useEffect, useMemo } from 'react'
+
 import { useField, useFormikContext } from 'formik'
+import PropTypes from 'prop-types'
 import { v4 } from 'uuid'
-import { Flex, Typography, SubdomainInput } from '@etvas/etvaskit'
+
+import { Flex, SubdomainInput, Typography } from '@etvas/etvaskit'
+
 import { SubLabel } from './TagInput/SubLabel'
 
 export const IntervalField = ({

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+
 import { TagInput } from '../src'
 
 export default {

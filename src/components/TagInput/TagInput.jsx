@@ -1,17 +1,19 @@
 import React, { forwardRef, useCallback, useMemo, useState } from 'react'
+
+import css from '@styled-system/css'
+import propTypes from '@styled-system/prop-types'
+import { themeGet } from '@styled-system/theme-get'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { variant } from 'styled-system'
-import { themeGet } from '@styled-system/theme-get'
-import propTypes from '@styled-system/prop-types'
-import css from '@styled-system/css'
-import { Typography, Box, Flex } from '@etvas/etvaskit'
 
+import { Box, Flex, Typography } from '@etvas/etvaskit'
+
+import { SubLabel } from './SubLabel'
+import { Tag } from './Tag'
+import { tagShape } from './shape'
 import { default as containerVariants } from './variants.container'
 import { default as inputVariants } from './variants.input'
-import { tagShape } from './shape'
-import { Tag } from './Tag'
-import { SubLabel } from './SubLabel'
 
 export const TagInput = forwardRef(
   (

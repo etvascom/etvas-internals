@@ -1,5 +1,7 @@
 import React from 'react'
-import { Typography, Card } from '@etvas/etvaskit'
+
+import { Card, Typography } from '@etvas/etvaskit'
+
 import { Divider } from '../src'
 
 export default {

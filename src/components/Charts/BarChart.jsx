@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react'
+
 import HighCharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import PropTypes from 'prop-types'
@@ -32,11 +33,10 @@ const getOptions = ({ categories, series, ...rest }) => ({
 })
 
 export const BarChart = ({ categories, series, ...rest }) => {
-  const options = useMemo(() => getOptions({ categories, series, ...rest }), [
-    categories,
-    series,
-    rest
-  ])
+  const options = useMemo(
+    () => getOptions({ categories, series, ...rest }),
+    [categories, series, rest]
+  )
 
   return <HighchartsReact highcharts={HighCharts} options={options} />
 }

@@ -1,6 +1,8 @@
-import React, { useState, useRef } from 'react'
+import React, { useRef, useState } from 'react'
+
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
+
 import { Flex, Typography } from '@etvas/etvaskit'
 
 const Tooltip = ({

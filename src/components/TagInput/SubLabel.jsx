@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { variant } from 'styled-system'
+
 import { Typography } from '@etvas/etvaskit'
 
 import { default as sublabelVariants } from './variants.sublabel'

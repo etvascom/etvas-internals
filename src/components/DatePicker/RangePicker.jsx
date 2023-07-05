@@ -1,11 +1,12 @@
-import React, { useLayoutEffect, useRef, useMemo, useState } from 'react'
-import PropTypes from 'prop-types'
+import React, { useLayoutEffect, useMemo, useRef, useState } from 'react'
+
 import moment from 'moment'
-import { Flex, Typography, Icon, Box, Button, styled } from '@etvas/etvaskit'
+import PropTypes from 'prop-types'
 import { css } from 'styled-components'
 
-import { Calendar } from './Calendar'
+import { Box, Button, Flex, Icon, Typography, styled } from '@etvas/etvaskit'
 
+import { Calendar } from './Calendar'
 import { COMMON_FORMAT, CURRENT_MONTH_FORMAT } from './constants'
 
 export const RangePicker = ({
@@ -84,9 +85,10 @@ export const RangePicker = ({
     return eot
   }, [endOfTime, isSettingEnd, mStart, navigationByYear])
 
-  const nextMonth = useMemo(() => currentMonth.clone().add(1, 'month'), [
-    currentMonth
-  ])
+  const nextMonth = useMemo(
+    () => currentMonth.clone().add(1, 'month'),
+    [currentMonth]
+  )
 
   const navigateMonth = dir => {
     setCurrentMonth(currentMonth.clone().add(dir, 'month'))

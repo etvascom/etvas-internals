@@ -1,18 +1,21 @@
-import React, { useMemo, useEffect, useState } from 'react'
-import PropTypes from 'prop-types'
+import React, { useEffect, useMemo, useState } from 'react'
+
 import { useField } from 'formik'
+import PropTypes from 'prop-types'
+
 import {
-  Flex,
-  DropdownField,
-  TextField,
-  Button,
-  Icon,
   Box,
-  SubdomainField
+  Button,
+  DropdownField,
+  Flex,
+  Icon,
+  SubdomainField,
+  TextField
 } from '@etvas/etvaskit'
-import { TagField } from '../TagInput/TagField'
-import { IntervalField } from '../IntervalField'
+
 import { useClearField } from '../../hooks'
+import { IntervalField } from '../IntervalField'
+import { TagField } from '../TagInput/TagField'
 
 export const Rule = ({
   disabled,

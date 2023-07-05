@@ -1,9 +1,12 @@
 import React, { useMemo } from 'react'
+
 import PropTypes from 'prop-types'
-import { Button, Box, Flex, CheckboxField } from '@etvas/etvaskit'
-import { Rule } from './Rule'
+
+import { Box, Button, CheckboxField, Flex } from '@etvas/etvaskit'
+
 import { Combinator } from './Combinator'
 import { CombinatorField } from './CombinatorField'
+import { Rule } from './Rule'
 
 export const Group = ({
   disabled,

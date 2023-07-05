@@ -1,9 +1,10 @@
 import React, { useMemo } from 'react'
-import PropTypes from 'prop-types'
-import moment from 'moment'
 
-import { Flex, Typography, Box, Touchable, styled } from '@etvas/etvaskit'
+import moment from 'moment'
+import PropTypes from 'prop-types'
 import { css } from 'styled-components'
+
+import { Box, Flex, Touchable, Typography, styled } from '@etvas/etvaskit'
 
 export const Years = ({
   value,

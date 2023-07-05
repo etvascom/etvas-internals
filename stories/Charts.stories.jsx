@@ -1,5 +1,6 @@
 import React from 'react'
-import { LineChart, ColumnChart, BarChart } from '../src'
+
+import { BarChart, ColumnChart, LineChart } from '../src'
 
 export default {
   title: 'Components/Charts'

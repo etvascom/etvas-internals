@@ -1,8 +1,10 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import { Box, Flex, Button, Dropdown, Typography } from '@etvas/etvaskit'
+
 import css from '@styled-system/css'
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
+
+import { Box, Button, Dropdown, Flex, Typography } from '@etvas/etvaskit'
 
 const GridFooter = ({ paginationConfig }) => {
   if (!paginationConfig) {

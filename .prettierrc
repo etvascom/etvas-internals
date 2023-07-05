@@ -8,5 +8,16 @@
   "singleQuote": true,
   "tabWidth": 2,
   "useTabs": false,
-  "trailingComma": "none"
+  "trailingComma": "none",
+  "importOrder": [
+    "^react$",
+    "<THIRD_PARTY_MODULES>",
+    "^@etvas/etvaskit$",
+    "^@etvas/i18n$",
+    "^app",
+    "^@shared/",
+    "^[./]"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
 }

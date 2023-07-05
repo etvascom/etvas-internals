@@ -1,4 +1,5 @@
 import { v4 as uuid } from 'uuid'
+
 import { getRuleDetails } from './rule'
 
 // this accepts the common format as input

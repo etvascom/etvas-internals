@@ -1,11 +1,14 @@
 import React, { useCallback, useEffect, useMemo } from 'react'
-import PropTypes from 'prop-types'
-import { v4 as uuid } from 'uuid'
+
 import { useField } from 'formik'
 import { cloneDeep } from 'lodash'
-import { Box, Typography, Button } from '@etvas/etvaskit'
-import { Group } from './Group'
+import PropTypes from 'prop-types'
+import { v4 as uuid } from 'uuid'
+
+import { Box, Button, Typography } from '@etvas/etvaskit'
+
 import { CombinatorField } from './CombinatorField'
+import { Group } from './Group'
 import { getRuleDetails } from './utils/rule'
 
 export const RuleBuilder = ({

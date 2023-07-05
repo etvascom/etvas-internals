@@ -1,6 +1,8 @@
-import PropTypes from 'prop-types'
 import React from 'react'
+
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
+
 import { Button } from '@etvas/etvaskit'
 
 export const GridButton = ({ children, ...props }) => (

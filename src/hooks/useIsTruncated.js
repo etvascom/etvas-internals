@@ -1,4 +1,4 @@
-import { useCallback, useState, useLayoutEffect } from 'react'
+import { useCallback, useLayoutEffect, useState } from 'react'
 
 export const useIsTruncated = element => {
   const isElementTruncated = useCallback(() => {

@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+
 import { Box, themed } from '@etvas/etvaskit'
 
 export const Divider = styled(Box)`

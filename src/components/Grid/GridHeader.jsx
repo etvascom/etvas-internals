@@ -1,7 +1,10 @@
 import React, { Fragment, useMemo } from 'react'
+
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { themed, Box, Touchable, Icon } from '@etvas/etvaskit'
+
+import { Box, Icon, Touchable, themed } from '@etvas/etvaskit'
+
 import GridHeaderLabel from './GridHeaderLabel'
 
 const sortTypes = [0, 1, 2, 3]

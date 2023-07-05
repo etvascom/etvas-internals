@@ -1,10 +1,11 @@
 import React, { forwardRef } from 'react'
+
+import { useField, useFormikContext } from 'formik'
 import PropTypes from 'prop-types'
 import { v4 } from 'uuid'
-import { useField, useFormikContext } from 'formik'
 
-import { tagShape } from './shape'
 import { TagInput } from './TagInput'
+import { tagShape } from './shape'
 
 export const TagField = forwardRef((props, ref) => {
   const { submitCount } = useFormikContext()

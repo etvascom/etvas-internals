@@ -1,7 +1,9 @@
 import React, { useMemo } from 'react'
+
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { themed, Box } from '@etvas/etvaskit'
+
+import { Box, themed } from '@etvas/etvaskit'
 
 import Cell from './Cell'
 

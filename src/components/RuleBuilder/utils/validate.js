@@ -1,43 +1,39 @@
 import { getRuleDetails } from './rule'
 
-export const validateRuleBuilder = (
-  field,
-  combinedRuleOptions,
-  absoluteRuleOptions
-) => values => {
-  const errors = []
+export const validateRuleBuilder =
+  (field, combinedRuleOptions, absoluteRuleOptions) => values => {
+    const errors = []
 
-  values[field].groups.forEach((group, groupIndex) => {
-    const combinedErrors = generateRuleErrors(
-      group.combined,
-      combinedRuleOptions
-    )
+    values[field].groups.forEach((group, groupIndex) => {
+      const combinedErrors = generateRuleErrors(
+        group.combined,
+        combinedRuleOptions
+      )
 
-    const absoluteErrors = group.advancedTargeting
-      ? generateRuleErrors(group.absolute, absoluteRuleOptions)
-      : []
+      const absoluteErrors = group.advancedTargeting
+        ? generateRuleErrors(group.absolute, absoluteRuleOptions)
+        : []
 
-    if (Object.keys(combinedErrors).length) {
-      errors[groupIndex] = errors[groupIndex] ?? {}
-      errors[groupIndex].combined = combinedErrors
-    }
+      if (Object.keys(combinedErrors).length) {
+        errors[groupIndex] = errors[groupIndex] ?? {}
+        errors[groupIndex].combined = combinedErrors
+      }
 
-    if (Object.keys(absoluteErrors).length) {
-      errors[groupIndex] = errors[groupIndex] ?? {}
-      errors[groupIndex].absolute = absoluteErrors
-    }
-  })
+      if (Object.keys(absoluteErrors).length) {
+        errors[groupIndex] = errors[groupIndex] ?? {}
+        errors[groupIndex].absolute = absoluteErrors
+      }
+    })
 
-  return Object.keys(errors).length ? { [field]: { groups: errors } } : {}
-}
+    return Object.keys(errors).length ? { [field]: { groups: errors } } : {}
+  }
 
 const generateRuleErrors = (rules, options) =>
   Object.keys(rules).reduce((acc, ruleId) => {
     const rule = rules[ruleId]
 
-    const { type, operator, value, operatorKey, valueKey } = getRuleDetails(
-      rule
-    )
+    const { type, operator, value, operatorKey, valueKey } =
+      getRuleDetails(rule)
 
     const failedOperatorValidator = options[type].operator.validate.find(item =>
       item.validator(operator)

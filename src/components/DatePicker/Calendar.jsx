@@ -1,11 +1,13 @@
-import React, { useState, useMemo, useCallback, useEffect } from 'react'
-import PropTypes from 'prop-types'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+
 import moment from 'moment'
 import 'moment/locale/de'
+import PropTypes from 'prop-types'
+import { css } from 'styled-components'
+
+import { Box, Flex, Icon, Touchable, Typography, styled } from '@etvas/etvaskit'
 
 import { COMMON_FORMAT } from './constants'
-import { Flex, Typography, Touchable, Icon, Box, styled } from '@etvas/etvaskit'
-import { css } from 'styled-components'
 
 export const Calendar = ({
   value,

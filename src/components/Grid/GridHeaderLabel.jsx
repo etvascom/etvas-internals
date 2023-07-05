@@ -1,8 +1,11 @@
 import React, { useRef } from 'react'
+
 import PropTypes from 'prop-types'
+
 import { Typography } from '@etvas/etvaskit'
-import Tooltip from '../Tooltip'
+
 import { useIsTruncated } from '../../hooks'
+import Tooltip from '../Tooltip'
 
 const GridHeaderLabel = ({ children, tooltipContent }) => {
   const headerRef = useRef()

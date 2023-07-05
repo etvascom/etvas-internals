@@ -1,11 +1,12 @@
-import React, { useLayoutEffect, useRef, useMemo, useState } from 'react'
-import PropTypes from 'prop-types'
+import React, { useLayoutEffect, useMemo, useRef, useState } from 'react'
+
 import moment from 'moment'
-import { Flex, Typography, Icon, styled } from '@etvas/etvaskit'
+import PropTypes from 'prop-types'
 import { css } from 'styled-components'
 
-import { Calendar } from './Calendar'
+import { Flex, Icon, Typography, styled } from '@etvas/etvaskit'
 
+import { Calendar } from './Calendar'
 import { COMMON_FORMAT } from './constants'
 
 export const DatePicker = ({
