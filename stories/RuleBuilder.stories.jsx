@@ -2,66 +2,46 @@ import React from 'react'
 
 import { action } from '@storybook/addon-actions'
 import { useField } from 'formik'
+import * as yup from 'yup'
 
 import { Box, Button, Form } from '@etvas/etvaskit'
 
 import {
   RuleBuilder,
+  createRuleBuilderYupSchema,
   exportRuleBuilder,
-  importRuleBuilder,
-  validateRuleBuilder
+  importRuleBuilder
 } from '../src'
 
 export default {
   title: 'Components/RuleBuilder'
 }
 
-const required = {
-  validator: value =>
-    !value || (typeof value === 'string' ? value.trim() : value).length === 0,
-  error: 'Required'
-}
-
-const betweenRequired = {
-  validator: value => {
-    const split = value?.split(',')
-    const [leftValue, rightValue] = [split?.shift(), split?.pop()]
-    return !leftValue || !rightValue
+yup.setLocale({
+  mixed: {
+    required: 'Required'
   },
-  error: 'Both values are required'
-}
-
-const betweenPositive = {
-  validator: value => {
-    const split = value?.split(',')
-    const [leftValue, rightValue] = [split?.shift(), split?.pop()]
-    return numPositive.validator(leftValue) || numPositive.validator(rightValue)
-  },
-  error: 'Both numbers must be positive'
-}
-
-const minMax = {
-  validator: value => {
-    const split = value?.split(',')
-    const [leftValue, rightValue] = [split?.shift(), split?.pop()]
-    return Number(leftValue) >= Number(rightValue)
-  },
-  error: 'The left value must be smaller than the right value'
-}
-
-const minTags = num => ({
-  validator: value =>
-    !value ||
-    value
-      .split(',')
-      .filter(val => !!val)
-      .map(val => val.trim()).length < num,
-  error: `Min ${num} tags needed`
+  number: {
+    positive: 'Must be positive'
+  }
 })
 
-const numPositive = {
-  validator: value => isNaN(value) || parseFloat(value) < 0 || value.length < 1,
-  error: 'Number must be positive'
+const betweenRequired = value => {
+  const split = value?.split(',')
+  const [leftValue, rightValue] = [split?.shift(), split?.pop()]
+  return leftValue && rightValue
+}
+
+const betweenPositive = value => {
+  const split = value?.split(',')
+  const [leftValue, rightValue] = [split?.shift(), split?.pop()]
+  return leftValue > 0 && rightValue > 0
+}
+
+const minMax = value => {
+  const split = value?.split(',')
+  const [leftValue, rightValue] = [split?.shift(), split?.pop()]
+  return Number(leftValue) < Number(rightValue)
 }
 
 const combinedRuleOptions = {
@@ -69,11 +49,11 @@ const combinedRuleOptions = {
     label: 'Merchant',
     placeholder: 'Merchant',
     allowCount: num => num <= 1,
-    validate: [required],
+    validate: yup.string().required(),
     operator: {
       label: 'Merchant Condition',
       placeholder: 'Merchant Condition',
-      validate: [required],
+      validate: yup.string().required(),
       options: [
         { label: 'contains', value: '~' },
         { label: 'exact match', value: '=' },
@@ -85,32 +65,32 @@ const combinedRuleOptions = {
       label: 'Merchant name',
       placeholder: 'Adidas',
       type: 'string',
-      validate: [required]
+      validate: yup.string().required()
     },
     operatorValue: {
       '~~': {
         label: 'Merchant name tag',
         placeholder: 'Adidas, Nike, Puma',
         type: 'tag',
-        validate: [required]
+        validate: yup.string().required()
       },
       '~=': {
         label: 'Merchant name tag',
         placeholder: 'Adidas, Nike, Puma',
         type: 'tag',
-        validate: [required, minTags(3)]
+        validate: yup.string().required()
       }
     }
   },
   amount: {
     label: 'Amount',
     placeholder: 'Amount',
-    validate: [required],
+    validate: yup.string().required(),
     allowCount: num => num <= 1,
     operator: {
       label: 'Amount Condition',
       placeholder: 'Amount Condition',
-      validate: [required],
+      validate: yup.string().required(),
       options: [
         { label: 'Greater than', value: '>' },
         { label: 'Less than', value: '<' },
@@ -122,7 +102,7 @@ const combinedRuleOptions = {
       placeholder: '10',
       type: 'number',
       suffix: '€',
-      validate: [required, numPositive]
+      validate: yup.number().positive().required()
     },
     operatorValue: {
       '><': {
@@ -131,7 +111,14 @@ const combinedRuleOptions = {
         type: 'between',
         suffix: '€',
         suffixSpace: 1,
-        validate: [betweenRequired, betweenPositive, minMax]
+        validate: yup
+          .mixed()
+          .test(
+            'between',
+            'Invalid range',
+            value =>
+              betweenRequired(value) && betweenPositive(value) && minMax(value)
+          )
       }
     }
   }
@@ -141,11 +128,11 @@ const absoluteRuleOptions = {
   timespan: {
     label: 'Timespan',
     placeholder: 'Timespan',
-    validate: [required],
+    validate: yup.string().required(),
     operator: {
       label: 'Timespan Condition',
       placeholder: 'Timespan Condition',
-      validate: [required],
+      validate: yup.string().required(),
       options: [
         { label: 'lower than', value: '<' },
         { label: 'greater than', value: '>' }
@@ -157,17 +144,17 @@ const absoluteRuleOptions = {
       type: 'number',
       suffix: 'days',
       suffixSpace: 1,
-      validate: [required, numPositive]
+      validate: yup.number().positive().required()
     }
   },
   count: {
     label: 'Transaction Number',
     placeholder: 'Transaction Number',
-    validate: [required],
+    validate: yup.string().required(),
     operator: {
       label: 'Transaction Number Condition',
       placeholder: '1',
-      validate: [required],
+      validate: yup.string().required(),
       options: [
         { label: 'Greater than', value: '>' },
         { label: 'Less than', value: '<' }
@@ -179,7 +166,7 @@ const absoluteRuleOptions = {
       type: 'number',
       suffix: 'transactions',
       suffixSpace: 1,
-      validate: [required, numPositive]
+      validate: yup.number().positive().required()
     }
   }
 }
@@ -190,6 +177,14 @@ const FormikContextViewer = () => {
   return <pre>{JSON.stringify(context.value, null, 2)}</pre>
 }
 
+const createValidationSchema = (combinedRuleOptions, absoluteRuleOptions) =>
+  yup.object().shape({
+    cashbacks: createRuleBuilderYupSchema(
+      combinedRuleOptions,
+      absoluteRuleOptions
+    )
+  })
+
 export const RuleBuilderExample = () => (
   <Box p={4} bg='white'>
     <Form
@@ -199,8 +194,7 @@ export const RuleBuilderExample = () => (
         action('form submitted')()
       }}
       initialValues={{ cashbacks: {} }}
-      validate={validateRuleBuilder(
-        'cashbacks',
+      validationSchema={createValidationSchema(
         combinedRuleOptions,
         absoluteRuleOptions
       )}>

@@ -1,60 +1,55 @@
+import * as yup from 'yup'
+
 import { getRuleDetails } from './rule'
 
-export const validateRuleBuilder =
-  (field, combinedRuleOptions, absoluteRuleOptions) => values => {
-    const errors = []
-
-    values[field].groups.forEach((group, groupIndex) => {
-      const combinedErrors = generateRuleErrors(
-        group.combined,
-        combinedRuleOptions
-      )
-
-      const absoluteErrors = group.advancedTargeting
-        ? generateRuleErrors(group.absolute, absoluteRuleOptions)
-        : []
-
-      if (Object.keys(combinedErrors).length) {
-        errors[groupIndex] = errors[groupIndex] ?? {}
-        errors[groupIndex].combined = combinedErrors
-      }
-
-      if (Object.keys(absoluteErrors).length) {
-        errors[groupIndex] = errors[groupIndex] ?? {}
-        errors[groupIndex].absolute = absoluteErrors
-      }
+export const createRuleBuilderYupSchema = (
+  combinedRuleOptions,
+  absoluteRuleOptions
+) => {
+  const groupSchema = yup.object().shape({
+    combinator: yup.string().required(),
+    not: yup.boolean().required(),
+    combined: createRulesYupSchema(combinedRuleOptions),
+    absolute: yup.mixed().when('advancedTargeting', {
+      is: true,
+      then: () => createRulesYupSchema(absoluteRuleOptions),
+      else: schema => schema.notRequired()
     })
+  })
 
-    return Object.keys(errors).length ? { [field]: { groups: errors } } : {}
-  }
+  const ruleBuilderSchema = yup.object().shape({
+    combinator: yup.string().required(),
+    groups: yup.array().of(groupSchema)
+  })
 
-const generateRuleErrors = (rules, options) =>
-  Object.keys(rules).reduce((acc, ruleId) => {
-    const rule = rules[ruleId]
+  return ruleBuilderSchema
+}
 
-    const { type, operator, value, operatorKey, valueKey } =
-      getRuleDetails(rule)
+const createRulesYupSchema = options =>
+  yup.lazy(value =>
+    yup.object().shape(
+      mapObject(value, rule => {
+        const { type, operator, operatorKey, valueKey } = getRuleDetails(rule)
 
-    const failedOperatorValidator = options[type].operator.validate.find(item =>
-      item.validator(operator)
+        const optionValue =
+          options[type]?.operatorValue?.[operator] ?? options[type].value
+
+        const operatorValidationRule = options[type].operator.validate
+        const valueValidationRule = optionValue.validate
+
+        return yup
+          .object()
+          .shape({
+            [valueKey]: valueValidationRule,
+            [operatorKey]: operatorValidationRule
+          })
+          .required()
+      })
     )
+  )
 
-    if (failedOperatorValidator) {
-      acc[ruleId] = acc[ruleId] ?? {}
-      acc[ruleId][operatorKey] = failedOperatorValidator.error
-    }
-
-    const optionValue =
-      options[type]?.operatorValue?.[operator] ?? options[type].value
-
-    const failedValueValidator = optionValue.validate.find(item =>
-      item.validator(value)
-    )
-
-    if (failedValueValidator) {
-      acc[ruleId] = acc[ruleId] ?? {}
-      acc[ruleId][valueKey] = failedValueValidator.error
-    }
-
+const mapObject = (object, callback) =>
+  Object.keys(object).reduce((acc, key) => {
+    acc[key] = callback(object[key], key)
     return acc
   }, {})
