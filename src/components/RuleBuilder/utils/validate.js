@@ -10,11 +10,14 @@ export const createRuleBuilderYupSchema = (
     combinator: yup.string().required(),
     not: yup.boolean().required(),
     combined: createRulesYupSchema(combinedRuleOptions),
-    absolute: yup.mixed().when('advancedTargeting', {
-      is: true,
-      then: () => createRulesYupSchema(absoluteRuleOptions),
-      else: schema => schema.notRequired()
-    })
+    absolute: yup
+      .mixed()
+      .nullable()
+      .when('advancedTargeting', {
+        is: true,
+        then: () => createRulesYupSchema(absoluteRuleOptions),
+        else: schema => schema.notRequired()
+      })
   })
 
   const ruleBuilderSchema = yup.object().shape({
