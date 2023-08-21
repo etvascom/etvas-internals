@@ -1,4 +1,5 @@
 import React, {
+  useCallback,
   useEffect,
   useLayoutEffect,
   useMemo,
@@ -34,7 +35,8 @@ const Grid = ({
   isDisabledRow,
   rowColor,
   busyVariant,
-  busySkeletonNumber
+  busySkeletonNumber,
+  allowMultipleExtendedItems
 }) => {
   const [sortConfig, setSortConfig] = useState(() => {
     if (initialSort?.by) {
@@ -52,11 +54,56 @@ const Grid = ({
     }
     return {}
   })
-  const [extendedItem, setExtendedItem] = useState('')
+  const [extendedItems, setExtendedItems] = useState([])
   const isExpandableRow = !!RenderExtended
 
+  const isExtended = value => extendedItems.includes(value)
+  const isItemExtended = item => extendedItems.includes(item[extendedField])
+
+  const extendItem = useCallback(
+    item => {
+      if (allowMultipleExtendedItems) {
+        setExtendedItems([...extendedItems, item[extendedField]])
+      } else {
+        setExtendedItems([item[extendedField]])
+      }
+    },
+    [allowMultipleExtendedItems, extendedField, extendedItems]
+  )
+
+  const collapseItem = useCallback(
+    item => {
+      if (allowMultipleExtendedItems) {
+        setExtendedItems(
+          extendedItems.filter(
+            extendedItem => extendedItem !== item[extendedField]
+          )
+        )
+      } else {
+        setExtendedItems([])
+      }
+    },
+    [allowMultipleExtendedItems, extendedField, extendedItems]
+  )
+
+  const toggleItemExtended = item => {
+    if (isExtended(item[extendedField])) {
+      collapseItem(item)
+    } else {
+      extendItem(item)
+    }
+  }
+
   useEffect(() => {
-    setExtendedItem(forceExtended || '')
+    if (!forceExtended) {
+      return
+    }
+
+    if (Array.isArray(forceExtended)) {
+      setExtendedItems(forceExtended)
+    } else {
+      setExtendedItems([forceExtended])
+    }
   }, [forceExtended])
 
   const gridColumns = useMemo(() => {
@@ -78,14 +125,14 @@ const Grid = ({
         },
         action: (item, extended) => {
           if (!extended) {
-            setExtendedItem(item[extendedField])
+            extendItem(item)
           } else {
-            setExtendedItem('')
+            collapseItem(item)
           }
         }
       }
     ]
-  }, [columns, extendedField])
+  }, [collapseItem, columns, extendItem, extendedField])
 
   const toggleSort = field => {
     const column = columns.find(col => col.sort === field)
@@ -126,11 +173,7 @@ const Grid = ({
       return
     }
 
-    if (item[extendedField] === extendedItem) {
-      setExtendedItem('')
-    } else {
-      setExtendedItem(item[extendedField])
-    }
+    toggleItemExtended(item)
   }
 
   return (
@@ -151,23 +194,20 @@ const Grid = ({
         ) : (
           sortItems(items, sortConfig).map(item => (
             <ItemWrapper
-              scroll={
-                item[extendedField] === extendedItem &&
-                forceExtended === extendedItem
-              }
+              scroll={isItemExtended(item) && isExtended(forceExtended)}
               key={item[rowKeyAttribute]}>
               <Row
                 key={`${name}-row-${item.id ?? item._id}`}
                 item={item}
                 prefix={name}
                 columns={gridColumns}
-                extended={item[extendedField] === extendedItem}
+                extended={isItemExtended(item)}
                 isClickableRow={isExpandableRow || !!onRowClick}
                 rowColor={rowColor}
                 rowAction={handleOnRowClick}
                 isDisabledRow={isDisabledRow(item)}
               />
-              {item[extendedField] === extendedItem ? (
+              {isItemExtended(item) ? (
                 <ExtendedWrapper>
                   {item['key'] ? (
                     <RenderExtended item={item} />
@@ -252,7 +292,8 @@ Grid.propTypes = {
   busyVariant: PropTypes.oneOf(['blockSkeleton', 'runningBar']),
   isDisabledRow: PropTypes.func,
   busySkeletonNumber: PropTypes.number,
-  rowColor: PropTypes.func
+  rowColor: PropTypes.func,
+  allowMultipleExtendedItems: PropTypes.bool
 }
 
 Grid.defaultProps = {
@@ -262,7 +303,8 @@ Grid.defaultProps = {
   busyVariant: 'runningBar',
   isDisabledRow: () => false,
   busySkeletonNumber: 5,
-  rowColor: item => 'baseWhite'
+  rowColor: item => 'baseWhite',
+  allowMultipleExtendedItems: false
 }
 
 export default Grid

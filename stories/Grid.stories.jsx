@@ -143,7 +143,7 @@ const getItems = () => [
     description: 'this is a long description'
   },
   {
-    id: '3',
+    id: '4',
     name: 'this is a super long name and will need to be truncated by the grid',
     value: 0,
     description:
@@ -234,5 +234,40 @@ export const GridWithLongHeaders = () => {
     <Box m={10}>
       <Grid name={grid.name} columns={grid.columns} items={items} />
     </Box>
+  )
+}
+
+export const MultipleExtended = args => {
+  const grid = getExampleGrid()
+  const items = getItems()
+
+  return (
+    <Grid
+      name={grid.name}
+      columns={grid.columns}
+      items={items}
+      busy={false}
+      extendedField={grid.extendedField}
+      renderExtended={grid.renderExtended}
+      allowMultipleExtendedItems
+    />
+  )
+}
+
+export const MultipleForceExtended = args => {
+  const grid = getExampleGrid()
+  const items = getItems()
+
+  return (
+    <Grid
+      name={grid.name}
+      columns={grid.columns}
+      items={items}
+      busy={false}
+      extendedField={grid.extendedField}
+      renderExtended={grid.renderExtended}
+      allowMultipleExtendedItems
+      forceExtended={items.map(({ id }) => id)}
+    />
   )
 }
