@@ -16,7 +16,7 @@ export const createRuleBuilderYupSchema = (
       .when('advancedTargeting', {
         is: true,
         then: () => createRulesYupSchema(absoluteRuleOptions),
-        else: schema => schema.notRequired()
+        otherwise: schema => schema.notRequired()
       })
   })
 
