@@ -27,9 +27,14 @@ const HeaderCell = ({ column, sortType }) => (
         </StyledOrderIcons>
       </Box>
     ) : null}
-    <GridHeaderLabel tooltipContent={column.header}>
-      {column.header}
-    </GridHeaderLabel>
+
+    {column.headerComponent ? (
+      column.headerComponent
+    ) : (
+      <GridHeaderLabel tooltipContent={column.header}>
+        {column.header}
+      </GridHeaderLabel>
+    )}
   </StyledWrapper>
 )
 
