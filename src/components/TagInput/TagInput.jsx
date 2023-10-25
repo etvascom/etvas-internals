@@ -127,7 +127,7 @@ export const TagInput = forwardRef(
                 my={1}
               />
             ))}
-            {!disabled && maxTags >= tags.length && (
+            {maxTags >= tags.length && (
               <StyledInput
                 variant={currentVariant}
                 autoComplete={autoComplete}
