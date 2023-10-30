@@ -11,13 +11,14 @@ export const GridMainComponent = ({
   children,
   icon,
   iconColor,
+  iconPosition,
   dotColor,
   ...props
 }) => (
   <Flex alignItems='center' width='100%' pr={2}>
-    {!!icon && (
+    {!!icon && iconPosition === 'left' && (
       <Flex alignItems='center' mr={3}>
-        <Icon name={icon} size='medium' color={iconColor} />
+        <Icon name={icon} size='medium' color={iconColor} x />
       </Flex>
     )}
     {!!dotColor && (
@@ -28,6 +29,11 @@ export const GridMainComponent = ({
     <TruncateGridInfo minWidth='0' fontWeight='normal' {...props}>
       {children}
     </TruncateGridInfo>
+    {!!icon && iconPosition === 'right' && (
+      <Flex alignItems='center'>
+        <Icon name={icon} size='medium' color={iconColor} />
+      </Flex>
+    )}
   </Flex>
 )
 
@@ -80,9 +86,11 @@ GridMainComponent.propTypes = {
   children: PropTypes.any,
   icon: PropTypes.string,
   dotColor: PropTypes.string,
-  iconColor: PropTypes.string
+  iconColor: PropTypes.string,
+  iconPosition: PropTypes.oneOf(['right', 'left'])
 }
 
 GridMainComponent.defaultProps = {
-  iconColor: 'inputIcon'
+  iconColor: 'inputIcon',
+  iconPosition: 'left'
 }
