@@ -4,15 +4,29 @@ import moment from 'moment'
 import PropTypes from 'prop-types'
 import { css } from 'styled-components'
 
-import { Box, Button, Flex, Icon, Typography, styled } from '@etvas/etvaskit'
+import {
+  Box,
+  Button,
+  Checkbox,
+  Dropdown,
+  Flex,
+  Icon,
+  Typography,
+  styled
+} from '@etvas/etvaskit'
 
 import { Calendar } from './Calendar'
-import { COMMON_FORMAT, CURRENT_MONTH_FORMAT } from './constants'
+import {
+  COMMON_FORMAT,
+  CURRENT_MONTH_FORMAT,
+  compareMethods
+} from './constants'
 
 export const RangePicker = ({
+  multiple,
   startOfTime,
   endOfTime,
-  value,
+  value: rawValue,
   displayFormat,
   yearDisplayStart,
   yearDisplayEnd,
@@ -21,12 +35,23 @@ export const RangePicker = ({
   onChange,
   label,
   placeholder,
+  labelCompareWith,
+  labelCompareDivider,
+  labelLastPeriod,
+  compareLabels,
   ...props
 }) => {
   const wrapRef = useRef()
   const [isExpanded, setExpanded] = useState(false)
   const [isSettingEnd, setSettingEnd] = useState(false)
   const [currentHover, setCurrentHover] = useState(null)
+  const [isComparing, setComparing] = useState(false)
+  const [compareMethod, setCompareMethod] = useState(
+    compareLabels?.[compareMethods.lastPeriod]
+  )
+
+  const value = multiple ? rawValue?.[0] : rawValue
+  const compareValue = multiple ? rawValue?.[1] : null
 
   const [currentMonth, setCurrentMonth] = useState(() => {
     const { start } = value || {}
@@ -97,16 +122,50 @@ export const RangePicker = ({
   const handleCanChange = pos => value =>
     currentMonth.clone().add(pos, 'month').isSame(moment.utc(value), 'month')
 
+  const computeSecondInterval = ({ start, end }, compareMethod) => {
+    const _start = moment(start)
+    const _end = moment(end)
+
+    const diff = _end.diff(_start, 'days') + 1
+
+    return {
+      start: _start.subtract(diff, 'days').format(COMMON_FORMAT),
+      end: _end.subtract(diff, 'days').format(COMMON_FORMAT)
+    }
+  }
+
+  const handleChange = ({ start, end }, isComparing, compareMethod) => {
+    if (!onChange) {
+      return
+    }
+
+    if (!multiple) {
+      onChange({ start, end })
+      return
+    }
+
+    if (!isComparing) {
+      onChange([{ start, end }])
+      return
+    }
+
+    const secondInterval = computeSecondInterval({ start, end }, compareMethod)
+
+    onChange([{ start, end }, secondInterval])
+  }
+
   const handleCalendarClick = value => {
     if (isSettingEnd) {
       const _mEnd = moment.utc(value)
       setDateRange({ mStart: mStart.clone(), mEnd: _mEnd })
-      if (onChange) {
-        onChange({
+      handleChange(
+        {
           start: mStart.format(COMMON_FORMAT),
           end: _mEnd.format(COMMON_FORMAT)
-        })
-      }
+        },
+        isComparing,
+        compareMethod
+      )
       setSettingEnd(false)
       setExpanded(false)
       return
@@ -114,6 +173,16 @@ export const RangePicker = ({
     const _mStart = moment.utc(value)
     setDateRange({ mStart: _mStart, mEnd: _mStart })
     setSettingEnd(true)
+  }
+
+  const handleComparingChange = () => {
+    setComparing(!isComparing)
+    handleChange(value, !isComparing, compareMethod)
+  }
+
+  const handleCompareMethodChange = method => {
+    setCompareMethod(method)
+    handleChange(value, isComparing, method)
   }
 
   const toggleExpanded = () => {
@@ -168,6 +237,15 @@ export const RangePicker = ({
               <>
                 {moment.utc(value.start).format(displayFormat)} &divide;{' '}
                 {moment.utc(value.end).format(displayFormat)}
+                {multiple && isComparing && (
+                  <>
+                    {' '}
+                    {labelCompareDivider}{' '}
+                    {moment.utc(compareValue.start).format(displayFormat)}{' '}
+                    &divide;{' '}
+                    {moment.utc(compareValue.end).format(displayFormat)}
+                  </>
+                )}
               </>
             )}
           </Typography>
@@ -177,62 +255,92 @@ export const RangePicker = ({
         </FakeInput>
         {isExpanded && (
           <DropdownWrapper>
-            <Box mx={2}>
-              <CalendarHeading>
-                <Button
-                  icon='chevronLeft'
-                  variant='link'
-                  onClick={() => navigateMonth(-1)}
-                />
-                <Typography variant='base14Bold'>
-                  {currentMonth.format(CURRENT_MONTH_FORMAT)}
-                </Typography>
-                <div></div>
-              </CalendarHeading>
-              <Calendar
-                value={mStart.format(COMMON_FORMAT)}
-                browseDate={currentMonth.format(COMMON_FORMAT)}
-                monthSelector={false}
-                yearSelector={false}
-                monthNavigation={false}
-                onChange={handleCalendarClick}
-                canChange={handleCanChange(0)}
-                onHover={handleHover}
-                startOfTime={rangeStartOfTime.format(COMMON_FORMAT)}
-                endOfTime={rangeEndOfTime.format(COMMON_FORMAT)}
-                highlight={highlight}
-                highlightCurrent={false}
-                label={false}
-              />
-            </Box>
-            <Box mx={2}>
-              <CalendarHeading>
-                <div></div>
-                <Typography variant='base14Bold'>
-                  {nextMonth.format(CURRENT_MONTH_FORMAT)}
-                </Typography>
-                <Button
-                  icon='chevronRight'
-                  variant='link'
-                  onClick={() => navigateMonth(1)}
-                />
-              </CalendarHeading>
-              <Calendar
-                value={mEnd.format(COMMON_FORMAT)}
-                browseDate={nextMonth.format(COMMON_FORMAT)}
-                monthSelector={false}
-                yearSelector={false}
-                monthNavigation={false}
-                monthNavigationWithinYear={false}
-                onChange={handleCalendarClick}
-                canChange={handleCanChange(1)}
-                onHover={handleHover}
-                startOfTime={rangeStartOfTime.format(COMMON_FORMAT)}
-                endOfTime={rangeEndOfTime.format(COMMON_FORMAT)}
-                highlight={highlight}
-                highlightCurrent={false}
-                label={false}
-              />
+            <Box>
+              <Flex>
+                <Box mx={2}>
+                  <CalendarHeading>
+                    <Button
+                      icon='chevronLeft'
+                      variant='link'
+                      onClick={() => navigateMonth(-1)}
+                    />
+                    <Typography variant='base14Bold'>
+                      {currentMonth.format(CURRENT_MONTH_FORMAT)}
+                    </Typography>
+                    <div></div>
+                  </CalendarHeading>
+                  <Calendar
+                    value={mStart.format(COMMON_FORMAT)}
+                    browseDate={currentMonth.format(COMMON_FORMAT)}
+                    monthSelector={false}
+                    yearSelector={false}
+                    monthNavigation={false}
+                    onChange={handleCalendarClick}
+                    canChange={handleCanChange(0)}
+                    onHover={handleHover}
+                    startOfTime={rangeStartOfTime.format(COMMON_FORMAT)}
+                    endOfTime={rangeEndOfTime.format(COMMON_FORMAT)}
+                    highlight={highlight}
+                    highlightCurrent={false}
+                    label={false}
+                  />
+                </Box>
+                <Box mx={2}>
+                  <CalendarHeading>
+                    <div></div>
+                    <Typography variant='base14Bold'>
+                      {nextMonth.format(CURRENT_MONTH_FORMAT)}
+                    </Typography>
+                    <Button
+                      icon='chevronRight'
+                      variant='link'
+                      onClick={() => navigateMonth(1)}
+                    />
+                  </CalendarHeading>
+                  <Calendar
+                    value={mEnd.format(COMMON_FORMAT)}
+                    browseDate={nextMonth.format(COMMON_FORMAT)}
+                    monthSelector={false}
+                    yearSelector={false}
+                    monthNavigation={false}
+                    monthNavigationWithinYear={false}
+                    onChange={handleCalendarClick}
+                    canChange={handleCanChange(1)}
+                    onHover={handleHover}
+                    startOfTime={rangeStartOfTime.format(COMMON_FORMAT)}
+                    endOfTime={rangeEndOfTime.format(COMMON_FORMAT)}
+                    highlight={highlight}
+                    highlightCurrent={false}
+                    label={false}
+                  />
+                </Box>
+              </Flex>
+
+              {multiple && (
+                <Flex alignItems='center' mt={4} mx={2}>
+                  <Checkbox
+                    checked={isComparing}
+                    onChange={handleComparingChange}
+                  />
+                  <Typography variant='base12Light' mx={2}>
+                    {labelCompareWith}:
+                  </Typography>
+                  <Dropdown
+                    width='200px'
+                    value={compareMethod}
+                    required
+                    onChange={handleCompareMethodChange}
+                    noBottomSpace>
+                    {Object.keys(compareMethods).map(method => (
+                      <Dropdown.Option
+                        key={method}
+                        value={compareLabels[method]}>
+                        {compareLabels[method]}
+                      </Dropdown.Option>
+                    ))}
+                  </Dropdown>
+                </Flex>
+              )}
             </Box>
           </DropdownWrapper>
         )}
@@ -289,6 +397,7 @@ const CalendarHeading = styled(Flex)`
 `
 
 RangePicker.propTypes = {
+  multiple: PropTypes.bool,
   yearDisplayStart: PropTypes.number,
   yearDisplayEnd: PropTypes.number,
   startOfTime: PropTypes.oneOfType([
@@ -317,11 +426,18 @@ RangePicker.propTypes = {
   disabled: PropTypes.bool,
   displayFormat: PropTypes.string,
   label: PropTypes.node,
+  labelCompareWith: PropTypes.node,
+  labelCompareDivider: PropTypes.node,
+  labelLastPeriod: PropTypes.node,
+  compareLabels: PropTypes.shape({
+    [compareMethods.lastPeriod]: PropTypes.node
+  }),
   placeholder: PropTypes.node,
   navigationByYear: PropTypes.bool
 }
 
 RangePicker.defaultProps = {
+  multiple: false,
   displayFormat: 'D MMMM YYYY',
   navigationByYear: true
 }
