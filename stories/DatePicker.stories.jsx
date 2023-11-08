@@ -158,3 +158,39 @@ export const RangePickerWithNavigationByYear = () => {
     />
   )
 }
+
+export const MultiRangePickerWithLabel = () => {
+  const [dateRange, setDateRange] = useState()
+
+  const onChangeDateRange = value => {
+    setDateRange(value)
+  }
+
+  return (
+    <>
+      <RangePicker
+        multiple
+        value={dateRange}
+        label='Date Range Picker'
+        placeholder='Select new range'
+        onChange={onChangeDateRange}
+        displayFormat='DD.MM.YYYY'
+        yearDisplayStart={2021}
+        yearDisplayEnd={2022}
+        startOfTime='2021-12-05'
+        endOfTime='2025-03-15'
+        labelYear='Selected Year'
+        labelStartDate='Start Date'
+        labelEndDate='End Date'
+        labelCompareWith='Compare with'
+        labelCompareDivider='compared with'
+        compareLabels={{
+          lastPeriod: 'Last Period',
+          lastYear: 'Last Year'
+        }}
+        navigationByYear={false}
+      />
+      <pre>{JSON.stringify(dateRange, null, 2)}</pre>
+    </>
+  )
+}
