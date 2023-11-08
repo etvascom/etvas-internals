@@ -185,7 +185,8 @@ export const MultiRangePickerWithLabel = () => {
         labelCompareWith='Compare with'
         labelCompareDivider='compared with'
         compareLabels={{
-          lastPeriod: 'Last Period'
+          lastPeriod: 'Last Period',
+          lastYear: 'Last Year'
         }}
         navigationByYear={false}
       />

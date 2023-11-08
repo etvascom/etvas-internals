@@ -46,9 +46,7 @@ export const RangePicker = ({
   const [isSettingEnd, setSettingEnd] = useState(false)
   const [currentHover, setCurrentHover] = useState(null)
   const [isComparing, setComparing] = useState(false)
-  const [compareMethod, setCompareMethod] = useState(
-    compareLabels?.[compareMethods.lastPeriod]
-  )
+  const [compareMethod, setCompareMethod] = useState(compareMethods.lastPeriod)
 
   const value = multiple ? rawValue?.[0] : rawValue
   const compareValue = multiple ? rawValue?.[1] : null
@@ -126,11 +124,17 @@ export const RangePicker = ({
     const _start = moment(start)
     const _end = moment(end)
 
-    const diff = _end.diff(_start, 'days') + 1
+    if (compareMethod === compareMethods.lastPeriod) {
+      const diff = _end.diff(_start, 'days') + 1
+      return {
+        start: _start.subtract(diff, 'days').format(COMMON_FORMAT),
+        end: _end.subtract(diff, 'days').format(COMMON_FORMAT)
+      }
+    }
 
     return {
-      start: _start.subtract(diff, 'days').format(COMMON_FORMAT),
-      end: _end.subtract(diff, 'days').format(COMMON_FORMAT)
+      start: _start.subtract(1, 'year').format(COMMON_FORMAT),
+      end: _end.subtract(1, 'year').format(COMMON_FORMAT)
     }
   }
 
@@ -330,11 +334,10 @@ export const RangePicker = ({
                     value={compareMethod}
                     required
                     onChange={handleCompareMethodChange}
+                    valueRender={value => compareLabels[value]}
                     noBottomSpace>
                     {Object.keys(compareMethods).map(method => (
-                      <Dropdown.Option
-                        key={method}
-                        value={compareLabels[method]}>
+                      <Dropdown.Option key={method} value={method}>
                         {compareLabels[method]}
                       </Dropdown.Option>
                     ))}
