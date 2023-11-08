@@ -121,20 +121,17 @@ export const RangePicker = ({
     currentMonth.clone().add(pos, 'month').isSame(moment.utc(value), 'month')
 
   const computeSecondInterval = ({ start, end }, compareMethod) => {
-    const _start = moment(start)
-    const _end = moment(end)
-
     if (compareMethod === compareMethods.lastPeriod) {
-      const diff = _end.diff(_start, 'days') + 1
+      const diff = end.diff(start, 'days') + 1
       return {
-        start: _start.subtract(diff, 'days').format(COMMON_FORMAT),
-        end: _end.subtract(diff, 'days').format(COMMON_FORMAT)
+        start: start.subtract(diff, 'days').format(COMMON_FORMAT),
+        end: end.subtract(diff, 'days').format(COMMON_FORMAT)
       }
     }
 
     return {
-      start: _start.subtract(1, 'year').format(COMMON_FORMAT),
-      end: _end.subtract(1, 'year').format(COMMON_FORMAT)
+      start: start.subtract(1, 'year').format(COMMON_FORMAT),
+      end: end.subtract(1, 'year').format(COMMON_FORMAT)
     }
   }
 
@@ -153,7 +150,10 @@ export const RangePicker = ({
       return
     }
 
-    const secondInterval = computeSecondInterval({ start, end }, compareMethod)
+    const secondInterval = computeSecondInterval(
+      { start: moment(start), end: moment(end) },
+      compareMethod
+    )
 
     onChange([{ start, end }, secondInterval])
   }
