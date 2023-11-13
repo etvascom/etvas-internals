@@ -99,6 +99,7 @@ export const Rule = ({
 
       {value.type === 'searchMultiple' ? (
         <DropdownField
+          maxWidth='31%'
           disabled={disabled}
           options={value.options}
           name={`${name}.${type}Value`}

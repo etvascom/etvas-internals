@@ -44,15 +44,13 @@ const minMax = value => {
   return Number(leftValue) < Number(rightValue)
 }
 
-const options = []
-for (let i = 0; i < 1000; i++) {
-  options.push({
-    id: `key-${i}`,
-    label: `Item number ${i}`,
-    value: `Item value ${i}`
-  })
-}
-
+const getCategoryOptions = () =>
+  Array.from({ length: 100 }, (_, i) => ({
+    id: `Id-${i}`,
+    label: `Category ${i}`,
+    value: `Value ${i}`
+  }))
+  
 const combinedRuleOptions = {
   merchant: {
     label: 'Merchant',
@@ -147,7 +145,7 @@ const combinedRuleOptions = {
       '~=': {
         label: 'Category',
         type: 'searchMultiple',
-        options,
+        options: getCategoryOptions(),
         validate: yup.array().of(yup.string()).required()
       }
     }
