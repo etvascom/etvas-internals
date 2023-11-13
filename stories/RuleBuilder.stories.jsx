@@ -44,6 +44,13 @@ const minMax = value => {
   return Number(leftValue) < Number(rightValue)
 }
 
+const getCategoryOptions = () =>
+  Array.from({ length: 100 }, (_, i) => ({
+    id: `Id-${i}`,
+    label: `Category ${i}`,
+    value: `Value ${i}`
+  }))
+  
 const combinedRuleOptions = {
   merchant: {
     label: 'Merchant',
@@ -119,6 +126,27 @@ const combinedRuleOptions = {
             value =>
               betweenRequired(value) && betweenPositive(value) && minMax(value)
           )
+      }
+    }
+  },
+  category: {
+    label: 'Category',
+    placeholder: 'Category',
+    allowCount: num => num <= 1,
+    validate: yup.string().required(),
+    operator: {
+      label: 'Category Condition',
+      placeholder: 'Category Condition',
+      validate: yup.string().required(),
+      options: [{ label: 'is one of', value: '~=' }]
+    },
+
+    operatorValue: {
+      '~=': {
+        label: 'Category',
+        type: 'searchMultiple',
+        options: getCategoryOptions(),
+        validate: yup.array().of(yup.string()).required()
       }
     }
   }

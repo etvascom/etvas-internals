@@ -97,7 +97,18 @@ export const Rule = ({
         mr={4}
       />
 
-      {value.type === 'tag' ? (
+      {value.type === 'searchMultiple' ? (
+        <DropdownField
+          maxWidth='31%'
+          disabled={disabled}
+          options={value.options}
+          name={`${name}.${type}Value`}
+          placeholder={valuePlaceholder}
+          label={value.label}
+          multiple
+          required
+        />
+      ) : value.type === 'tag' ? (
         <TagField
           disabled={disabled}
           name={`${name}.${type}Value`}
