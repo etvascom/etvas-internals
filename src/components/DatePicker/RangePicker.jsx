@@ -1,4 +1,10 @@
-import React, { useLayoutEffect, useMemo, useRef, useState } from 'react'
+import React, {
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState
+} from 'react'
 
 import moment from 'moment'
 import PropTypes from 'prop-types'
@@ -8,9 +14,11 @@ import {
   Box,
   Button,
   Checkbox,
+  Chip,
   Dropdown,
   Flex,
   Icon,
+  Touchable,
   Typography,
   styled
 } from '@etvas/etvaskit'
@@ -37,6 +45,8 @@ export const RangePicker = ({
   placeholder,
   labelCompareWith,
   labelCompareDivider,
+  labelCurrent,
+  labelCompare,
   labelLastPeriod,
   compareLabels,
   ...props
@@ -47,14 +57,17 @@ export const RangePicker = ({
   const [currentHover, setCurrentHover] = useState(null)
   const [isComparing, setComparing] = useState(false)
   const [compareMethod, setCompareMethod] = useState(compareMethods.lastPeriod)
+  const [showCurrentPeriod, setShowCurrentPeriod] = useState(true)
 
   const value = multiple ? rawValue?.[0] : rawValue
   const compareValue = multiple ? rawValue?.[1] : null
 
+  const canSwitchToCompare =
+    compareMethod === compareMethods.customPeriod && isComparing
+
   const [currentMonth, setCurrentMonth] = useState(() => {
     const { start } = value || {}
-    const currentMonth = moment(start || moment().startOf('month'))
-    return currentMonth
+    return moment(start || moment().startOf('month'))
   })
 
   const resetDateRange = val => {
@@ -121,17 +134,17 @@ export const RangePicker = ({
     currentMonth.clone().add(pos, 'month').isSame(moment.utc(value), 'month')
 
   const computeSecondInterval = ({ start, end }, compareMethod) => {
-    if (compareMethod === compareMethods.lastPeriod) {
-      const diff = end.diff(start, 'days') + 1
+    if (compareMethod === compareMethods.lastYear) {
       return {
-        start: start.subtract(diff, 'days').format(COMMON_FORMAT),
-        end: end.subtract(diff, 'days').format(COMMON_FORMAT)
+        start: start.subtract(1, 'year').format(COMMON_FORMAT),
+        end: end.subtract(1, 'year').format(COMMON_FORMAT)
       }
     }
 
+    const diff = end.diff(start, 'days') + 1
     return {
-      start: start.subtract(1, 'year').format(COMMON_FORMAT),
-      end: end.subtract(1, 'year').format(COMMON_FORMAT)
+      start: start.subtract(diff, 'days').format(COMMON_FORMAT),
+      end: end.subtract(diff, 'days').format(COMMON_FORMAT)
     }
   }
 
@@ -151,9 +164,19 @@ export const RangePicker = ({
     }
 
     const secondInterval = computeSecondInterval(
-      { start: moment(start), end: moment(end) },
+      { start: moment.utc(start), end: moment.utc(end) },
       compareMethod
     )
+
+    if (canSwitchToCompare) {
+      onChange(
+        showCurrentPeriod
+          ? [{ start, end }, compareValue ?? { start, end }]
+          : [value, { start, end }]
+      )
+
+      return
+    }
 
     onChange([{ start, end }, secondInterval])
   }
@@ -171,7 +194,8 @@ export const RangePicker = ({
         compareMethod
       )
       setSettingEnd(false)
-      setExpanded(false)
+      setExpanded(canSwitchToCompare)
+      setShowCurrentPeriod(!canSwitchToCompare)
       return
     }
     const _mStart = moment.utc(value)
@@ -185,9 +209,32 @@ export const RangePicker = ({
   }
 
   const handleCompareMethodChange = method => {
+    if (
+      compareMethod === compareMethods.customPeriod &&
+      method !== compareMethod
+    ) {
+      setShowCurrentPeriod(true)
+    }
+
     setCompareMethod(method)
     handleChange(value, isComparing, method)
   }
+
+  const handleShowCurrentPeriodChange = newShowCurrentPeriod => () => {
+    setShowCurrentPeriod(newShowCurrentPeriod)
+
+    const _value = newShowCurrentPeriod ? value : compareValue
+    setCurrentMonth(moment.utc(_value?.start))
+  }
+
+  useEffect(() => {
+    const _value = showCurrentPeriod ? value : compareValue
+
+    setDateRange({
+      mStart: moment.utc(_value?.start),
+      mEnd: moment.utc(_value?.end)
+    })
+  }, [value, compareValue, showCurrentPeriod])
 
   const toggleExpanded = () => {
     if (!value?.start && isExpanded) {
@@ -321,27 +368,51 @@ export const RangePicker = ({
               </Flex>
 
               {multiple && (
-                <Flex alignItems='center' mt={4} mx={2}>
-                  <Checkbox
-                    checked={isComparing}
-                    onChange={handleComparingChange}
-                  />
-                  <Typography variant='base12Light' mx={2}>
-                    {labelCompareWith}:
-                  </Typography>
-                  <Dropdown
-                    width='200px'
-                    value={compareMethod}
-                    required
-                    onChange={handleCompareMethodChange}
-                    valueRender={value => compareLabels[value]}
-                    noBottomSpace>
-                    {Object.keys(compareMethods).map(method => (
-                      <Dropdown.Option key={method} value={method}>
-                        {compareLabels[method]}
-                      </Dropdown.Option>
-                    ))}
-                  </Dropdown>
+                <Flex
+                  alignItems='center'
+                  justifyContent='space-between'
+                  mt={4}
+                  mx={2}>
+                  <Flex alignItems='center'>
+                    <Checkbox
+                      checked={isComparing}
+                      onChange={handleComparingChange}
+                    />
+                    <Typography variant='base12Light' mx={2}>
+                      {labelCompareWith}:
+                    </Typography>
+                    <Dropdown
+                      width='150px'
+                      value={compareMethod}
+                      required
+                      onChange={handleCompareMethodChange}
+                      valueRender={value => compareLabels[value]}
+                      noBottomSpace>
+                      {Object.keys(compareMethods).map(method => (
+                        <Dropdown.Option key={method} value={method}>
+                          {compareLabels[method]}
+                        </Dropdown.Option>
+                      ))}
+                    </Dropdown>
+                  </Flex>
+                  {canSwitchToCompare && (
+                    <Flex alignItems='center'>
+                      <Touchable onClick={handleShowCurrentPeriodChange(true)}>
+                        <Chip
+                          color={showCurrentPeriod ? 'etvas' : 'white'}
+                          contentColor={showCurrentPeriod ? 'white' : 'black'}>
+                          {labelCurrent}
+                        </Chip>
+                      </Touchable>
+                      <Touchable onClick={handleShowCurrentPeriodChange(false)}>
+                        <Chip
+                          color={!showCurrentPeriod ? 'etvas' : 'white'}
+                          contentColor={!showCurrentPeriod ? 'white' : 'black'}>
+                          {labelCompare}
+                        </Chip>
+                      </Touchable>
+                    </Flex>
+                  )}
                 </Flex>
               )}
             </Box>
@@ -377,8 +448,8 @@ const FakeInput = styled(Flex)(({ expanded, disabled, theme }) =>
       disabled
         ? theme.colors.inputBorderGray
         : expanded
-        ? theme.colors.accent
-        : theme.colors.inputBorderGray
+          ? theme.colors.accent
+          : theme.colors.inputBorderGray
     }`,
     borderRadius: 2,
     cursor: disabled ? 'not-allowed' : 'pointer',
@@ -431,6 +502,8 @@ RangePicker.propTypes = {
   label: PropTypes.node,
   labelCompareWith: PropTypes.node,
   labelCompareDivider: PropTypes.node,
+  labelCurrent: PropTypes.node,
+  labelCompare: PropTypes.node,
   labelLastPeriod: PropTypes.node,
   compareLabels: PropTypes.shape({
     [compareMethods.lastPeriod]: PropTypes.node

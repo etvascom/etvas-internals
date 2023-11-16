@@ -184,9 +184,12 @@ export const MultiRangePickerWithLabel = () => {
         labelEndDate='End Date'
         labelCompareWith='Compare with'
         labelCompareDivider='compared with'
+        labelCurrent='Current'
+        labelCompare='Compare'
         compareLabels={{
           lastPeriod: 'Last Period',
-          lastYear: 'Last Year'
+          lastYear: 'Last Year',
+          customPeriod: 'Custom Period'
         }}
         navigationByYear={false}
       />
