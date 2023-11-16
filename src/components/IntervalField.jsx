@@ -18,7 +18,8 @@ export const IntervalField = ({
   separator,
   stringSeparator,
   suffix,
-  suffixSpace
+  suffixSpace,
+  ...props
 }) => {
   const [{ value }, { touched, error }, { setValue }] = useField(name)
   const { submitCount } = useFormikContext()
@@ -69,7 +70,8 @@ export const IntervalField = ({
       width={1}
       flexDirection='column'
       justifyContent='center'
-      alignItems='center'>
+      alignItems='center'
+      {...props}>
       <Flex width={1} justifyContent='space-between' alignItems='flex-end'>
         <SubdomainInput
           id={idLeft}
