@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
 
 import { useField } from 'formik'
 import PropTypes from 'prop-types'
@@ -99,7 +99,7 @@ export const Rule = ({
 
       {value.type === 'searchMultiple' ? (
         <DropdownField
-          maxWidth='31%'
+          {...operatorValueWidthProps}
           disabled={disabled}
           options={value.options}
           name={`${name}.${type}Value`}
@@ -110,6 +110,7 @@ export const Rule = ({
         />
       ) : value.type === 'tag' ? (
         <TagField
+          {...operatorValueWidthProps}
           disabled={disabled}
           name={`${name}.${type}Value`}
           type='text'
@@ -120,6 +121,7 @@ export const Rule = ({
         />
       ) : value.type === 'between' ? (
         <IntervalField
+          {...operatorValueWidthProps}
           disabled={disabled}
           name={`${name}.${type}Value`}
           label={value.label}
@@ -130,6 +132,7 @@ export const Rule = ({
         />
       ) : isSuffixType ? (
         <SubdomainField
+          {...operatorValueWidthProps}
           disabled={disabled}
           name={`${name}.${type}Value`}
           type={value.type}
@@ -142,6 +145,7 @@ export const Rule = ({
         />
       ) : (
         <TextField
+          {...operatorValueWidthProps}
           disabled={disabled}
           name={`${name}.${type}Value`}
           type={value.type}
@@ -162,6 +166,12 @@ export const Rule = ({
       )}
     </Flex>
   )
+}
+
+const operatorValueWidthProps = {
+  width: '31%',
+  minWidth: '31%',
+  maxWidth: '31%'
 }
 
 Rule.propTypes = {
