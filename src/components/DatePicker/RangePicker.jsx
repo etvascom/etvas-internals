@@ -65,10 +65,9 @@ export const RangePicker = ({
   const canSwitchToCompare =
     compareMethod === compareMethods.customPeriod && isComparing
 
-  const [currentMonth, setCurrentMonth] = useState(() => {
-    const { start } = value || {}
-    return moment(start || moment().startOf('month'))
-  })
+  const [currentMonth, setCurrentMonth] = useState(() =>
+    moment(value?.start || moment().startOf('month'))
+  )
 
   const resetDateRange = val => {
     const { start, end } = val || {}
