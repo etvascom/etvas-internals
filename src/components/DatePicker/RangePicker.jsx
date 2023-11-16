@@ -222,16 +222,16 @@ export const RangePicker = ({
   const handleShowCurrentPeriodChange = newShowCurrentPeriod => () => {
     setShowCurrentPeriod(newShowCurrentPeriod)
 
-    const _value = newShowCurrentPeriod ? value : compareValue
-    setCurrentMonth(moment.utc(_value?.start))
+    const shownValue = newShowCurrentPeriod ? value : compareValue
+    setCurrentMonth(moment.utc(shownValue?.start))
   }
 
   useEffect(() => {
-    const _value = showCurrentPeriod ? value : compareValue
+    const shownValue = showCurrentPeriod ? value : compareValue
 
     setDateRange({
-      mStart: moment.utc(_value?.start),
-      mEnd: moment.utc(_value?.end)
+      mStart: moment.utc(shownValue?.start),
+      mEnd: moment.utc(shownValue?.end)
     })
   }, [value, compareValue, showCurrentPeriod])
 
