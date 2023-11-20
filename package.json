@@ -52,7 +52,7 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.20.0",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "formik": "^2.1.4",
+    "formik": "^2.4.1",
     "lint-staged": "^10.2.7",
     "moment": "^2",
     "prettier-eslint": "^9.0.2",
