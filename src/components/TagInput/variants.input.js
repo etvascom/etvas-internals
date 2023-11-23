@@ -17,7 +17,7 @@ const DEFAULT_STYLE = {
   border: 'none',
   minWidth: '100px',
   flex: '1 1 auto',
-  '::placeholder': {
+  '&::placeholder': {
     color: 'textInputPlaceholder'
   }
 }
@@ -25,7 +25,7 @@ const DEFAULT_STYLE = {
 const ERROR_STYLE = {
   ...DEFAULT_STYLE,
   borderColor: 'error',
-  ':disabled': {
+  '&:disabled': {
     ...DEFAULT_DISABLED_STYLE,
     color: 'textInputDisabled'
   }
@@ -33,7 +33,7 @@ const ERROR_STYLE = {
 
 const WARNING_STYLE = {
   ...DEFAULT_STYLE,
-  ':disabled': {
+  '&:disabled': {
     ...DEFAULT_DISABLED_STYLE,
     color: 'textInputDisabled'
   }

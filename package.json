@@ -73,6 +73,7 @@
   ],
   "dependencies": {
     "@babel/eslint-parser": "^7.19.1",
+    "@emotion/is-prop-valid": "^1.2.1",
     "highcharts": "^9.1.2",
     "highcharts-react-official": "^3.0.0",
     "yup": "^1.2.0"

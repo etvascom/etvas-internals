@@ -119,7 +119,7 @@ const IconButton = styled(Button)`
   width: 100%;
   height: 100%;
 
-  :not([disabled]):hover svg {
+  &:not([disabled]):hover svg {
     fill: ${({ theme }) => theme.colors.brand};
   }
 `

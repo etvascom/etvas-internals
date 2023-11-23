@@ -62,12 +62,12 @@ const StyledButton = styled(Button)(
   css({
     backgroundColor: 'background',
     color: 'textDefault',
-    ':not([disabled])': {
-      ':hover': { backgroundColor: 'inputGray' },
-      ':active': { backgroundColor: 'inputGray' },
-      ':focus': { backgroundColor: 'inputGray' }
+    '&:not([disabled])': {
+      '&:hover': { backgroundColor: 'inputGray' },
+      '&:active': { backgroundColor: 'inputGray' },
+      '&:focus': { backgroundColor: 'inputGray' }
     },
-    ':disabled': {
+    '&:disabled': {
       backgroundColor: 'background'
     }
   })

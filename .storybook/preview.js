@@ -1,5 +1,6 @@
 import React from 'react'
 
+import isPropValid from '@emotion/is-prop-valid'
 import { StyleSheetManager } from 'styled-components'
 
 import { BrandingProvider, GlobalStyle, ThemeProvider } from '@etvas/etvaskit'
