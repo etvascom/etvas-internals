@@ -82,7 +82,7 @@ export const Rule = ({
         label={typeLabel}
         required
         id={typeConfig.id}
-        showTooltip={typeConfig.tooltip}
+        showTooltip={!!typeConfig.tooltip}
         mr={4}
       />
       {typeConfig.tooltip}
@@ -94,7 +94,7 @@ export const Rule = ({
         label={operator.label}
         onChange={handleOperatorChange}
         id={operator.id}
-        showTooltip={operator.renderTooltip}
+        showTooltip={!!operator.renderTooltip}
         required
         mr={4}
       />
@@ -111,7 +111,7 @@ export const Rule = ({
           multiple
           required
           id={typeConfig.value.id}
-          showTooltip={value.tooltip}
+          showTooltip={!!value.tooltip}
         />
       ) : value.type === 'tag' ? (
         <TagField
@@ -124,7 +124,7 @@ export const Rule = ({
           separator=','
           required
           id={typeConfig.value.id}
-          showTooltip={value.tooltip}
+          showTooltip={!!value.tooltip}
         />
       ) : value.type === 'between' ? (
         <IntervalField
@@ -137,7 +137,7 @@ export const Rule = ({
           suffixSpace={value.suffixSpace || 0}
           required
           id={typeConfig.value.id}
-          showTooltip={value.tooltip}
+          showTooltip={!!value.tooltip}
         />
       ) : isSuffixType ? (
         <SubdomainField
@@ -152,7 +152,7 @@ export const Rule = ({
           prefix=''
           required
           id={typeConfig.value.id}
-          showTooltip={value.tooltip}
+          showTooltip={!!value.tooltip}
         />
       ) : (
         <TextField
@@ -165,7 +165,7 @@ export const Rule = ({
           suffix={value.suffix}
           suffixSpace={value.suffixSpace || 0}
           id={typeConfig.value.id}
-          showTooltip={value.tooltip}
+          showTooltip={!!value.tooltip}
           required
         />
       )}
