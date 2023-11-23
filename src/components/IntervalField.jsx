@@ -19,6 +19,7 @@ export const IntervalField = ({
   stringSeparator,
   suffix,
   suffixSpace,
+  showTooltip,
   ...props
 }) => {
   const [{ value }, { touched, error }, { setValue }] = useField(name)
@@ -87,6 +88,7 @@ export const IntervalField = ({
           error={!!displayedError}
           noBottomSpace
           required
+          showTooltip={showTooltip}
         />
         <Typography variant='base12Bold' px={2} mb='14px'>
           {separator}
@@ -123,7 +125,8 @@ IntervalField.propTypes = {
   separator: PropTypes.string,
   stringSeparator: PropTypes.string,
   suffix: PropTypes.string,
-  suffixSpace: PropTypes.number
+  suffixSpace: PropTypes.number,
+  showTooltip: PropTypes.bool
 }
 
 IntervalField.defaultProps = {
