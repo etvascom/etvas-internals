@@ -7,7 +7,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { variant } from 'styled-system'
 
-import { Box, Flex, Typography } from '@etvas/etvaskit'
+import { Flex, Icon, Typography } from '@etvas/etvaskit'
 
 import { SubLabel } from './SubLabel'
 import { Tag } from './Tag'
@@ -41,6 +41,7 @@ export const TagInput = forwardRef(
       noPreserveSpace,
       forceAddTagKeys,
       maxTags,
+      showTooltip,
       ...rest
     },
     ref
@@ -103,7 +104,7 @@ export const TagInput = forwardRef(
     return (
       <Container flexDirection='column' width={1} {...rest}>
         {!!label && (
-          <Box mb={1}>
+          <Flex mb={1} alignItems='center'>
             <Typography
               as='label'
               htmlFor={id}
@@ -112,7 +113,18 @@ export const TagInput = forwardRef(
               width='fit-content'>
               {label}
             </Typography>
-          </Box>
+            {id && showTooltip && (
+              <Flex ml={1} alignItems='center' id={`${id}-icon`}>
+                <Icon
+                  name='information'
+                  color='baseMetal'
+                  size='small'
+                  opacity='.5'
+                  cursor='pointer'
+                />
+              </Flex>
+            )}
+          </Flex>
         )}
 
         <Flex alignItems='center' position='relative' width={1}>
@@ -208,7 +220,8 @@ TagInput.propTypes = {
   exportHandler: PropTypes.func,
   noPreserveSpace: PropTypes.bool,
   maxTags: PropTypes.number,
-  forceAddTagKeys: PropTypes.arrayOf(PropTypes.string)
+  forceAddTagKeys: PropTypes.arrayOf(PropTypes.string),
+  showTooltip: PropTypes.bool
 }
 
 TagInput.defaultProps = {

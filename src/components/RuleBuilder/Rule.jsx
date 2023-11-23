@@ -55,10 +55,7 @@ export const Rule = ({
     [options, type, operatorValue]
   )
 
-  const typePlaceholder = useMemo(
-    () => options[type].placeholder,
-    [options, type]
-  )
+  const typeConfig = options[type]
 
   const valuePlaceholder = useMemo(() => value.placeholder, [value])
 
@@ -81,11 +78,14 @@ export const Rule = ({
         disabled={disabled}
         options={typeOptions}
         name={`${name}.type`}
-        placeholder={typePlaceholder}
+        placeholder={typeConfig.placeholder}
         label={typeLabel}
         required
+        id={typeConfig.id}
+        showTooltip={typeConfig.tooltip}
         mr={4}
       />
+      {typeConfig.tooltip}
       <DropdownField
         disabled={disabled}
         options={operator.options}
@@ -93,9 +93,12 @@ export const Rule = ({
         placeholder={operator.placeholder}
         label={operator.label}
         onChange={handleOperatorChange}
+        id={operator.id}
+        showTooltip={operator.renderTooltip}
         required
         mr={4}
       />
+      {operator.renderTooltip && operator.renderTooltip(operatorValue)}
 
       {value.type === 'searchMultiple' ? (
         <DropdownField
@@ -107,6 +110,8 @@ export const Rule = ({
           label={value.label}
           multiple
           required
+          id={typeConfig.value.id}
+          showTooltip={value.tooltip}
         />
       ) : value.type === 'tag' ? (
         <TagField
@@ -118,6 +123,8 @@ export const Rule = ({
           placeholder={valuePlaceholder}
           separator=','
           required
+          id={typeConfig.value.id}
+          showTooltip={value.tooltip}
         />
       ) : value.type === 'between' ? (
         <IntervalField
@@ -129,6 +136,8 @@ export const Rule = ({
           suffix={value.suffix}
           suffixSpace={value.suffixSpace || 0}
           required
+          id={typeConfig.value.id}
+          showTooltip={value.tooltip}
         />
       ) : isSuffixType ? (
         <SubdomainField
@@ -142,6 +151,8 @@ export const Rule = ({
           suffixSpace={value.suffixSpace || 0}
           prefix=''
           required
+          id={typeConfig.value.id}
+          showTooltip={value.tooltip}
         />
       ) : (
         <TextField
@@ -153,9 +164,12 @@ export const Rule = ({
           placeholder={valuePlaceholder}
           suffix={value.suffix}
           suffixSpace={value.suffixSpace || 0}
+          id={typeConfig.value.id}
+          showTooltip={value.tooltip}
           required
         />
       )}
+      {value.tooltip}
 
       {!disabled && removeRuleIcon ? (
         <Button variant='link' ml={4} mt={6} onClick={onRemove}>
