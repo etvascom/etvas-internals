@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { BarChart, ColumnChart, LineChart } from '../src'
 
 export default {

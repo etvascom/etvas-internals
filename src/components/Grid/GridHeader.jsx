@@ -1,4 +1,4 @@
-import React, { Fragment, useMemo } from 'react'
+import { Fragment, useMemo } from 'react'
 
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
@@ -59,7 +59,8 @@ const Header = ({ columns, toggleSort, sortConfig }) => {
             <Touchable
               key={`header-${column.name}`}
               onClick={() => toggleSort(column.sort)}
-              minWidth={0}>
+              minWidth={0}
+            >
               <HeaderCell column={column} sortType={getSortType(column)} />
             </Touchable>
           ) : (

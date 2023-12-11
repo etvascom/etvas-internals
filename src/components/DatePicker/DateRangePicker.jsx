@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 import moment from 'moment'
 import PropTypes from 'prop-types'
@@ -102,7 +102,8 @@ export const DateRangePicker = ({
             as='label'
             variant='base12Bold'
             color='baseMetal'
-            width='fit-content'>
+            width='fit-content'
+          >
             {label}
           </Typography>
         </Box>
@@ -111,12 +112,14 @@ export const DateRangePicker = ({
         <FakeInput
           onClick={toggleExpanded}
           expanded={isExpanded}
-          disabled={disabled}>
+          disabled={disabled}
+        >
           <Typography
             mx={2}
             truncate
             variant='labelSmall'
-            color={disabled ? 'textInputDisabled' : 'baseBlack'}>
+            color={disabled ? 'textInputDisabled' : 'baseBlack'}
+          >
             {placeholder && !value ? (
               placeholder
             ) : (
@@ -198,8 +201,8 @@ const FakeInput = styled(Flex)(({ expanded, disabled, theme }) =>
       disabled
         ? theme.colors.inputBorderGray
         : expanded
-        ? theme.colors.accent
-        : theme.colors.inputBorderGray
+          ? theme.colors.accent
+          : theme.colors.inputBorderGray
     }`,
     borderRadius: 2,
     cursor: disabled ? 'not-allowed' : 'pointer',

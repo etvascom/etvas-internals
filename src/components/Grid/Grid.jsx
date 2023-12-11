@@ -1,4 +1,4 @@
-import React, {
+import {
   useCallback,
   useEffect,
   useLayoutEffect,
@@ -195,7 +195,8 @@ const Grid = ({
           sortItems(items, sortConfig).map(item => (
             <ItemWrapper
               scroll={isItemExtended(item) && isExtended(forceExtended)}
-              key={item[rowKeyAttribute]}>
+              key={item[rowKeyAttribute]}
+            >
               <Row
                 key={`${name}-row-${item.id ?? item._id}`}
                 item={item}

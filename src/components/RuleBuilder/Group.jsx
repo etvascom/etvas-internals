@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 
 import PropTypes from 'prop-types'
 
@@ -111,7 +111,8 @@ export const Group = ({
             variant='link'
             disabled={disabled || !canAddRule}
             onClick={onAddRule(group.id, addType)}
-            mr={8}>
+            mr={8}
+          >
             {addRuleLabel}
           </Button>
 
