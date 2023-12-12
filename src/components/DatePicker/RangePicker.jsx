@@ -260,8 +260,7 @@ export const RangePicker = ({
             as='label'
             variant='base12Bold'
             color='baseMetal'
-            width='fit-content'
-          >
+            width='fit-content'>
             {label}
           </Typography>
         </Box>
@@ -270,21 +269,19 @@ export const RangePicker = ({
         <FakeInput
           onClick={toggleExpanded}
           expanded={isExpanded}
-          disabled={disabled}
-        >
+          disabled={disabled}>
           <Typography
             mx={2}
             truncate
             variant='labelSmall'
-            color={disabled ? 'textInputDisabled' : 'baseBlack'}
-          >
+            color={disabled ? 'textInputDisabled' : 'baseBlack'}>
             {placeholder && !value ? (
               placeholder
             ) : (
               <>
                 {moment.utc(value.start).format(displayFormat)} &divide;{' '}
                 {moment.utc(value.end).format(displayFormat)}
-                {multiple && isComparing && (
+                {multiple && isComparing && compareValue && (
                   <>
                     {' '}
                     {labelCompareDivider}{' '}
@@ -368,8 +365,7 @@ export const RangePicker = ({
                   alignItems='center'
                   justifyContent='space-between'
                   mt={4}
-                  mx={2}
-                >
+                  mx={2}>
                   <Flex alignItems='center'>
                     <Checkbox
                       checked={isComparing}
@@ -384,8 +380,7 @@ export const RangePicker = ({
                       required
                       onChange={handleCompareMethodChange}
                       valueRender={value => compareLabels[value]}
-                      noBottomSpace
-                    >
+                      noBottomSpace>
                       {Object.keys(compareMethods).map(method => (
                         <Dropdown.Option key={method} value={method}>
                           {compareLabels[method]}
@@ -398,16 +393,14 @@ export const RangePicker = ({
                       <Touchable onClick={handleShowCurrentPeriodChange(true)}>
                         <Chip
                           color={showCurrentPeriod ? 'etvas' : 'white'}
-                          contentColor={showCurrentPeriod ? 'white' : 'black'}
-                        >
+                          contentColor={showCurrentPeriod ? 'white' : 'black'}>
                           {labelCurrent}
                         </Chip>
                       </Touchable>
                       <Touchable onClick={handleShowCurrentPeriodChange(false)}>
                         <Chip
                           color={!showCurrentPeriod ? 'etvas' : 'white'}
-                          contentColor={!showCurrentPeriod ? 'white' : 'black'}
-                        >
+                          contentColor={!showCurrentPeriod ? 'white' : 'black'}>
                           {labelCompare}
                         </Chip>
                       </Touchable>
