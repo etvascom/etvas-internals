@@ -1,3 +1,5 @@
+import React from 'react'
+
 import css from '@styled-system/css'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
@@ -24,14 +26,12 @@ const GridFooter = ({ paginationConfig }) => {
         <StyledButton
           mr={2}
           onClick={actions?.prev?.handlePrev}
-          disabled={actions?.prev?.disabled}
-        >
+          disabled={actions?.prev?.disabled}>
           Prev
         </StyledButton>
         <StyledButton
           onClick={actions?.next?.handleNext}
-          disabled={actions?.next?.disabled}
-        >
+          disabled={actions?.next?.disabled}>
           Next
         </StyledButton>
       </Flex>
@@ -89,8 +89,7 @@ const ItemDisplayCounter = ({
       value={initialElements}
       valueRender={value => `${value} Results`}
       onChange={onChange}
-      disabled={disabled}
-    >
+      disabled={disabled}>
       {resultsPerPage.map(el => (
         <Dropdown.Option key={el} value={el}>
           {el} Results

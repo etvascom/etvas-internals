@@ -1,4 +1,4 @@
-import { forwardRef, useCallback, useMemo, useState } from 'react'
+import React, { forwardRef, useCallback, useMemo, useState } from 'react'
 
 import css from '@styled-system/css'
 import propTypes from '@styled-system/prop-types'
@@ -110,8 +110,7 @@ export const TagInput = forwardRef(
               htmlFor={id}
               variant='base12Bold'
               color='baseMetal'
-              width='fit-content'
-            >
+              width='fit-content'>
               {label}
             </Typography>
             {id && showTooltip && (
@@ -170,8 +169,7 @@ export const TagInput = forwardRef(
         <SubLabel
           noPreserveSpace={noPreserveSpace}
           variant={currentVariant}
-          mt={1}
-        >
+          mt={1}>
           {error}
         </SubLabel>
       </Container>

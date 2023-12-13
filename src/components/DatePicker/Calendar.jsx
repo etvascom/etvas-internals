@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import moment from 'moment'
 import 'moment/locale/de'
@@ -244,16 +244,14 @@ export const Calendar = ({
             <Flex alignItems='center'>
               <Typography
                 variant='labelSmallBold'
-                color={isMonthsShown ? 'accent' : undefined}
-              >
+                color={isMonthsShown ? 'accent' : undefined}>
                 {m.format(monthFormat)}
               </Typography>
               <Rotated
                 justifyContent='center'
                 alignItems='center'
                 color={isMonthsShown ? 'accent' : undefined}
-                aria-expanded={isMonthsShown}
-              >
+                aria-expanded={isMonthsShown}>
                 <Icon name='chevronLeft' />
               </Rotated>
             </Flex>
@@ -264,16 +262,14 @@ export const Calendar = ({
             <Flex alignItems='center'>
               <Typography
                 variant='labelSmallBold'
-                color={isYearsShown ? 'accent' : undefined}
-              >
+                color={isYearsShown ? 'accent' : undefined}>
                 {m.format(yearFormat)}
               </Typography>
               <Rotated
                 justifyContent='center'
                 alignItems='center'
                 color={isYearsShown ? 'accent' : undefined}
-                aria-expanded={isYearsShown}
-              >
+                aria-expanded={isYearsShown}>
                 <Icon name='chevronLeft' />
               </Rotated>
             </Flex>
@@ -282,16 +278,14 @@ export const Calendar = ({
         {monthNavigation && (
           <MonthNav
             onClick={() => handleMonthNavigate(-1)}
-            disabled={!canNavigateMonth(-1)}
-          >
+            disabled={!canNavigateMonth(-1)}>
             <Icon name='chevronLeft' />
           </MonthNav>
         )}
         {monthNavigation && (
           <MonthNav
             onClick={() => handleMonthNavigate(1)}
-            disabled={!canNavigateMonth(1)}
-          >
+            disabled={!canNavigateMonth(1)}>
             <Icon name='chevronRight' />
           </MonthNav>
         )}
@@ -303,12 +297,10 @@ export const Calendar = ({
               <MonthCell
                 current={mon.current}
                 disabled={!isBetweenMonth(mon._m)}
-                onClick={() => handleMonthChange(mon.value)}
-              >
+                onClick={() => handleMonthChange(mon.value)}>
                 <Typography
                   variant='default'
-                  fontWeight={mon.today ? 'bold' : 300}
-                >
+                  fontWeight={mon.today ? 'bold' : 300}>
                   {mon.label}
                 </Typography>
               </MonthCell>
@@ -321,8 +313,7 @@ export const Calendar = ({
           <CellWrapper ratio={1 / 4}>
             <YearCell
               disabled={!canNavigateYear(-10)}
-              onClick={() => handleYearNavigate(-10)}
-            >
+              onClick={() => handleYearNavigate(-10)}>
               <Icon name='chevronLeft' />
             </YearCell>
           </CellWrapper>
@@ -332,12 +323,10 @@ export const Calendar = ({
                 key={y.key}
                 current={y.current}
                 disabled={!isBetweenYear(y.value)}
-                onClick={() => handleYearChange(y.value)}
-              >
+                onClick={() => handleYearChange(y.value)}>
                 <Typography
                   variant='default'
-                  fontWeight={y.today ? 'bold' : 300}
-                >
+                  fontWeight={y.today ? 'bold' : 300}>
                   {y.label}
                 </Typography>
               </YearCell>
@@ -345,8 +334,7 @@ export const Calendar = ({
           ))}
           <YearCell
             disabled={!canNavigateYear(10)}
-            onClick={() => handleYearNavigate(10)}
-          >
+            onClick={() => handleYearNavigate(10)}>
             <Icon name='chevronRight' />
           </YearCell>
         </ConditionalFlex>
@@ -373,12 +361,10 @@ export const Calendar = ({
               current={day.current}
               highlight={day.highlight}
               disabled={!isBetweenDate(day._m)}
-              month={day.month}
-            >
+              month={day.month}>
               <Typography
                 variant='default'
-                fontWeight={day.today ? 'bold' : 300}
-              >
+                fontWeight={day.today ? 'bold' : 300}>
                 {day.label}
               </Typography>
             </DayCell>
@@ -475,14 +461,14 @@ const DayCell = styled(Touchable)(
         color: current
           ? theme.colors.accentDarkest
           : month
-            ? theme.colors.accent
-            : theme.colors.baseBlack,
+          ? theme.colors.accent
+          : theme.colors.baseBlack,
         borderColor:
           disabled || hidden
             ? 'transparent'
             : month
-              ? theme.colors.accent
-              : 'transparent'
+            ? theme.colors.accent
+            : 'transparent'
       }
     })
 )

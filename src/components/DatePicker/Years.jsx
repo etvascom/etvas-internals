@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import React, { useMemo } from 'react'
 
 import moment from 'moment'
 import PropTypes from 'prop-types'
@@ -63,11 +63,9 @@ export const Years = ({
             perRow={perRow}
             current={cell.current}
             disabled={cell.disabled}
-            onClick={() => handleCellClick(cell)}
-          >
+            onClick={() => handleCellClick(cell)}>
             <Typography
-              variant={cell.value === today ? 'labelSmallBold' : 'labelSmall'}
-            >
+              variant={cell.value === today ? 'labelSmallBold' : 'labelSmall'}>
               {cell.label}
             </Typography>
           </CellTouch>

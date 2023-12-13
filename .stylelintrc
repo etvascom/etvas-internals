@@ -1,20 +1,17 @@
 {
   "processors": [
-    [
-      "stylelint-processor-styled-components",
-      {
-        "parserPlugins": [
-          "jsx",
-          "objectRestSpread",
-          ["decorators", { "decoratorsBeforeExport": true }],
-          "classProperties",
-          "exportExtensions",
-          "dynamicImport",
-          "optionalChaining",
-          "nullishCoalescingOperator"
-        ]
-      }
-    ]
+    ["stylelint-processor-styled-components", {
+      "parserPlugins": [
+        "jsx",
+        "objectRestSpread",
+        ["decorators", { "decoratorsBeforeExport": true }],
+        "classProperties",
+        "exportExtensions",
+        "dynamicImport",
+        "optionalChaining",
+        "nullishCoalescingOperator"
+      ]
+    }]
   ],
   "extends": [
     "stylelint-config-recommended",

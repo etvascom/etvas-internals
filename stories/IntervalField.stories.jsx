@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { Formik, useField } from 'formik'
 
 import { IntervalField } from '../src'

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 
 import { useField } from 'formik'
 import { cloneDeep } from 'lodash'
@@ -190,8 +190,7 @@ export const RuleBuilder = ({
           variant='link'
           mt={4}
           disabled={disabled}
-          onClick={handleAddGroup}
-        >
+          onClick={handleAddGroup}>
           {addGroupLabel}
         </Button>
       )}

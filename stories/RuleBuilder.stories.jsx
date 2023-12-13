@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { action } from '@storybook/addon-actions'
 import { useField } from 'formik'
 import * as yup from 'yup'
@@ -48,7 +50,7 @@ const getCategoryOptions = () =>
     label: `Category ${i}`,
     value: `Value ${i}`
   }))
-
+  
 const combinedRuleOptions = {
   merchant: {
     label: 'Merchant',
@@ -223,8 +225,7 @@ export const RuleBuilderExample = () => (
       validationSchema={createValidationSchema(
         combinedRuleOptions,
         absoluteRuleOptions
-      )}
-    >
+      )}>
       <RuleBuilder
         name='cashbacks'
         label='CASHBACK CONDITIONS'
@@ -313,8 +314,7 @@ export const RuleBuilderDisabled = () => (
           combinedRuleOptions,
           absoluteRuleOptions
         )
-      }}
-    >
+      }}>
       <RuleBuilder
         name='cashbacks'
         label='CASHBACK CONDITIONS'
