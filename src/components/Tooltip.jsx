@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
@@ -37,7 +37,8 @@ const Tooltip = ({
           color='baseWhite'
           variant='base14Light'
           distance={distance}
-          placement={placement}>
+          placement={placement}
+        >
           {content}
         </StyledTypography>
       )}
@@ -65,11 +66,11 @@ const StyledTypography = styled(Typography)`
   top: 50%;
   transform: translateX(0) translateY(-50%);`
       : placement === 'left'
-      ? `left: auto;
+        ? `left: auto;
   right: calc(100% + ${distance});
   top: 50%;
   transform: translateX(0) translateY(-50%);`
-      : `
+        : `
 ${placement}: calc(${distance} * -1);
 `};
 `

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 
 import HighCharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'

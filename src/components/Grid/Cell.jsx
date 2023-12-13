@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
@@ -89,7 +89,8 @@ const Cell = ({ item, column, checked, extended, ...props }) => {
       activeOpacity={0.75}
       effect='opacity'
       width='100%'
-      {...props}>
+      {...props}
+    >
       {contents}
     </StyledTouchable>
   )

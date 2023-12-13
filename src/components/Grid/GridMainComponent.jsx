@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 
 import PropTypes from 'prop-types'
 
@@ -51,7 +51,8 @@ export const TruncateGridInfo = ({ children, fontWeight, color, ...props }) => {
       color={color}
       truncate
       ref={ref}
-      fontWeight={fontWeight}>
+      fontWeight={fontWeight}
+    >
       {children}
     </Typography>
   )

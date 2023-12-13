@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 
 import { useField, useFormikContext } from 'formik'
 import PropTypes from 'prop-types'
@@ -72,7 +72,8 @@ export const IntervalField = ({
       flexDirection='column'
       justifyContent='center'
       alignItems='center'
-      {...props}>
+      {...props}
+    >
       <Flex width={1} justifyContent='space-between' alignItems='flex-end'>
         <SubdomainInput
           id={idLeft}

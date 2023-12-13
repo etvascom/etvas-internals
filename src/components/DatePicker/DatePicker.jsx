@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 import moment from 'moment'
 import PropTypes from 'prop-types'
@@ -52,11 +52,13 @@ export const DatePicker = ({
       <FakeInput
         onClick={toggleExpanded}
         expanded={isExpanded}
-        disabled={disabled}>
+        disabled={disabled}
+      >
         <Typography
           mx={2}
           truncate
-          color={disabled ? 'textInputDisabled' : 'baseBlack'}>
+          color={disabled ? 'textInputDisabled' : 'baseBlack'}
+        >
           {mDate.format(displayFormat)}
         </Typography>
         <Flex mr={2} opacity={disabled ? 0.35 : 1}>
@@ -101,8 +103,8 @@ const FakeInput = styled(Flex)(({ expanded, disabled, theme }) =>
       disabled
         ? theme.colors.inputBorderGray
         : expanded
-        ? theme.colors.accent
-        : theme.colors.inputBorderGray
+          ? theme.colors.accent
+          : theme.colors.inputBorderGray
     }`,
     borderRadius: 2,
     cursor: disabled ? 'not-allowed' : 'pointer',

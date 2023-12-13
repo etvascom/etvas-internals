@@ -1,5 +1,3 @@
-import React from 'react'
-
 import PropTypes from 'prop-types'
 
 import { Flex } from '@etvas/etvaskit'
@@ -24,7 +22,8 @@ export const GridButtons = ({ item, actions }) => {
             e.stopPropagation()
             action.action(item)
           }}
-          mr={i !== availableActions.length - 1 ? 6 : 0}>
+          mr={i !== availableActions.length - 1 ? 6 : 0}
+        >
           {action.buttonText}
         </GridButton>
       ))}

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
@@ -31,7 +31,8 @@ const Row = ({
       onClick={() => rowAction(item)}
       isDisabledRow={isDisabledRow}
       color={rowColor(item)}
-      {...props}>
+      {...props}
+    >
       {columns.map(column => (
         <Cell
           key={`${prefix}-cell-${column.name}`}

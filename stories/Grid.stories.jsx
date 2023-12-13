@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { action } from '@storybook/addon-actions'
 
 import { Box, Button } from '@etvas/etvaskit'
@@ -24,7 +22,8 @@ const getExampleGrid = () => ({
       header: 'Name',
       render: item => (
         <GridMainComponent
-          dotColor={item.name.length % 2 ? 'positive' : 'error'}>
+          dotColor={item.name.length % 2 ? 'positive' : 'error'}
+        >
           {item.name}
         </GridMainComponent>
       ),
@@ -83,7 +82,8 @@ const getGridLongHeader = () => ({
       header: 'Lorem ipsum dolor sit amet consectetur adipisicing.',
       render: item => (
         <GridMainComponent
-          dotColor={item.name.length % 2 ? 'positive' : 'error'}>
+          dotColor={item.name.length % 2 ? 'positive' : 'error'}
+        >
           {item.name}
         </GridMainComponent>
       ),

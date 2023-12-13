@@ -1,10 +1,10 @@
-import React, { useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import { css } from 'styled-components'
 
-import { Box, Flex, Icon, Typography, styled } from '@etvas/etvaskit'
+import { Flex, Icon, Typography, styled } from '@etvas/etvaskit'
 
 import { Calendar } from './Calendar'
 import { Years } from './Years'
