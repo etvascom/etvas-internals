@@ -60,14 +60,14 @@ export const RangePicker = ({
     compareMethod === compareMethods.customPeriod && isComparing
 
   const [currentMonth, setCurrentMonth] = useState(() =>
-    moment(value?.start || moment().startOf('month'))
+    moment.utc(value?.start || moment.utc().startOf('month'))
   )
 
   const resetDateRange = val => {
     const { start, end } = val || {}
 
-    const mStart = moment(start || moment())
-    const mEnd = moment(end || moment())
+    const mStart = moment.utc(start || moment.utc())
+    const mEnd = moment.utc(end || moment.utc())
 
     return { mStart, mEnd }
   }
@@ -250,6 +250,25 @@ export const RangePicker = ({
       : mStart.isSameOrBefore(moment.utc(day)) &&
         mEnd.isSameOrAfter(moment.utc(day))
 
+  const secondaryHighlight = day => {
+    const secondaryValue =
+      !showCurrentPeriod && compareMethod === compareMethods.customPeriod
+        ? value
+        : compareValue
+
+    if (!secondaryValue) {
+      return false
+    }
+
+    const { start, end } = secondaryValue
+    return moment
+      .utc(day)
+      .isBetween(
+        moment.utc(start).subtract(1, 'day'),
+        moment.utc(end).add(1, 'day')
+      )
+  }
+
   const handleHover = day => setCurrentHover(moment.utc(day))
 
   return (
@@ -260,8 +279,7 @@ export const RangePicker = ({
             as='label'
             variant='base12Bold'
             color='baseMetal'
-            width='fit-content'
-          >
+            width='fit-content'>
             {label}
           </Typography>
         </Box>
@@ -270,14 +288,12 @@ export const RangePicker = ({
         <FakeInput
           onClick={toggleExpanded}
           expanded={isExpanded}
-          disabled={disabled}
-        >
+          disabled={disabled}>
           <Typography
             mx={2}
             truncate
             variant='labelSmall'
-            color={disabled ? 'textInputDisabled' : 'baseBlack'}
-          >
+            color={disabled ? 'textInputDisabled' : 'baseBlack'}>
             {placeholder && !value ? (
               placeholder
             ) : (
@@ -328,6 +344,7 @@ export const RangePicker = ({
                     startOfTime={rangeStartOfTime.format(COMMON_FORMAT)}
                     endOfTime={rangeEndOfTime.format(COMMON_FORMAT)}
                     highlight={highlight}
+                    secondaryHighlight={secondaryHighlight}
                     highlightCurrent={false}
                     label={false}
                   />
@@ -357,6 +374,7 @@ export const RangePicker = ({
                     startOfTime={rangeStartOfTime.format(COMMON_FORMAT)}
                     endOfTime={rangeEndOfTime.format(COMMON_FORMAT)}
                     highlight={highlight}
+                    secondaryHighlight={secondaryHighlight}
                     highlightCurrent={false}
                     label={false}
                   />
@@ -368,8 +386,7 @@ export const RangePicker = ({
                   alignItems='center'
                   justifyContent='space-between'
                   mt={4}
-                  mx={2}
-                >
+                  mx={2}>
                   <Flex alignItems='center'>
                     <Checkbox
                       checked={isComparing}
@@ -384,8 +401,7 @@ export const RangePicker = ({
                       required
                       onChange={handleCompareMethodChange}
                       valueRender={value => compareLabels[value]}
-                      noBottomSpace
-                    >
+                      noBottomSpace>
                       {Object.keys(compareMethods).map(method => (
                         <Dropdown.Option key={method} value={method}>
                           {compareLabels[method]}
@@ -398,16 +414,14 @@ export const RangePicker = ({
                       <Touchable onClick={handleShowCurrentPeriodChange(true)}>
                         <Chip
                           color={showCurrentPeriod ? 'etvas' : 'white'}
-                          contentColor={showCurrentPeriod ? 'white' : 'black'}
-                        >
+                          contentColor={showCurrentPeriod ? 'white' : 'black'}>
                           {labelCurrent}
                         </Chip>
                       </Touchable>
                       <Touchable onClick={handleShowCurrentPeriodChange(false)}>
                         <Chip
                           color={!showCurrentPeriod ? 'etvas' : 'white'}
-                          contentColor={!showCurrentPeriod ? 'white' : 'black'}
-                        >
+                          contentColor={!showCurrentPeriod ? 'white' : 'black'}>
                           {labelCompare}
                         </Chip>
                       </Touchable>

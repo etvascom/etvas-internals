@@ -25,6 +25,7 @@ export const Calendar = ({
   onChange,
   onHover,
   highlight,
+  secondaryHighlight,
   highlightCurrent,
   canChange,
   label,
@@ -105,7 +106,11 @@ export const Calendar = ({
         current: c.isSame(mRef, 'day'),
         month: c.isSame(m, 'month'),
         today: c.isSame(now, 'day'),
-        highlight: highlight(c.format(COMMON_FORMAT), c.clone())
+        highlight: highlight(c.format(COMMON_FORMAT), c.clone()),
+        secondaryHighlight: secondaryHighlight(
+          c.format(COMMON_FORMAT),
+          c.clone()
+        )
       })
     }
 
@@ -126,7 +131,7 @@ export const Calendar = ({
     }
 
     return [cal, month]
-  }, [dayFormat, highlight, m, mRef, monthFormat])
+  }, [dayFormat, highlight, secondaryHighlight, m, mRef, monthFormat])
 
   const week = useMemo(() => {
     const week = []
@@ -244,16 +249,14 @@ export const Calendar = ({
             <Flex alignItems='center'>
               <Typography
                 variant='labelSmallBold'
-                color={isMonthsShown ? 'accent' : undefined}
-              >
+                color={isMonthsShown ? 'accent' : undefined}>
                 {m.format(monthFormat)}
               </Typography>
               <Rotated
                 justifyContent='center'
                 alignItems='center'
                 color={isMonthsShown ? 'accent' : undefined}
-                aria-expanded={isMonthsShown}
-              >
+                aria-expanded={isMonthsShown}>
                 <Icon name='chevronLeft' />
               </Rotated>
             </Flex>
@@ -264,16 +267,14 @@ export const Calendar = ({
             <Flex alignItems='center'>
               <Typography
                 variant='labelSmallBold'
-                color={isYearsShown ? 'accent' : undefined}
-              >
+                color={isYearsShown ? 'accent' : undefined}>
                 {m.format(yearFormat)}
               </Typography>
               <Rotated
                 justifyContent='center'
                 alignItems='center'
                 color={isYearsShown ? 'accent' : undefined}
-                aria-expanded={isYearsShown}
-              >
+                aria-expanded={isYearsShown}>
                 <Icon name='chevronLeft' />
               </Rotated>
             </Flex>
@@ -282,16 +283,14 @@ export const Calendar = ({
         {monthNavigation && (
           <MonthNav
             onClick={() => handleMonthNavigate(-1)}
-            disabled={!canNavigateMonth(-1)}
-          >
+            disabled={!canNavigateMonth(-1)}>
             <Icon name='chevronLeft' />
           </MonthNav>
         )}
         {monthNavigation && (
           <MonthNav
             onClick={() => handleMonthNavigate(1)}
-            disabled={!canNavigateMonth(1)}
-          >
+            disabled={!canNavigateMonth(1)}>
             <Icon name='chevronRight' />
           </MonthNav>
         )}
@@ -303,12 +302,10 @@ export const Calendar = ({
               <MonthCell
                 current={mon.current}
                 disabled={!isBetweenMonth(mon._m)}
-                onClick={() => handleMonthChange(mon.value)}
-              >
+                onClick={() => handleMonthChange(mon.value)}>
                 <Typography
                   variant='default'
-                  fontWeight={mon.today ? 'bold' : 300}
-                >
+                  fontWeight={mon.today ? 'bold' : 300}>
                   {mon.label}
                 </Typography>
               </MonthCell>
@@ -321,8 +318,7 @@ export const Calendar = ({
           <CellWrapper ratio={1 / 4}>
             <YearCell
               disabled={!canNavigateYear(-10)}
-              onClick={() => handleYearNavigate(-10)}
-            >
+              onClick={() => handleYearNavigate(-10)}>
               <Icon name='chevronLeft' />
             </YearCell>
           </CellWrapper>
@@ -332,12 +328,10 @@ export const Calendar = ({
                 key={y.key}
                 current={y.current}
                 disabled={!isBetweenYear(y.value)}
-                onClick={() => handleYearChange(y.value)}
-              >
+                onClick={() => handleYearChange(y.value)}>
                 <Typography
                   variant='default'
-                  fontWeight={y.today ? 'bold' : 300}
-                >
+                  fontWeight={y.today ? 'bold' : 300}>
                   {y.label}
                 </Typography>
               </YearCell>
@@ -345,8 +339,7 @@ export const Calendar = ({
           ))}
           <YearCell
             disabled={!canNavigateYear(10)}
-            onClick={() => handleYearNavigate(10)}
-          >
+            onClick={() => handleYearNavigate(10)}>
             <Icon name='chevronRight' />
           </YearCell>
         </ConditionalFlex>
@@ -372,13 +365,12 @@ export const Calendar = ({
               highlightCurrent={highlightCurrent}
               current={day.current}
               highlight={day.highlight}
+              secondaryHighlight={day.secondaryHighlight}
               disabled={!isBetweenDate(day._m)}
-              month={day.month}
-            >
+              month={day.month}>
               <Typography
                 variant='default'
-                fontWeight={day.today ? 'bold' : 300}
-              >
+                fontWeight={day.today ? 'bold' : 300}>
                 {day.label}
               </Typography>
             </DayCell>
@@ -461,15 +453,37 @@ const WeekCell = styled(Typography)(({ theme }) =>
 )
 
 const DayCell = styled(Touchable)(
-  ({ current, disabled, highlight, hidden, month, theme, highlightCurrent }) =>
+  ({
+    current,
+    disabled,
+    highlight,
+    secondaryHighlight,
+    hidden,
+    month,
+    theme,
+    highlightCurrent
+  }) =>
     css({
       ...cellStyle,
-      backgroundColor:
-        (highlightCurrent && current) || highlight
-          ? theme.colors.accentFade
-          : 'transparent',
+      backgroundColor: () => {
+        if ((highlightCurrent && current) || highlight) {
+          return theme.colors.accentFade
+        }
+
+        if (secondaryHighlight) {
+          return theme.colors.accentFade
+        }
+
+        return 'transparent'
+      },
       cursor: disabled || hidden ? 'not-allowed' : 'pointer',
-      opacity: hidden ? 0.05 : disabled ? 0.35 : month ? 1 : 0.1,
+      opacity: hidden
+        ? 0.05
+        : disabled || (secondaryHighlight && !highlight)
+          ? 0.35
+          : month
+            ? 1
+            : 0.1,
       border: '1px solid transparent',
       '&:hover': {
         color: current
@@ -518,6 +532,7 @@ Calendar.propTypes = {
   onChange: PropTypes.func,
   onHover: PropTypes.func,
   highlight: PropTypes.func,
+  secondaryHighlight: PropTypes.func,
   highlightCurrent: PropTypes.bool,
   canChange: PropTypes.func,
   label: PropTypes.node
@@ -533,5 +548,6 @@ Calendar.defaultProps = {
   monthNavigation: true,
   monthNavigationWithinYear: false,
   highlightCurrent: true,
-  highlight: () => false
+  highlight: () => false,
+  secondaryHighlight: () => false
 }
