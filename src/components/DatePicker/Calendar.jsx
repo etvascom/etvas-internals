@@ -25,6 +25,7 @@ export const Calendar = ({
   onChange,
   onHover,
   highlight,
+  secondaryHighlight,
   highlightCurrent,
   canChange,
   label,
@@ -105,7 +106,11 @@ export const Calendar = ({
         current: c.isSame(mRef, 'day'),
         month: c.isSame(m, 'month'),
         today: c.isSame(now, 'day'),
-        highlight: highlight(c.format(COMMON_FORMAT), c.clone())
+        highlight: highlight(c.format(COMMON_FORMAT), c.clone()),
+        secondaryHighlight: secondaryHighlight(
+          c.format(COMMON_FORMAT),
+          c.clone()
+        )
       })
     }
 
@@ -126,7 +131,7 @@ export const Calendar = ({
     }
 
     return [cal, month]
-  }, [dayFormat, highlight, m, mRef, monthFormat])
+  }, [dayFormat, highlight, secondaryHighlight, m, mRef, monthFormat])
 
   const week = useMemo(() => {
     const week = []
@@ -360,6 +365,7 @@ export const Calendar = ({
               highlightCurrent={highlightCurrent}
               current={day.current}
               highlight={day.highlight}
+              secondaryHighlight={day.secondaryHighlight}
               disabled={!isBetweenDate(day._m)}
               month={day.month}>
               <Typography
@@ -447,15 +453,37 @@ const WeekCell = styled(Typography)(({ theme }) =>
 )
 
 const DayCell = styled(Touchable)(
-  ({ current, disabled, highlight, hidden, month, theme, highlightCurrent }) =>
+  ({
+    current,
+    disabled,
+    highlight,
+    secondaryHighlight,
+    hidden,
+    month,
+    theme,
+    highlightCurrent
+  }) =>
     css({
       ...cellStyle,
-      backgroundColor:
-        (highlightCurrent && current) || highlight
-          ? theme.colors.accentFade
-          : 'transparent',
+      backgroundColor: () => {
+        if ((highlightCurrent && current) || highlight) {
+          return theme.colors.accentFade
+        }
+
+        if (secondaryHighlight) {
+          return theme.colors.accentFade
+        }
+
+        return 'transparent'
+      },
       cursor: disabled || hidden ? 'not-allowed' : 'pointer',
-      opacity: hidden ? 0.05 : disabled ? 0.35 : month ? 1 : 0.1,
+      opacity: hidden
+        ? 0.05
+        : disabled || (secondaryHighlight && !highlight)
+          ? 0.35
+          : month
+            ? 1
+            : 0.1,
       border: '1px solid transparent',
       '&:hover': {
         color: current
@@ -504,6 +532,7 @@ Calendar.propTypes = {
   onChange: PropTypes.func,
   onHover: PropTypes.func,
   highlight: PropTypes.func,
+  secondaryHighlight: PropTypes.func,
   highlightCurrent: PropTypes.bool,
   canChange: PropTypes.func,
   label: PropTypes.node
@@ -519,5 +548,6 @@ Calendar.defaultProps = {
   monthNavigation: true,
   monthNavigationWithinYear: false,
   highlightCurrent: true,
-  highlight: () => false
+  highlight: () => false,
+  secondaryHighlight: () => false
 }

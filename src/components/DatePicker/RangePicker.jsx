@@ -66,14 +66,14 @@ export const RangePicker = ({
     compareMethod === compareMethods.customPeriod && isComparing
 
   const [currentMonth, setCurrentMonth] = useState(() =>
-    moment(value?.start || moment().startOf('month'))
+    moment.utc(value?.start || moment.utc().startOf('month'))
   )
 
   const resetDateRange = val => {
     const { start, end } = val || {}
 
-    const mStart = moment(start || moment())
-    const mEnd = moment(end || moment())
+    const mStart = moment.utc(start || moment.utc())
+    const mEnd = moment.utc(end || moment.utc())
 
     return { mStart, mEnd }
   }
@@ -256,6 +256,25 @@ export const RangePicker = ({
       : mStart.isSameOrBefore(moment.utc(day)) &&
         mEnd.isSameOrAfter(moment.utc(day))
 
+  const secondaryHighlight = day => {
+    const secondaryValue =
+      !showCurrentPeriod && compareMethod === compareMethods.customPeriod
+        ? value
+        : compareValue
+
+    if (!secondaryValue) {
+      return false
+    }
+
+    const { start, end } = secondaryValue
+    return moment
+      .utc(day)
+      .isBetween(
+        moment.utc(start).subtract(1, 'day'),
+        moment.utc(end).add(1, 'day')
+      )
+  }
+
   const handleHover = day => setCurrentHover(moment.utc(day))
 
   return (
@@ -331,6 +350,7 @@ export const RangePicker = ({
                     startOfTime={rangeStartOfTime.format(COMMON_FORMAT)}
                     endOfTime={rangeEndOfTime.format(COMMON_FORMAT)}
                     highlight={highlight}
+                    secondaryHighlight={secondaryHighlight}
                     highlightCurrent={false}
                     label={false}
                   />
@@ -360,6 +380,7 @@ export const RangePicker = ({
                     startOfTime={rangeStartOfTime.format(COMMON_FORMAT)}
                     endOfTime={rangeEndOfTime.format(COMMON_FORMAT)}
                     highlight={highlight}
+                    secondaryHighlight={secondaryHighlight}
                     highlightCurrent={false}
                     label={false}
                   />
