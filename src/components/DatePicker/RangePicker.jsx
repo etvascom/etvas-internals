@@ -261,7 +261,7 @@ export const RangePicker = ({
   return (
     <Flex flexDirection='column' {...props}>
       {label && (
-        <Box mb={1}>
+        <Flex mb={1} alignItems='center'>
           <Typography
             as='label'
             variant='base12Bold'
@@ -269,7 +269,7 @@ export const RangePicker = ({
             width='fit-content'>
             {label}
           </Typography>
-        </Box>
+        </Flex>
       )}
       <Wrapper ref={wrapRef}>
         <FakeInput

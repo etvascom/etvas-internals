@@ -97,7 +97,7 @@ export const DateRangePicker = ({
   return (
     <Flex flexDirection='column' {...props}>
       {label && (
-        <Box mb={1}>
+        <Flex mb={1} alignItems='center'>
           <Typography
             as='label'
             variant='base12Bold'
@@ -105,7 +105,7 @@ export const DateRangePicker = ({
             width='fit-content'>
             {label}
           </Typography>
-        </Box>
+        </Flex>
       )}
       <Wrapper ref={wrapRef}>
         <FakeInput
@@ -198,8 +198,8 @@ const FakeInput = styled(Flex)(({ expanded, disabled, theme }) =>
       disabled
         ? theme.colors.inputBorderGray
         : expanded
-        ? theme.colors.accent
-        : theme.colors.inputBorderGray
+          ? theme.colors.accent
+          : theme.colors.inputBorderGray
     }`,
     borderRadius: 2,
     cursor: disabled ? 'not-allowed' : 'pointer',
