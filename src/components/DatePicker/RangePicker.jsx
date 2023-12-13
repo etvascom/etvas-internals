@@ -261,7 +261,7 @@ export const RangePicker = ({
   return (
     <Flex flexDirection='column' {...props}>
       {label && (
-        <Box mb={1}>
+        <Flex mb={1} alignItems='center'>
           <Typography
             as='label'
             variant='base12Bold'
@@ -269,7 +269,7 @@ export const RangePicker = ({
             width='fit-content'>
             {label}
           </Typography>
-        </Box>
+        </Flex>
       )}
       <Wrapper ref={wrapRef}>
         <FakeInput
@@ -443,13 +443,7 @@ const FakeInput = styled(Flex)(({ expanded, disabled, theme }) =>
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: disabled ? theme.colors.backgroundInputGray : 'white',
-    border: `1px solid ${
-      disabled
-        ? theme.colors.inputBorderGray
-        : expanded
-          ? theme.colors.accent
-          : theme.colors.inputBorderGray
-    }`,
+    border: `1px solid ${getDefaultBorderColor({ expanded, disabled, theme })}`,
     borderRadius: 2,
     cursor: disabled ? 'not-allowed' : 'pointer',
     pointerEvents: disabled ? 'none' : 'all',
@@ -458,6 +452,16 @@ const FakeInput = styled(Flex)(({ expanded, disabled, theme }) =>
     }
   })
 )
+
+const getDefaultBorderColor = ({ expanded, disabled, theme }) => {
+  if (disabled) {
+    return theme.colors.inputBorderGray
+  }
+  if (expanded) {
+    return theme.colors.accent
+  }
+  return theme.colors.inputBorderGray
+}
 
 const Wrapper = styled(Flex)`
   width: 100%;
