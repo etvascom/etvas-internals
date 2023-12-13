@@ -8,7 +8,7 @@ const config = {
   entryPoints: ['src/index.js'],
   minify: true,
   bundle: true,
-  inject: ['./react.js'],
+  jsx: 'automatic',
   loader: {
     '.js': 'jsx',
     '.jsx': 'jsx'
