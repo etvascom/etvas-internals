@@ -4,6 +4,9 @@ var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __esm = (fn, res) => function __init() {
+  return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
+};
 var __commonJS = (cb, mod) => function __require() {
   return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
 };
@@ -20,10 +23,18 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   mod
 ));
 
+// src/react-shim.js
+import * as React from "react";
+var init_react_shim = __esm({
+  "src/react-shim.js"() {
+  }
+});
+
 // node_modules/react-is/cjs/react-is.development.js
 var require_react_is_development = __commonJS({
   "node_modules/react-is/cjs/react-is.development.js"(exports) {
     "use strict";
+    init_react_shim();
     if (true) {
       (function() {
         "use strict";
@@ -178,6 +189,7 @@ var require_react_is_development = __commonJS({
 var require_react_is = __commonJS({
   "node_modules/react-is/index.js"(exports, module) {
     "use strict";
+    init_react_shim();
     if (false) {
       module.exports = null;
     } else {
@@ -190,6 +202,7 @@ var require_react_is = __commonJS({
 var require_object_assign = __commonJS({
   "node_modules/object-assign/index.js"(exports, module) {
     "use strict";
+    init_react_shim();
     var getOwnPropertySymbols = Object.getOwnPropertySymbols;
     var hasOwnProperty = Object.prototype.hasOwnProperty;
     var propIsEnumerable = Object.prototype.propertyIsEnumerable;
@@ -260,6 +273,7 @@ var require_object_assign = __commonJS({
 var require_ReactPropTypesSecret = __commonJS({
   "node_modules/prop-types/lib/ReactPropTypesSecret.js"(exports, module) {
     "use strict";
+    init_react_shim();
     var ReactPropTypesSecret = "SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED";
     module.exports = ReactPropTypesSecret;
   }
@@ -268,6 +282,7 @@ var require_ReactPropTypesSecret = __commonJS({
 // node_modules/prop-types/lib/has.js
 var require_has = __commonJS({
   "node_modules/prop-types/lib/has.js"(exports, module) {
+    init_react_shim();
     module.exports = Function.call.bind(Object.prototype.hasOwnProperty);
   }
 });
@@ -276,6 +291,7 @@ var require_has = __commonJS({
 var require_checkPropTypes = __commonJS({
   "node_modules/prop-types/checkPropTypes.js"(exports, module) {
     "use strict";
+    init_react_shim();
     var printWarning = function() {
     };
     if (true) {
@@ -342,6 +358,7 @@ var require_checkPropTypes = __commonJS({
 var require_factoryWithTypeCheckers = __commonJS({
   "node_modules/prop-types/factoryWithTypeCheckers.js"(exports, module) {
     "use strict";
+    init_react_shim();
     var ReactIs = require_react_is();
     var assign2 = require_object_assign();
     var ReactPropTypesSecret = require_ReactPropTypesSecret();
@@ -783,6 +800,7 @@ var require_factoryWithTypeCheckers = __commonJS({
 // node_modules/prop-types/index.js
 var require_prop_types = __commonJS({
   "node_modules/prop-types/index.js"(exports, module) {
+    init_react_shim();
     if (true) {
       ReactIs = require_react_is();
       throwOnDirectAccess = true;
@@ -798,6 +816,7 @@ var require_prop_types = __commonJS({
 // node_modules/lodash/lodash.js
 var require_lodash = __commonJS({
   "node_modules/lodash/lodash.js"(exports, module) {
+    init_react_shim();
     (function() {
       var undefined2;
       var VERSION = "4.17.21";
@@ -6233,7 +6252,14 @@ var require_lodash = __commonJS({
   }
 });
 
+// src/index.js
+init_react_shim();
+
+// src/components/index.js
+init_react_shim();
+
 // src/components/Tooltip.jsx
+init_react_shim();
 var import_prop_types = __toESM(require_prop_types());
 import { useRef, useState } from "react";
 import styled from "styled-components";
@@ -6306,7 +6332,11 @@ Tooltip.defaultProps = {
 };
 var Tooltip_default = Tooltip;
 
+// src/components/DatePicker/index.js
+init_react_shim();
+
 // src/components/DatePicker/Calendar.jsx
+init_react_shim();
 var import_prop_types2 = __toESM(require_prop_types());
 import { useCallback, useEffect, useMemo, useState as useState2 } from "react";
 import moment from "moment";
@@ -6315,6 +6345,7 @@ import { css } from "styled-components";
 import { Box, Flex as Flex2, Icon, Touchable, Typography as Typography2, styled as styled2 } from "@etvas/etvaskit";
 
 // src/components/DatePicker/constants.js
+init_react_shim();
 var COMMON_FORMAT = "YYYY-MM-DD";
 var CURRENT_MONTH_FORMAT = "MMMM YYYY";
 var compareMethods = {
@@ -6765,6 +6796,7 @@ Calendar.defaultProps = {
 };
 
 // src/components/DatePicker/DatePicker.jsx
+init_react_shim();
 var import_prop_types3 = __toESM(require_prop_types());
 import { useLayoutEffect, useMemo as useMemo2, useRef as useRef2, useState as useState3 } from "react";
 import moment2 from "moment";
@@ -6873,6 +6905,7 @@ DatePicker.defaultProps = {
 };
 
 // src/components/DatePicker/DateRangePicker.jsx
+init_react_shim();
 var import_prop_types5 = __toESM(require_prop_types());
 import { useLayoutEffect as useLayoutEffect2, useMemo as useMemo4, useRef as useRef3, useState as useState4 } from "react";
 import moment4 from "moment";
@@ -6880,6 +6913,7 @@ import { css as css4 } from "styled-components";
 import { Flex as Flex5, Icon as Icon3, Typography as Typography5, styled as styled5 } from "@etvas/etvaskit";
 
 // src/components/DatePicker/Years.jsx
+init_react_shim();
 var import_prop_types4 = __toESM(require_prop_types());
 import { useMemo as useMemo3 } from "react";
 import moment3 from "moment";
@@ -7191,6 +7225,7 @@ DateRangePicker.defaultProps = {
 };
 
 // src/components/DatePicker/RangePicker.jsx
+init_react_shim();
 var import_prop_types6 = __toESM(require_prop_types());
 import { useEffect as useEffect2, useLayoutEffect as useLayoutEffect3, useMemo as useMemo5, useRef as useRef4, useState as useState5 } from "react";
 import moment5 from "moment";
@@ -7604,7 +7639,11 @@ RangePicker.defaultProps = {
   navigationByYear: true
 };
 
+// src/components/Grid/index.js
+init_react_shim();
+
 // src/components/Grid/Grid.jsx
+init_react_shim();
 var import_prop_types13 = __toESM(require_prop_types());
 import {
   useCallback as useCallback4,
@@ -7617,7 +7656,11 @@ import {
 import styled12 from "styled-components";
 import { Box as Box8, Flex as Flex8, Icon as Icon7, Typography as Typography10, themed as themed4 } from "@etvas/etvaskit";
 
+// src/components/Grid/GridFooter.jsx
+init_react_shim();
+
 // node_modules/@styled-system/css/dist/index.esm.js
+init_react_shim();
 function _extends() {
   _extends = Object.assign || function(target) {
     for (var i = 1; i < arguments.length; i++) {
@@ -7923,17 +7966,23 @@ ItemDisplayCounter.propTypes = {
 var GridFooter_default = GridFooter;
 
 // src/components/Grid/GridHeader.jsx
+init_react_shim();
 var import_prop_types9 = __toESM(require_prop_types());
 import { Fragment, useMemo as useMemo6 } from "react";
 import styled8 from "styled-components";
 import { Box as Box5, Icon as Icon5, Touchable as Touchable4, themed } from "@etvas/etvaskit";
 
 // src/components/Grid/GridHeaderLabel.jsx
+init_react_shim();
 var import_prop_types8 = __toESM(require_prop_types());
 import { useRef as useRef6 } from "react";
 import { Typography as Typography8 } from "@etvas/etvaskit";
 
+// src/hooks/index.js
+init_react_shim();
+
 // src/hooks/useIsTruncated.js
+init_react_shim();
 import { useCallback as useCallback2, useLayoutEffect as useLayoutEffect4, useState as useState6 } from "react";
 var useIsTruncated = (element) => {
   const isElementTruncated = useCallback2(() => {
@@ -7955,6 +8004,7 @@ var useIsTruncated = (element) => {
 };
 
 // src/hooks/useClearField.js
+init_react_shim();
 import { useCallback as useCallback3, useEffect as useEffect3, useRef as useRef5 } from "react";
 var useClearField = (dependencies) => {
   const ref = useRef5();
@@ -8065,6 +8115,7 @@ Header.propTypes = {
 var GridHeader_default = Header;
 
 // src/components/Grid/LoadingGrid.jsx
+init_react_shim();
 var import_prop_types10 = __toESM(require_prop_types());
 import styled9 from "styled-components";
 import { ActivityIndicator, BlockSkeleton } from "@etvas/etvaskit";
@@ -8085,12 +8136,14 @@ var Shadow = styled9.div`
 `;
 
 // src/components/Grid/Row.jsx
+init_react_shim();
 var import_prop_types12 = __toESM(require_prop_types());
 import { useMemo as useMemo8 } from "react";
 import styled11 from "styled-components";
 import { Box as Box7, themed as themed3 } from "@etvas/etvaskit";
 
 // src/components/Grid/Cell.jsx
+init_react_shim();
 var import_prop_types11 = __toESM(require_prop_types());
 import { useMemo as useMemo7, useState as useState7 } from "react";
 import styled10 from "styled-components";
@@ -8264,6 +8317,7 @@ Row.propTypes = {
 var Row_default = Row;
 
 // src/components/Grid/sorting.js
+init_react_shim();
 var sortFunctions = {
   string: (a, b) => a.localeCompare(b),
   number: (a, b) => a === b ? 0 : a > b ? 1 : -1,
@@ -8555,6 +8609,7 @@ Grid.defaultProps = {
 var Grid_default = Grid;
 
 // src/components/Grid/GridButton.jsx
+init_react_shim();
 var import_prop_types14 = __toESM(require_prop_types());
 import styled13 from "styled-components";
 import { Button as Button4 } from "@etvas/etvaskit";
@@ -8570,6 +8625,7 @@ var StyledButton2 = styled13(Button4)`
 `;
 
 // src/components/Grid/GridButtons.jsx
+init_react_shim();
 var import_prop_types15 = __toESM(require_prop_types());
 import { Flex as Flex9 } from "@etvas/etvaskit";
 var GridButtons = ({ item, actions }) => {
@@ -8596,6 +8652,7 @@ GridButtons.propTypes = {
 };
 
 // src/components/Grid/GridDot.jsx
+init_react_shim();
 var import_prop_types16 = __toESM(require_prop_types());
 import styled14 from "styled-components";
 import { Box as Box9, themed as themed5 } from "@etvas/etvaskit";
@@ -8609,6 +8666,7 @@ var Dot = styled14(Box9)`
 `;
 
 // src/components/Grid/GridMainComponent.jsx
+init_react_shim();
 var import_prop_types17 = __toESM(require_prop_types());
 import { useLayoutEffect as useLayoutEffect6, useRef as useRef8, useState as useState9 } from "react";
 import { Flex as Flex10, Icon as Icon8, Typography as Typography11 } from "@etvas/etvaskit";
@@ -8661,7 +8719,11 @@ GridMainComponent.defaultProps = {
   iconPosition: "left"
 };
 
+// src/components/Charts/index.js
+init_react_shim();
+
 // src/components/Charts/LineChart.jsx
+init_react_shim();
 var import_prop_types18 = __toESM(require_prop_types());
 import { useMemo as useMemo10 } from "react";
 import HighCharts from "highcharts";
@@ -8727,6 +8789,7 @@ LineChart.propTypes = {
 };
 
 // src/components/Charts/ColumnChart.jsx
+init_react_shim();
 var import_prop_types19 = __toESM(require_prop_types());
 import { useMemo as useMemo11 } from "react";
 import HighCharts2 from "highcharts";
@@ -8789,6 +8852,7 @@ ColumnChart.propTypes = {
 };
 
 // src/components/Charts/BarChart.jsx
+init_react_shim();
 var import_prop_types20 = __toESM(require_prop_types());
 import { useMemo as useMemo12 } from "react";
 import HighCharts3 from "highcharts";
@@ -8851,6 +8915,7 @@ BarChart.propTypes = {
 };
 
 // src/components/Counter.jsx
+init_react_shim();
 var import_prop_types21 = __toESM(require_prop_types());
 import { Chip as Chip2, Flex as Flex11, Typography as Typography12 } from "@etvas/etvaskit";
 var Counter = ({
@@ -8872,19 +8937,28 @@ Counter.defaultProps = {
 };
 
 // src/components/Divider.jsx
+init_react_shim();
 import styled15 from "styled-components";
 import { Box as Box10, themed as themed6 } from "@etvas/etvaskit";
 var Divider = styled15(Box10)`
   border-top: 1px solid ${themed6("colors.divider")};
 `;
 
+// src/components/RuleBuilder/index.js
+init_react_shim();
+
 // src/components/RuleBuilder/RuleBuilder.jsx
+init_react_shim();
 var import_lodash = __toESM(require_lodash());
 var import_prop_types33 = __toESM(require_prop_types());
 import { useCallback as useCallback7, useEffect as useEffect6, useMemo as useMemo17 } from "react";
 import { useField as useField5 } from "formik";
 
+// node_modules/uuid/dist/esm-browser/index.js
+init_react_shim();
+
 // node_modules/uuid/dist/esm-browser/rng.js
+init_react_shim();
 var getRandomValues;
 var rnds8 = new Uint8Array(16);
 function rng() {
@@ -8897,7 +8971,14 @@ function rng() {
   return getRandomValues(rnds8);
 }
 
+// node_modules/uuid/dist/esm-browser/stringify.js
+init_react_shim();
+
+// node_modules/uuid/dist/esm-browser/validate.js
+init_react_shim();
+
 // node_modules/uuid/dist/esm-browser/regex.js
+init_react_shim();
 var regex_default = /^(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000)$/i;
 
 // node_modules/uuid/dist/esm-browser/validate.js
@@ -8923,6 +9004,7 @@ function stringify(arr) {
 var stringify_default = stringify;
 
 // node_modules/uuid/dist/esm-browser/v4.js
+init_react_shim();
 function v4(options, buf, offset) {
   options = options || {};
   var rnds = options.random || (options.rng || rng)();
@@ -8943,10 +9025,12 @@ var v4_default = v4;
 import { Box as Box13, Button as Button7, Typography as Typography18 } from "@etvas/etvaskit";
 
 // src/components/RuleBuilder/CombinatorField.jsx
+init_react_shim();
 var import_prop_types23 = __toESM(require_prop_types());
 import { useField } from "formik";
 
 // src/components/RuleBuilder/Combinator.jsx
+init_react_shim();
 var import_prop_types22 = __toESM(require_prop_types());
 import styled16 from "styled-components";
 import { Touchable as Touchable6, Typography as Typography13 } from "@etvas/etvaskit";
@@ -9016,11 +9100,13 @@ CombinatorField.propTypes = {
 };
 
 // src/components/RuleBuilder/Group.jsx
+init_react_shim();
 var import_prop_types32 = __toESM(require_prop_types());
 import { useMemo as useMemo16 } from "react";
 import { Box as Box12, Button as Button6, CheckboxField, Flex as Flex15 } from "@etvas/etvaskit";
 
 // src/components/RuleBuilder/Rule.jsx
+init_react_shim();
 var import_prop_types31 = __toESM(require_prop_types());
 import { useMemo as useMemo15 } from "react";
 import { useField as useField4 } from "formik";
@@ -9035,15 +9121,21 @@ import {
 } from "@etvas/etvaskit";
 
 // src/components/IntervalField.jsx
+init_react_shim();
 var import_prop_types24 = __toESM(require_prop_types());
 import { useCallback as useCallback5, useEffect as useEffect5, useMemo as useMemo13 } from "react";
 import { useField as useField2, useFormikContext } from "formik";
 import { Flex as Flex12, SubdomainInput, Typography as Typography15 } from "@etvas/etvaskit";
 
 // src/components/TagInput/SubLabel.jsx
+init_react_shim();
 import styled17 from "styled-components";
 
+// node_modules/styled-system/dist/index.esm.js
+init_react_shim();
+
 // node_modules/@styled-system/core/dist/index.esm.js
+init_react_shim();
 var import_object_assign = __toESM(require_object_assign());
 var merge = function merge2(a, b) {
   var result = (0, import_object_assign.default)({}, a, b);
@@ -9216,6 +9308,7 @@ var compose = function compose2() {
 };
 
 // node_modules/@styled-system/layout/dist/index.esm.js
+init_react_shim();
 var isNumber = function isNumber2(n) {
   return typeof n === "number" && !isNaN(n);
 };
@@ -9262,6 +9355,7 @@ var layout = system(config);
 var index_esm_default2 = layout;
 
 // node_modules/@styled-system/color/dist/index.esm.js
+init_react_shim();
 var config2 = {
   color: {
     property: "color",
@@ -9278,6 +9372,7 @@ var color = system(config2);
 var index_esm_default3 = color;
 
 // node_modules/@styled-system/typography/dist/index.esm.js
+init_react_shim();
 var defaults2 = {
   fontSizes: [12, 14, 16, 20, 24, 32, 48, 64, 72]
 };
@@ -9310,6 +9405,7 @@ var typography = system(config3);
 var index_esm_default4 = typography;
 
 // node_modules/@styled-system/flexbox/dist/index.esm.js
+init_react_shim();
 var config4 = {
   alignItems: true,
   alignContent: true,
@@ -9329,6 +9425,7 @@ var flexbox = system(config4);
 var index_esm_default5 = flexbox;
 
 // node_modules/@styled-system/grid/dist/index.esm.js
+init_react_shim();
 var defaults3 = {
   space: [0, 4, 8, 16, 32, 64, 128, 256, 512]
 };
@@ -9362,6 +9459,7 @@ var grid = system(config5);
 var index_esm_default6 = grid;
 
 // node_modules/@styled-system/border/dist/index.esm.js
+init_react_shim();
 var config6 = {
   border: {
     property: "border",
@@ -9492,6 +9590,7 @@ var border = system(config6);
 var index_esm_default7 = border;
 
 // node_modules/@styled-system/background/dist/index.esm.js
+init_react_shim();
 var config7 = {
   background: true,
   backgroundImage: true,
@@ -9507,6 +9606,7 @@ var background = system(config7);
 var index_esm_default8 = background;
 
 // node_modules/@styled-system/position/dist/index.esm.js
+init_react_shim();
 var defaults4 = {
   space: [0, 4, 8, 16, 32, 64, 128, 256, 512]
 };
@@ -9541,6 +9641,7 @@ var position = system(config8);
 var index_esm_default9 = position;
 
 // node_modules/@styled-system/space/dist/index.esm.js
+init_react_shim();
 var defaults5 = {
   space: [0, 4, 8, 16, 32, 64, 128, 256, 512]
 };
@@ -9660,6 +9761,7 @@ var padding = system(configs.padding);
 var space = compose(margin, padding);
 
 // node_modules/@styled-system/shadow/dist/index.esm.js
+init_react_shim();
 var shadow = system({
   boxShadow: {
     property: "boxShadow",
@@ -9672,6 +9774,7 @@ var shadow = system({
 });
 
 // node_modules/@styled-system/variant/dist/index.esm.js
+init_react_shim();
 var variant = function variant2(_ref) {
   var _config;
   var scale = _ref.scale, _ref$prop = _ref.prop, prop = _ref$prop === void 0 ? "variant" : _ref$prop, _ref$variants = _ref.variants, variants = _ref$variants === void 0 ? {} : _ref$variants, key = _ref.key;
@@ -9771,6 +9874,7 @@ var left = index_esm_default9.left;
 import { Typography as Typography14 } from "@etvas/etvaskit";
 
 // src/components/TagInput/variants.sublabel.js
+init_react_shim();
 import { etvasTheme } from "@etvas/etvaskit";
 var DEFAULT_STYLE = {
   color: "textDefault",
@@ -9925,14 +10029,17 @@ IntervalField.defaultProps = {
 };
 
 // src/components/TagInput/TagField.jsx
+init_react_shim();
 var import_prop_types30 = __toESM(require_prop_types());
 import { forwardRef as forwardRef2 } from "react";
 import { useField as useField3, useFormikContext as useFormikContext2 } from "formik";
 
 // src/components/TagInput/TagInput.jsx
+init_react_shim();
 import { forwardRef, useCallback as useCallback6, useMemo as useMemo14, useState as useState10 } from "react";
 
 // node_modules/@styled-system/prop-types/dist/index.esm.js
+init_react_shim();
 var import_prop_types25 = __toESM(require_prop_types());
 function _extends2() {
   _extends2 = Object.assign || function(target) {
@@ -9972,6 +10079,7 @@ var index_esm_default11 = {
 };
 
 // node_modules/@styled-system/theme-get/dist/index.esm.js
+init_react_shim();
 var themeGet = function themeGet2(path, fallback) {
   if (fallback === void 0) {
     fallback = null;
@@ -9987,6 +10095,7 @@ import styled19 from "styled-components";
 import { Flex as Flex13, Icon as Icon10, Typography as Typography17 } from "@etvas/etvaskit";
 
 // src/components/TagInput/Tag.jsx
+init_react_shim();
 var import_prop_types26 = __toESM(require_prop_types());
 import styled18 from "styled-components";
 import { Icon as Icon9, Typography as Typography16 } from "@etvas/etvaskit";
@@ -10017,6 +10126,7 @@ Tag.propTypes = {
 };
 
 // src/components/TagInput/shape.js
+init_react_shim();
 var import_prop_types27 = __toESM(require_prop_types());
 var tagShape = {
   value: import_prop_types27.default.any,
@@ -10030,6 +10140,7 @@ var tagShape = {
 };
 
 // src/components/TagInput/variants.container.js
+init_react_shim();
 import { etvasTheme as etvasTheme2 } from "@etvas/etvaskit";
 var DEFAULT_DISABLED_STYLE = {
   cursor: "not-allowed",
@@ -10117,6 +10228,7 @@ var variants_container_default = {
 };
 
 // src/components/TagInput/variants.input.js
+init_react_shim();
 var DEFAULT_DISABLED_STYLE2 = {
   cursor: "not-allowed",
   pointerEvents: "none"
@@ -10695,6 +10807,7 @@ Group.propTypes = {
 };
 
 // src/components/RuleBuilder/utils/rule.js
+init_react_shim();
 var getRuleDetails = ({ type, ...rule }) => {
   const operatorKey = `${type}Operator`;
   const valueKey = `${type}Value`;
@@ -10915,6 +11028,7 @@ RuleBuilder.defaultProps = {
 };
 
 // src/components/RuleBuilder/utils/validate.js
+init_react_shim();
 import * as yup from "yup";
 var createRuleBuilderYupSchema = (combinedRuleOptions, absoluteRuleOptions) => {
   const groupSchema = yup.object().shape({
@@ -10954,6 +11068,7 @@ var mapObject = (object2, callback) => Object.keys(object2).reduce((acc, key) =>
 }, {});
 
 // src/components/RuleBuilder/utils/export.js
+init_react_shim();
 var exportRuleBuilder = ({ combinator, groups }) => ({
   combinator,
   groups: exportGroups(groups)
@@ -10975,6 +11090,7 @@ var exportRules = (rules) => Object.keys(rules).map((ruleId) => {
 });
 
 // src/components/RuleBuilder/utils/import.js
+init_react_shim();
 var importRuleBuilder = ({ combinator, groups }, combinedRuleOptions, absoluteRuleOptions) => ({
   combinator,
   groups: importGroups(groups, combinedRuleOptions, absoluteRuleOptions)
@@ -11024,6 +11140,9 @@ var importAbsoluteRules = (rules, options) => rules.length ? Object.fromEntries(
     ];
   })
 ) : null;
+
+// src/components/TagInput/index.js
+init_react_shim();
 export {
   BarChart,
   Calendar,

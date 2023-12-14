@@ -8,7 +8,7 @@ const config = {
   entryPoints: ['src/index.js'],
   // minify: true,
   bundle: true,
-  jsx: 'automatic',
+  inject: ['src/react-shim.js'],
   loader: {
     '.js': 'jsx',
     '.jsx': 'jsx'
