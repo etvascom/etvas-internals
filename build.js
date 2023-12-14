@@ -6,7 +6,7 @@ const { esbuildPluginBrowserslist } = require('esbuild-plugin-browserslist')
 const config = {
   logLevel: 'info',
   entryPoints: ['src/index.js'],
-  minify: true,
+  // minify: true,
   bundle: true,
   jsx: 'automatic',
   loader: {
