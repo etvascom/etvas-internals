@@ -6,9 +6,9 @@ const { esbuildPluginBrowserslist } = require('esbuild-plugin-browserslist')
 const config = {
   logLevel: 'info',
   entryPoints: ['src/index.js'],
-  // minify: true,
+  minify: true,
   bundle: true,
-  inject: ['src/react-shim.js'],
+  inject: ['build-react-shim.js'],
   loader: {
     '.js': 'jsx',
     '.jsx': 'jsx'
