@@ -43,13 +43,14 @@ export const RangePicker = ({
   labelCompare,
   labelLastPeriod,
   compareLabels,
+  isComparing,
+  setIsComparing,
   ...props
 }) => {
   const wrapRef = useRef()
   const [isExpanded, setExpanded] = useState(false)
   const [isSettingEnd, setSettingEnd] = useState(false)
   const [currentHover, setCurrentHover] = useState(null)
-  const [isComparing, setComparing] = useState(false)
   const [compareMethod, setCompareMethod] = useState(compareMethods.lastPeriod)
   const [showCurrentPeriod, setShowCurrentPeriod] = useState(true)
 
@@ -197,7 +198,7 @@ export const RangePicker = ({
   }
 
   const handleComparingChange = () => {
-    setComparing(!isComparing)
+    setIsComparing(!isComparing)
     handleChange(value, !isComparing, compareMethod)
   }
 
@@ -527,7 +528,9 @@ RangePicker.propTypes = {
     [compareMethods.lastPeriod]: PropTypes.node
   }),
   placeholder: PropTypes.node,
-  navigationByYear: PropTypes.bool
+  navigationByYear: PropTypes.bool,
+  isComparing: PropTypes.bool,
+  setIsComparing: PropTypes.func
 }
 
 RangePicker.defaultProps = {
