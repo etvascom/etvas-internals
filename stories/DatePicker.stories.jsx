@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { Card } from '@etvas/etvaskit'
+import { Button, Card } from '@etvas/etvaskit'
 
 import { DatePicker, DateRangePicker, RangePicker } from '../src'
 
@@ -161,6 +161,7 @@ export const RangePickerWithNavigationByYear = () => {
 
 export const MultiRangePickerWithLabel = () => {
   const [dateRange, setDateRange] = useState()
+  const [isComparing, setIsComparing] = useState(false)
 
   const onChangeDateRange = value => {
     setDateRange(value)
@@ -171,6 +172,8 @@ export const MultiRangePickerWithLabel = () => {
       <RangePicker
         multiple
         value={dateRange}
+        isComparing={isComparing}
+        setIsComparing={setIsComparing}
         label='Date Range Picker'
         placeholder='Select new range'
         onChange={onChangeDateRange}
@@ -194,6 +197,9 @@ export const MultiRangePickerWithLabel = () => {
         navigationByYear={false}
       />
       <pre>{JSON.stringify(dateRange, null, 2)}</pre>
+      <Button variant='primary' onClick={() => setIsComparing(!isComparing)}>
+        Toggle Compare {isComparing ? 'Off' : 'On'}
+      </Button>
     </>
   )
 }
