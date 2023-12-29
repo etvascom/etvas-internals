@@ -198,7 +198,7 @@ export const RangePicker = ({
   }
 
   const handleComparingChange = () => {
-    setIsComparing(!isComparing)
+    setIsComparing && setIsComparing(!isComparing)
     handleChange(value, !isComparing, compareMethod)
   }
 
