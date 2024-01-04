@@ -60,7 +60,9 @@ export const Rule = ({
   const valuePlaceholder = useMemo(() => value.placeholder, [value])
 
   const isSuffixType = useMemo(() => value.suffix, [value])
-  const [, , { setValue: setRuleValue }] = useField(`${name}.${type}Value`)
+  const [{ value: fieldValue }, , { setValue: setRuleValue }] = useField(
+    `${name}.${type}Value`
+  )
 
   const onChangeRuleValue = useClearField([setRuleValue])
 
@@ -169,8 +171,8 @@ export const Rule = ({
           required
         />
       )}
-      {value.tooltip}
-
+      {value.tooltip ||
+        (value.renderTooltip && value.renderTooltip(fieldValue))}
       {!disabled && removeRuleIcon ? (
         <Button variant='link' ml={4} mt={6} onClick={onRemove}>
           <Icon name={removeRuleIcon} size='large' />
