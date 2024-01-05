@@ -60,7 +60,9 @@ export const Rule = ({
   const valuePlaceholder = useMemo(() => value.placeholder, [value])
 
   const isSuffixType = useMemo(() => value.suffix, [value])
-  const [, , { setValue: setRuleValue }] = useField(`${name}.${type}Value`)
+  const [{ value: fieldValue }, , { setValue: setRuleValue }] = useField(
+    `${name}.${type}Value`
+  )
 
   const onChangeRuleValue = useClearField([setRuleValue])
 
@@ -111,7 +113,7 @@ export const Rule = ({
           multiple
           required
           id={typeConfig.value.id}
-          showTooltip={!!value.tooltip}
+          showTooltip={!!value.tooltip || !!value.renderTooltip}
         />
       ) : value.type === 'tag' ? (
         <TagField
@@ -124,7 +126,7 @@ export const Rule = ({
           separator=','
           required
           id={typeConfig.value.id}
-          showTooltip={!!value.tooltip}
+          showTooltip={!!value.tooltip || !!value.renderTooltip}
         />
       ) : value.type === 'between' ? (
         <IntervalField
@@ -137,7 +139,7 @@ export const Rule = ({
           suffixSpace={value.suffixSpace || 0}
           required
           id={typeConfig.value.id}
-          showTooltip={!!value.tooltip}
+          showTooltip={!!value.tooltip || !!value.renderTooltip}
         />
       ) : isSuffixType ? (
         <SubdomainField
@@ -152,7 +154,7 @@ export const Rule = ({
           prefix=''
           required
           id={typeConfig.value.id}
-          showTooltip={!!value.tooltip}
+          showTooltip={!!value.tooltip || !!value.renderTooltip}
         />
       ) : (
         <TextField
@@ -165,12 +167,12 @@ export const Rule = ({
           suffix={value.suffix}
           suffixSpace={value.suffixSpace || 0}
           id={typeConfig.value.id}
-          showTooltip={!!value.tooltip}
+          showTooltip={!!value.tooltip || !!value.renderTooltip}
           required
         />
       )}
-      {value.tooltip}
-
+      {value.tooltip ||
+        (value.renderTooltip && value.renderTooltip(fieldValue))}
       {!disabled && removeRuleIcon ? (
         <Button variant='link' ml={4} mt={6} onClick={onRemove}>
           <Icon name={removeRuleIcon} size='large' />
