@@ -36,7 +36,8 @@ const Grid = ({
   rowColor,
   busyVariant,
   busySkeletonNumber,
-  allowMultipleExtendedItems
+  allowMultipleExtendedItems,
+  ...props
 }) => {
   const [sortConfig, setSortConfig] = useState(() => {
     if (initialSort?.by) {
@@ -178,7 +179,7 @@ const Grid = ({
 
   return (
     <>
-      <Box mb={6}>
+      <Box mb={6} {...props}>
         {hasHeader && (
           <Header
             columns={gridColumns}
@@ -195,8 +196,7 @@ const Grid = ({
           sortItems(items, sortConfig).map(item => (
             <ItemWrapper
               scroll={isItemExtended(item) && isExtended(forceExtended)}
-              key={item[rowKeyAttribute]}
-            >
+              key={item[rowKeyAttribute]}>
               <Row
                 key={`${name}-row-${item.id ?? item._id}`}
                 item={item}
