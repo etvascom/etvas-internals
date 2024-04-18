@@ -195,9 +195,12 @@ const Grid = ({
         ) : (
           sortItems(items, sortConfig).map(item => (
             <ItemWrapper
+              data-test-id={`${name}-item`}
+              data-test-value={item.id ?? item._id}
               scroll={isItemExtended(item) && isExtended(forceExtended)}
               key={item[rowKeyAttribute]}>
               <Row
+                data-test-id={`${name}-item-row`} 
                 key={`${name}-row-${item.id ?? item._id}`}
                 item={item}
                 prefix={name}
@@ -209,7 +212,7 @@ const Grid = ({
                 isDisabledRow={isDisabledRow(item)}
               />
               {isItemExtended(item) ? (
-                <ExtendedWrapper>
+                <ExtendedWrapper data-test-id={`${name}-item-extended`}>
                   {item['key'] ? (
                     <RenderExtended item={item} />
                   ) : (
