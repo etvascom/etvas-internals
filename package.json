@@ -1,6 +1,6 @@
 {
   "name": "etvas-internals",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "ETVAS Internals",
   "main": "lib/index.js",
   "module": "es/index.js",
