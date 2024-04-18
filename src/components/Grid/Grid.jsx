@@ -229,7 +229,7 @@ const Grid = ({
   )
 }
 
-const ItemWrapper = ({ children, scroll }) => {
+const ItemWrapper = ({ children, scroll, ...props }) => {
   const viewRef = useRef()
 
   useLayoutEffect(() => {
@@ -241,7 +241,7 @@ const ItemWrapper = ({ children, scroll }) => {
     }
   }, [viewRef, scroll])
 
-  return <div ref={viewRef}>{children}</div>
+  return <div {...props} ref={viewRef}>{children}</div>
 }
 
 ItemWrapper.propTypes = {
