@@ -245,6 +245,8 @@ const ItemWrapper = ({ children, scroll, ...props }) => {
 }
 
 ItemWrapper.propTypes = {
+  'data-test-id': PropTypes.string,
+  'data-test-value': PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   children: PropTypes.any,
   scroll: PropTypes.bool
 }
