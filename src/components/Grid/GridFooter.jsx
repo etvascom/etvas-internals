@@ -4,7 +4,13 @@ import styled from 'styled-components'
 
 import { Box, Button, Dropdown, Flex, Typography } from '@etvas/etvaskit'
 
-const GridFooter = ({ paginationConfig }) => {
+const GridFooter = ({
+  paginationConfig,
+  nextLabel,
+  previousLabel,
+  showLabel,
+  resultsLabel
+}) => {
   if (!paginationConfig) {
     return null
   }
@@ -20,19 +26,19 @@ const GridFooter = ({ paginationConfig }) => {
           initialElements={pageLimit}
           resultsPerPage={resultsPerPage}
           onChange={actions?.changeCounter}
+          showLabel={showLabel}
+          resultsLabel={resultsLabel}
         />
         <StyledButton
           mr={2}
           onClick={actions?.prev?.handlePrev}
-          disabled={actions?.prev?.disabled}
-        >
-          Prev
+          disabled={actions?.prev?.disabled}>
+          {previousLabel}
         </StyledButton>
         <StyledButton
           onClick={actions?.next?.handleNext}
-          disabled={actions?.next?.disabled}
-        >
-          Next
+          disabled={actions?.next?.disabled}>
+          {nextLabel}
         </StyledButton>
       </Flex>
     </Box>
@@ -55,7 +61,11 @@ GridFooter.propTypes = {
         disabled: PropTypes.bool
       })
     })
-  })
+  }),
+  nextLabel: PropTypes.node,
+  previousLabel: PropTypes.node,
+  showLabel: PropTypes.node,
+  resultsLabel: PropTypes.node
 }
 
 const StyledButton = styled(Button)(
@@ -78,22 +88,23 @@ const ItemDisplayCounter = ({
   disabled,
   resultsPerPage,
   initialElements,
+  showLabel,
+  resultsLabel,
   ...props
 }) => (
   <Flex alignItems='center' {...props}>
     <Typography variant='inputLabel' mr={1}>
-      Show
+      {showLabel}
     </Typography>
     <Dropdown
       noBottomSpace
       value={initialElements}
       valueRender={value => `${value} Results`}
       onChange={onChange}
-      disabled={disabled}
-    >
+      disabled={disabled}>
       {resultsPerPage.map(el => (
         <Dropdown.Option key={el} value={el}>
-          {el} Results
+          {el} {resultsLabel}
         </Dropdown.Option>
       ))}
     </Dropdown>
@@ -107,7 +118,9 @@ ItemDisplayCounter.propTypes = {
   onChange: PropTypes.func,
   disabled: PropTypes.bool,
   resultsPerPage: PropTypes.arrayOf(PropTypes.number),
-  initialElements: PropTypes.number
+  initialElements: PropTypes.number,
+  showLabel: PropTypes.node,
+  resultsLabel: PropTypes.node
 }
 
 export default GridFooter

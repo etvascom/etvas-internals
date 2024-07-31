@@ -37,6 +37,10 @@ const Grid = ({
   busyVariant,
   busySkeletonNumber,
   allowMultipleExtendedItems,
+  paginationNextLabel,
+  paginationPreviousLabel,
+  paginationShowLabel,
+  paginationResultsLabel,
   ...props
 }) => {
   const [sortConfig, setSortConfig] = useState(() => {
@@ -200,7 +204,7 @@ const Grid = ({
               scroll={isItemExtended(item) && isExtended(forceExtended)}
               key={item[rowKeyAttribute]}>
               <Row
-                data-testid={`${name}-item-row`} 
+                data-testid={`${name}-item-row`}
                 key={`${name}-row-${item.id ?? item._id}`}
                 item={item}
                 prefix={name}
@@ -224,7 +228,13 @@ const Grid = ({
           ))
         )}
       </Box>
-      <GridFooter paginationConfig={paginationConfig} />
+      <GridFooter
+        paginationConfig={paginationConfig}
+        nextLabel={paginationNextLabel}
+        previousLabel={paginationPreviousLabel}
+        showLabel={paginationShowLabel}
+        resultsLabel={paginationResultsLabel}
+      />
     </>
   )
 }
@@ -241,7 +251,11 @@ const ItemWrapper = ({ children, scroll, ...props }) => {
     }
   }, [viewRef, scroll])
 
-  return <div {...props} ref={viewRef}>{children}</div>
+  return (
+    <div {...props} ref={viewRef}>
+      {children}
+    </div>
+  )
 }
 
 ItemWrapper.propTypes = {
@@ -299,6 +313,10 @@ Grid.propTypes = {
   isDisabledRow: PropTypes.func,
   busySkeletonNumber: PropTypes.number,
   rowColor: PropTypes.func,
+  paginationNextLabel: PropTypes.node,
+  paginationPreviousLabel: PropTypes.node,
+  paginationShowLabel: PropTypes.node,
+  paginationResultsLabel: PropTypes.node,
   allowMultipleExtendedItems: PropTypes.bool
 }
 
@@ -310,7 +328,11 @@ Grid.defaultProps = {
   isDisabledRow: () => false,
   busySkeletonNumber: 5,
   rowColor: item => 'baseWhite',
-  allowMultipleExtendedItems: false
+  allowMultipleExtendedItems: false,
+  paginationNextLabel: 'Next',
+  paginationPreviousLabel: 'Prev',
+  paginationShowLabel: 'Show',
+  paginationResultsLabel: 'Results'
 }
 
 export default Grid
