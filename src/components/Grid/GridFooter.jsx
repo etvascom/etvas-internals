@@ -99,7 +99,11 @@ const ItemDisplayCounter = ({
     <Dropdown
       noBottomSpace
       value={initialElements}
-      valueRender={value => `${value} Results`}
+      valueRender={value => (
+        <>
+          {value} {resultsLabel}
+        </>
+      )}
       onChange={onChange}
       disabled={disabled}>
       {resultsPerPage.map(el => (
