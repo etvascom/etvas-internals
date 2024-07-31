@@ -37,10 +37,6 @@ const Grid = ({
   busyVariant,
   busySkeletonNumber,
   allowMultipleExtendedItems,
-  paginationNextLabel,
-  paginationPreviousLabel,
-  paginationShowLabel,
-  paginationResultsLabel,
   ...props
 }) => {
   const [sortConfig, setSortConfig] = useState(() => {
@@ -228,13 +224,7 @@ const Grid = ({
           ))
         )}
       </Box>
-      <GridFooter
-        paginationConfig={paginationConfig}
-        nextLabel={paginationNextLabel}
-        previousLabel={paginationPreviousLabel}
-        showLabel={paginationShowLabel}
-        resultsLabel={paginationResultsLabel}
-      />
+      <GridFooter paginationConfig={paginationConfig} />
     </>
   )
 }
@@ -313,10 +303,6 @@ Grid.propTypes = {
   isDisabledRow: PropTypes.func,
   busySkeletonNumber: PropTypes.number,
   rowColor: PropTypes.func,
-  paginationNextLabel: PropTypes.node,
-  paginationPreviousLabel: PropTypes.node,
-  paginationShowLabel: PropTypes.node,
-  paginationResultsLabel: PropTypes.node,
   allowMultipleExtendedItems: PropTypes.bool
 }
 
@@ -328,11 +314,7 @@ Grid.defaultProps = {
   isDisabledRow: () => false,
   busySkeletonNumber: 5,
   rowColor: item => 'baseWhite',
-  allowMultipleExtendedItems: false,
-  paginationNextLabel: 'Next',
-  paginationPreviousLabel: 'Prev',
-  paginationShowLabel: 'Show',
-  paginationResultsLabel: 'Results'
+  allowMultipleExtendedItems: false
 }
 
 export default Grid

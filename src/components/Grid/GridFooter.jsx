@@ -4,18 +4,18 @@ import styled from 'styled-components'
 
 import { Box, Button, Dropdown, Flex, Typography } from '@etvas/etvaskit'
 
-const GridFooter = ({
-  paginationConfig,
-  nextLabel,
-  previousLabel,
-  showLabel,
-  resultsLabel
-}) => {
+const GridFooter = ({ paginationConfig }) => {
   if (!paginationConfig) {
     return null
   }
 
-  const { actions, pageLimit, loading, resultsPerPage } = paginationConfig
+  const { actions, pageLimit, loading, resultsPerPage, labels } =
+    paginationConfig
+
+  const nextLabel = labels?.next ?? 'Next'
+  const previousLabel = labels?.previous ?? 'Previous'
+  const showLabel = labels?.show ?? 'Show'
+  const resultsLabel = labels?.results ?? 'Results'
 
   return (
     <Box>
@@ -60,12 +60,14 @@ GridFooter.propTypes = {
         handlePrev: PropTypes.func,
         disabled: PropTypes.bool
       })
+    }),
+    labels: PropTypes.shape({
+      next: PropTypes.node,
+      previous: PropTypes.node,
+      show: PropTypes.node,
+      results: PropTypes.node
     })
-  }),
-  nextLabel: PropTypes.node,
-  previousLabel: PropTypes.node,
-  showLabel: PropTypes.node,
-  resultsLabel: PropTypes.node
+  })
 }
 
 const StyledButton = styled(Button)(
