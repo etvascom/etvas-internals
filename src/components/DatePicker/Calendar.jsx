@@ -53,16 +53,19 @@ export const Calendar = ({
   )
 
   const isBetweenDate = useCallback(
-    mom => mom.isSameOrAfter(past, 'day') && mom.isSameOrBefore(future, 'day'),
+    date =>
+      date.isSameOrAfter(past, 'day') && date.isSameOrBefore(future, 'day'),
     [future, past]
   )
   const isBetweenMonth = useCallback(
-    mom => {
-      const _s = mom.clone().startOf('month')
-      const _e = mom.clone().endOf('month')
+    date => {
+      const startOfMonth = date.clone().startOf('month')
+      const endOfMonth = date.clone().endOf('month')
       return (
-        (_s.isSameOrAfter(past, 'day') && _s.isSameOrBefore(future, 'day')) ||
-        (_e.isSameOrAfter(past, 'day') && _e.isSameOrBefore(future, 'day'))
+        (startOfMonth.isSameOrAfter(past, 'day') &&
+          startOfMonth.isSameOrBefore(future, 'day')) ||
+        (endOfMonth.isSameOrAfter(past, 'day') &&
+          endOfMonth.isSameOrBefore(future, 'day'))
       )
     },
     [future, past]
@@ -95,19 +98,26 @@ export const Calendar = ({
     end.endOf('week')
 
     const currentCalendarViewDays = []
-    for (let c = start.clone(); c.isSameOrBefore(end, 'day'); c.add(1, 'day')) {
+    for (
+      let dayIterator = start.clone();
+      dayIterator.isSameOrBefore(end, 'day');
+      dayIterator.add(1, 'day')
+    ) {
       currentCalendarViewDays.push({
-        key: c.valueOf(),
-        label: c.format(dayFormat),
-        value: c.date(),
-        _m: c.clone(),
-        current: c.isSame(momentValue, 'day'),
-        month: c.isSame(momentDate, 'month'),
-        today: c.isSame(now, 'day'),
-        highlight: highlight(c.format(COMMON_FORMAT), c.clone()),
+        key: dayIterator.valueOf(),
+        label: dayIterator.format(dayFormat),
+        value: dayIterator.date(),
+        momentDate: dayIterator.clone(),
+        current: dayIterator.isSame(momentValue, 'day'),
+        month: dayIterator.isSame(momentDate, 'month'),
+        today: dayIterator.isSame(now, 'day'),
+        highlight: highlight(
+          dayIterator.format(COMMON_FORMAT),
+          dayIterator.clone()
+        ),
         secondaryHighlight: secondaryHighlight(
-          c.format(COMMON_FORMAT),
-          c.clone()
+          dayIterator.format(COMMON_FORMAT),
+          dayIterator.clone()
         )
       })
     }
@@ -124,7 +134,7 @@ export const Calendar = ({
         value: mon.month(),
         current: mon.isSame(momentValue, 'month'),
         today: mon.isSame(now, 'month'),
-        _m: mon.clone()
+        momentDate: mon.clone()
       })
     }
 
@@ -137,16 +147,16 @@ export const Calendar = ({
     momentValue,
     monthFormat
   ])
-  
+
   const week = useMemo(() => {
     const week = []
-    const start = moment().startOf('week')
+    const startOfWeek = moment().startOf('week')
     for (
-      let w = start.clone();
-      w.isSameOrBefore(start, 'week');
-      w.add(1, 'day')
+      let dayIterator = startOfWeek.clone();
+      dayIterator.isSameOrBefore(startOfWeek, 'week');
+      dayIterator.add(1, 'day')
     ) {
-      week.push({ key: w.format('X'), label: w.format(weekdayFormat) })
+      week.push({ key: dayIterator.format('X'), label: dayIterator.format(weekdayFormat) })
     }
     return week
   }, [weekdayFormat])
@@ -155,13 +165,13 @@ export const Calendar = ({
     const year = []
     const startYear = (yearPanel ? yearPanel : momentValue.year()) - 12
     const now = moment()
-    for (let i = startYear; i < startYear + 22; i++) {
+    for (let yearIterator = startYear; yearIterator < startYear + 22; yearIterator++) {
       year.push({
-        key: i,
-        label: i,
-        value: i,
-        current: momentValue.year() === i,
-        today: now.year() === i
+        key: yearIterator,
+        label: yearIterator,
+        value: yearIterator,
+        current: momentValue.year() === yearIterator,
+        today: now.year() === yearIterator
       })
     }
     return year
@@ -222,21 +232,24 @@ export const Calendar = ({
   }
 
   const handleDayChange = day => {
-    if (!isBetweenDate(day._m)) {
+    if (!isBetweenDate(day.momentDate)) {
       return
     }
-    if (monthNavigationWithinYear && !day._m.isSame(momentValue, 'year')) {
+    if (
+      monthNavigationWithinYear &&
+      !day.momentDate.isSame(momentValue, 'year')
+    ) {
       return
     }
 
-    if (!canChange || canChange(day._m.format(COMMON_FORMAT))) {
-      setCurrentDate(day._m.format(COMMON_FORMAT))
-      onChange && onChange(day._m.format(COMMON_FORMAT))
+    if (!canChange || canChange(day.momentDate.format(COMMON_FORMAT))) {
+      setCurrentDate(day.momentDate.format(COMMON_FORMAT))
+      onChange && onChange(day.momentDate.format(COMMON_FORMAT))
     }
   }
 
   const handleHover = day => {
-    onHover && onHover(day._m.format(COMMON_FORMAT))
+    onHover && onHover(day.momentDate.format(COMMON_FORMAT))
   }
 
   return (
@@ -306,7 +319,7 @@ export const Calendar = ({
             <CellWrapper key={mon.key} ratio={1 / 2}>
               <MonthCell
                 current={mon.current}
-                disabled={!isBetweenMonth(mon._m)}
+                disabled={!isBetweenMonth(mon.momentDate)}
                 onClick={() => handleMonthChange(mon.value)}>
                 <Typography
                   variant='default'
@@ -371,7 +384,7 @@ export const Calendar = ({
               current={day.current}
               highlight={day.highlight}
               secondaryHighlight={day.secondaryHighlight}
-              disabled={!isBetweenDate(day._m)}
+              disabled={!isBetweenDate(day.momentDate)}
               month={day.month}>
               <Typography
                 variant='default'
