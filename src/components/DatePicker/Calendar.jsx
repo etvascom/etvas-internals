@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import moment from 'moment'
 import 'moment/locale/de'
@@ -34,13 +34,8 @@ export const Calendar = ({
   const [isMonthsShown, setMonthsShown] = useState(false)
   const [isYearsShown, setYearsShown] = useState(false)
   const [yearPanel, setYearPanel] = useState(null)
-  const [currentDate, setCurrentDate] = useState(browseDate || value)
 
-  useEffect(() => {
-    setCurrentDate(browseDate || value)
-  }, [value, browseDate])
-
-  const momentDate = useMemo(() => moment(currentDate), [currentDate])
+  const momentDate = useMemo(() => moment(browseDate || value), [browseDate, value])
   const momentValue = useMemo(() => moment(value), [value])
 
   const past = useMemo(
@@ -219,7 +214,7 @@ export const Calendar = ({
     if (next.isAfter(future, 'day')) {
       next = future.clone()
     }
-    setCurrentDate(next.format(COMMON_FORMAT))
+    onChange && onChange(next.format(COMMON_FORMAT))
     toggleYears()
   }
 
@@ -229,13 +224,13 @@ export const Calendar = ({
   }
 
   const handleMonthChange = month => {
-    setCurrentDate(momentDate.month(month).format(COMMON_FORMAT))
+    onChange && onChange(momentDate.month(month).format(COMMON_FORMAT))
     toggleMonths()
   }
 
   const handleMonthNavigate = offset => {
     setMonthsShown(false)
-    setCurrentDate(momentDate.add(offset, 'month').format(COMMON_FORMAT))
+    onChange && onChange(momentDate.add(offset, 'month').format(COMMON_FORMAT))
   }
 
   const handleDayChange = day => {
@@ -250,7 +245,6 @@ export const Calendar = ({
     }
 
     if (!canChange || canChange(day.momentDate.format(COMMON_FORMAT))) {
-      setCurrentDate(day.momentDate.format(COMMON_FORMAT))
       onChange && onChange(day.momentDate.format(COMMON_FORMAT))
     }
   }
