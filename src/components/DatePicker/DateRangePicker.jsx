@@ -44,38 +44,44 @@ export const DateRangePicker = ({
     return () => window.removeEventListener('click', listener)
   }, [])
 
-  const mSot = moment(startOfTime || moment().add(-160, 'year').startOf('year'))
-  const mEot = moment(endOfTime || moment().add(160, 'year').endOf('year'))
+  const momentStartOfTime = moment(
+    startOfTime || moment().add(-160, 'year').startOf('year')
+  )
+  const momentEndOfTime = moment(
+    endOfTime || moment().add(160, 'year').endOf('year')
+  )
 
-  const [mStart, mEnd] = useMemo(() => {
+  const [momentStart, momentEnd] = useMemo(() => {
     const { start, end } = value || {}
-    const mStart = moment(start || moment().add(-1, 'month').startOf('month'))
-    const mEnd = moment(end || moment())
-    return [mStart, mEnd]
+    const momentStart = moment(
+      start || moment().add(-1, 'month').startOf('month')
+    )
+    const momentEnd = moment(end || moment())
+    return [momentStart, momentEnd]
   }, [value])
 
-  const currentYear = useMemo(() => mStart.year(), [mStart])
+  const currentYear = useMemo(() => momentStart.year(), [momentStart])
 
   const emitChange = (start, end) => {
     if (!onChange) {
       return
     }
     onChange({
-      start: start || mStart.format(COMMON_FORMAT),
-      end: end || mEnd.format(COMMON_FORMAT)
+      start: start || momentStart.format(COMMON_FORMAT),
+      end: end || momentEnd.format(COMMON_FORMAT)
     })
   }
 
   const handleChangeCurrentYear = value => {
-    let ds = mStart.year(value)
-    let de = mEnd.year(value)
-    if (ds.isBefore(mSot, 'day')) {
-      ds = mSot.clone()
+    let dateStart = momentStart.year(value)
+    let dateEnd = momentEnd.year(value)
+    if (dateStart.isBefore(momentStartOfTime, 'day')) {
+      dateStart = momentStartOfTime.clone()
     }
-    if (de.isAfter(mEot, 'day')) {
-      de = mEot.clone()
+    if (dateEnd.isAfter(momentEndOfTime, 'day')) {
+      dateEnd = momentEndOfTime.clone()
     }
-    emitChange(ds.format(COMMON_FORMAT), de.format(COMMON_FORMAT))
+    emitChange(dateStart.format(COMMON_FORMAT), dateEnd.format(COMMON_FORMAT))
   }
 
   const handleChangeDateStart = value => {
@@ -90,7 +96,8 @@ export const DateRangePicker = ({
     !disabled && setExpanded(!isExpanded)
   }
 
-  const highlight = day => mStart.isSameOrBefore(day) && mEnd.isSameOrAfter(day)
+  const highlight = day =>
+    momentStart.isSameOrBefore(day) && momentEnd.isSameOrAfter(day)
 
   console.warn('* Deprecated: please use RangePicker component *')
 
@@ -121,8 +128,8 @@ export const DateRangePicker = ({
               placeholder
             ) : (
               <>
-                {mStart.format(displayFormat)} &divide;{' '}
-                {mEnd.format(displayFormat)}
+                {momentStart.format(displayFormat)} &divide;{' '}
+                {momentEnd.format(displayFormat)}
               </>
             )}
           </Typography>
@@ -138,31 +145,31 @@ export const DateRangePicker = ({
                 value={currentYear}
                 displayStart={yearDisplayStart}
                 displayEnd={yearDisplayEnd}
-                startOfTime={mSot.year()}
-                endOfTime={mEot.year()}
+                startOfTime={momentStartOfTime.year()}
+                endOfTime={momentEndOfTime.year()}
                 onChange={handleChangeCurrentYear}
                 label={labelYear}
               />
             )}
             <Calendar
               mx={2}
-              value={mStart.format(COMMON_FORMAT)}
+              value={momentStart.format(COMMON_FORMAT)}
               monthNavigationWithinYear={navigationByYear}
               yearSelector={!navigationByYear}
               onChange={handleChangeDateStart}
-              startOfTime={mSot.format(COMMON_FORMAT)}
-              endOfTime={mEnd.format(COMMON_FORMAT)}
+              startOfTime={momentStartOfTime.format(COMMON_FORMAT)}
+              endOfTime={momentEnd.format(COMMON_FORMAT)}
               highlight={highlight}
               label={labelStartDate}
             />
             <Calendar
               yearSelector={!navigationByYear}
               ml={2}
-              value={mEnd.format(COMMON_FORMAT)}
+              value={momentEnd.format(COMMON_FORMAT)}
               monthNavigationWithinYear={navigationByYear}
               onChange={handleChangeDateEnd}
-              startOfTime={mStart.format(COMMON_FORMAT)}
-              endOfTime={mEot.format(COMMON_FORMAT)}
+              startOfTime={momentStart.format(COMMON_FORMAT)}
+              endOfTime={momentEndOfTime.format(COMMON_FORMAT)}
               highlight={highlight}
               label={labelEndDate}
             />
