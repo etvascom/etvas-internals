@@ -64,16 +64,16 @@ export const RangePicker = ({
     moment.utc(value?.start || moment.utc().startOf('month'))
   )
 
-  const resetDateRange = val => {
-    const { start, end } = val || {}
+  const resetDateRange = value => {
+    const { start, end } = value || {}
 
-    const mStart = moment.utc(start || moment.utc())
-    const mEnd = moment.utc(end || moment.utc())
+    const momentStart = moment.utc(start || moment.utc())
+    const momentEnd = moment.utc(end || moment.utc())
 
-    return { mStart, mEnd }
+    return { momentStart, momentEnd }
   }
 
-  const [{ mStart, mEnd }, setDateRange] = useState(() => resetDateRange(value))
+  const [{ momentStart, momentEnd }, setDateRange] = useState(() => resetDateRange(value))
 
   useLayoutEffect(() => {
     const listener = event => {
@@ -90,30 +90,30 @@ export const RangePicker = ({
   }, [])
 
   const rangeStartOfTime = useMemo(() => {
-    const mPast = moment(
+    const momentPast = moment(
       startOfTime || moment().add(-160, 'year').startOf('year')
     )
     if (!isSettingEnd) {
-      return mPast
+      return momentPast
     }
-    return mStart.isSameOrAfter(mPast) ? mStart : mPast
-  }, [startOfTime, mStart, isSettingEnd])
+    return momentStart.isSameOrAfter(momentPast) ? momentStart : momentPast
+  }, [startOfTime, momentStart, isSettingEnd])
 
   const rangeEndOfTime = useMemo(() => {
-    const eot = moment.utc(
+    const momentFuture = moment.utc(
       endOfTime || moment.utc().add(160, 'year').endOf('year')
     )
 
     if (isSettingEnd && navigationByYear) {
-      const eoy = mStart.clone().endOf('year')
+      const endOfYear = momentStart.clone().endOf('year')
 
-      if (eoy.isBefore(eot)) {
-        return eoy
+      if (endOfYear.isBefore(momentFuture)) {
+        return endOfYear
       }
     }
 
-    return eot
-  }, [endOfTime, isSettingEnd, mStart, navigationByYear])
+    return momentFuture
+  }, [endOfTime, isSettingEnd, momentStart, navigationByYear])
 
   const nextMonth = useMemo(
     () => currentMonth.clone().add(1, 'month'),
@@ -177,12 +177,12 @@ export const RangePicker = ({
 
   const handleCalendarClick = value => {
     if (isSettingEnd) {
-      const _mEnd = moment.utc(value)
-      setDateRange({ mStart: mStart.clone(), mEnd: _mEnd })
+      const momentValue = moment.utc(value)
+      setDateRange({ momentStart: momentStart.clone(), momentEnd: momentValue })
       handleChange(
         {
-          start: mStart.format(COMMON_FORMAT),
-          end: _mEnd.format(COMMON_FORMAT)
+          start: momentStart.format(COMMON_FORMAT),
+          end: momentValue.format(COMMON_FORMAT)
         },
         isComparing,
         compareMethod
@@ -192,8 +192,8 @@ export const RangePicker = ({
       setShowCurrentPeriod(!canSwitchToCompare)
       return
     }
-    const _mStart = moment.utc(value)
-    setDateRange({ mStart: _mStart, mEnd: _mStart })
+    const momentValue = moment.utc(value)
+    setDateRange({ momentStart: momentValue, momentEnd: momentValue })
     setSettingEnd(true)
   }
 
@@ -225,8 +225,8 @@ export const RangePicker = ({
     const shownValue = showCurrentPeriod ? value : compareValue
 
     setDateRange({
-      mStart: moment.utc(shownValue?.start),
-      mEnd: moment.utc(shownValue?.end)
+      momentStart: moment.utc(shownValue?.start),
+      momentEnd: moment.utc(shownValue?.end)
     })
   }, [value, compareValue, showCurrentPeriod])
 
@@ -243,13 +243,13 @@ export const RangePicker = ({
 
   const highlight = day =>
     isSettingEnd
-      ? mStart.isSameOrBefore(moment.utc(day)) &&
+      ? momentStart.isSameOrBefore(moment.utc(day)) &&
         currentHover &&
-        mStart.isSameOrBefore(currentHover) &&
+        momentStart.isSameOrBefore(currentHover) &&
         moment.utc(day).isSameOrBefore(currentHover) &&
         rangeEndOfTime.isSameOrAfter(moment.utc(day))
-      : mStart.isSameOrBefore(moment.utc(day)) &&
-        mEnd.isSameOrAfter(moment.utc(day))
+      : momentStart.isSameOrBefore(moment.utc(day)) &&
+        momentEnd.isSameOrAfter(moment.utc(day))
 
   const secondaryHighlight = day => {
     const secondaryValue =
@@ -334,7 +334,7 @@ export const RangePicker = ({
                     <div></div>
                   </CalendarHeading>
                   <Calendar
-                    value={mStart.format(COMMON_FORMAT)}
+                    value={momentStart.format(COMMON_FORMAT)}
                     browseDate={currentMonth.format(COMMON_FORMAT)}
                     monthSelector={false}
                     yearSelector={false}
@@ -363,7 +363,7 @@ export const RangePicker = ({
                     />
                   </CalendarHeading>
                   <Calendar
-                    value={mEnd.format(COMMON_FORMAT)}
+                    value={momentEnd.format(COMMON_FORMAT)}
                     browseDate={nextMonth.format(COMMON_FORMAT)}
                     monthSelector={false}
                     yearSelector={false}
