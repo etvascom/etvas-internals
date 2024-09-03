@@ -34,7 +34,7 @@ export const DatePicker = ({
     return () => window.removeEventListener('click', listener)
   }, [])
 
-  const mDate = useMemo(() => (value ? moment(value) : moment()), [value])
+  const momentDate = useMemo(() => (value ? moment(value) : moment()), [value])
 
   const handleChangeDate = value => {
     if (collapseOnPick) {
@@ -52,14 +52,12 @@ export const DatePicker = ({
       <FakeInput
         onClick={toggleExpanded}
         expanded={isExpanded}
-        disabled={disabled}
-      >
+        disabled={disabled}>
         <Typography
           mx={2}
           truncate
-          color={disabled ? 'textInputDisabled' : 'baseBlack'}
-        >
-          {mDate.format(displayFormat)}
+          color={disabled ? 'textInputDisabled' : 'baseBlack'}>
+          {momentDate.format(displayFormat)}
         </Typography>
         <Flex mr={2} opacity={disabled ? 0.35 : 1}>
           <Icon name='calendar' />
@@ -68,7 +66,7 @@ export const DatePicker = ({
       {isExpanded && (
         <DropdownWrapper>
           <Calendar
-            value={mDate.format(COMMON_FORMAT)}
+            value={momentDate.format(COMMON_FORMAT)}
             onChange={handleChangeDate}
             {...props}
           />

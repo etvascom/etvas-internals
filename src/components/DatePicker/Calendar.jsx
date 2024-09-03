@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import moment from 'moment'
 import 'moment/locale/de'
@@ -34,16 +34,11 @@ export const Calendar = ({
   const [isMonthsShown, setMonthsShown] = useState(false)
   const [isYearsShown, setYearsShown] = useState(false)
   const [yearPanel, setYearPanel] = useState(null)
-  const [currentDate, setCurrentDate] = useState(browseDate || value)
 
-  useEffect(() => {
-    setCurrentDate(browseDate || value)
-  }, [value, browseDate])
+  const momentDate = useMemo(() => moment(browseDate || value), [browseDate, value])
+  const momentValue = useMemo(() => moment(value), [value])
 
-  let m = useMemo(() => moment(currentDate), [currentDate])
-  const mRef = useMemo(() => moment(value), [value])
-
-  const paleozoic = useMemo(
+  const past = useMemo(
     () => (startOfTime ? moment(startOfTime) : moment().add(-160, 'year')),
     [startOfTime]
   )
@@ -53,31 +48,32 @@ export const Calendar = ({
   )
 
   const isBetweenDate = useCallback(
-    mom =>
-      mom.isSameOrAfter(paleozoic, 'day') && mom.isSameOrBefore(future, 'day'),
-    [future, paleozoic]
+    date =>
+      date.isSameOrAfter(past, 'day') && date.isSameOrBefore(future, 'day'),
+    [future, past]
   )
   const isBetweenMonth = useCallback(
-    mom => {
-      const _s = mom.clone().startOf('month')
-      const _e = mom.clone().endOf('month')
+    date => {
+      const startOfMonth = date.clone().startOf('month')
+      const endOfMonth = date.clone().endOf('month')
       return (
-        (_s.isSameOrAfter(paleozoic, 'day') &&
-          _s.isSameOrBefore(future, 'day')) ||
-        (_e.isSameOrAfter(paleozoic, 'day') && _e.isSameOrBefore(future, 'day'))
+        (startOfMonth.isSameOrAfter(past, 'day') &&
+          startOfMonth.isSameOrBefore(future, 'day')) ||
+        (endOfMonth.isSameOrAfter(past, 'day') &&
+          endOfMonth.isSameOrBefore(future, 'day'))
       )
     },
-    [future, paleozoic]
+    [future, past]
   )
   const isBetweenYear = useCallback(
-    year => paleozoic.year() <= year && future.year() >= year,
-    [future, paleozoic]
+    year => past.year() <= year && future.year() >= year,
+    [future, past]
   )
 
-  const [cal, month] = useMemo(() => {
+  const [days, months] = useMemo(() => {
     const now = moment()
-    const start = m.clone().startOf('month')
-    const end = m.clone().endOf('month')
+    const start = momentDate.clone().startOf('month')
+    const end = momentDate.clone().endOf('month')
 
     if (start.isSame(start.clone().startOf('week'), 'day')) {
       start.startOf('week').add(-1, 'day')
@@ -96,85 +92,106 @@ export const Calendar = ({
     start.startOf('week')
     end.endOf('week')
 
-    const cal = []
-    for (let c = start.clone(); c.isSameOrBefore(end, 'day'); c.add(1, 'day')) {
-      cal.push({
-        key: c.valueOf(),
-        label: c.format(dayFormat),
-        value: c.date(),
-        _m: c.clone(),
-        current: c.isSame(mRef, 'day'),
-        month: c.isSame(m, 'month'),
-        today: c.isSame(now, 'day'),
-        highlight: highlight(c.format(COMMON_FORMAT), c.clone()),
+    const days = []
+    for (
+      let dayIterator = start.clone();
+      dayIterator.isSameOrBefore(end, 'day');
+      dayIterator.add(1, 'day')
+    ) {
+      days.push({
+        key: dayIterator.valueOf(),
+        label: dayIterator.format(dayFormat),
+        value: dayIterator.date(),
+        momentDate: dayIterator.clone(),
+        current: dayIterator.isSame(momentValue, 'day'),
+        month: dayIterator.isSame(momentDate, 'month'),
+        today: dayIterator.isSame(now, 'day'),
+        highlight: highlight(
+          dayIterator.format(COMMON_FORMAT),
+          dayIterator.clone()
+        ),
         secondaryHighlight: secondaryHighlight(
-          c.format(COMMON_FORMAT),
-          c.clone()
+          dayIterator.format(COMMON_FORMAT),
+          dayIterator.clone()
         )
       })
     }
 
-    const month = []
+    const months = []
     for (
-      let mon = m.clone().startOf('year');
-      mon.isSame(m, 'year');
-      mon.add(1, 'month')
+      let monthIterator = momentDate.clone().startOf('year');
+      monthIterator.isSame(momentDate, 'year');
+      monthIterator.add(1, 'month')
     ) {
-      month.push({
-        key: mon.valueOf(),
-        label: mon.format(monthFormat),
-        value: mon.month(),
-        current: mon.isSame(mRef, 'month'),
-        today: mon.isSame(now, 'month'),
-        _m: mon.clone()
+      months.push({
+        key: monthIterator.valueOf(),
+        label: monthIterator.format(monthFormat),
+        value: monthIterator.month(),
+        current: monthIterator.isSame(momentValue, 'month'),
+        today: monthIterator.isSame(now, 'month'),
+        momentDate: monthIterator.clone()
       })
     }
 
-    return [cal, month]
-  }, [dayFormat, highlight, secondaryHighlight, m, mRef, monthFormat])
+    return [days, months]
+  }, [
+    dayFormat,
+    highlight,
+    secondaryHighlight,
+    momentDate,
+    momentValue,
+    monthFormat
+  ])
 
   const week = useMemo(() => {
     const week = []
-    const start = moment().startOf('week')
+    const startOfWeek = moment().startOf('week')
     for (
-      let w = start.clone();
-      w.isSameOrBefore(start, 'week');
-      w.add(1, 'day')
+      let dayIterator = startOfWeek.clone();
+      dayIterator.isSameOrBefore(startOfWeek, 'week');
+      dayIterator.add(1, 'day')
     ) {
-      week.push({ key: w.format('X'), label: w.format(weekdayFormat) })
+      week.push({
+        key: dayIterator.format('X'),
+        label: dayIterator.format(weekdayFormat)
+      })
     }
     return week
   }, [weekdayFormat])
 
-  const year = useMemo(() => {
-    const year = []
-    const startYear = (yearPanel ? yearPanel : mRef.year()) - 12
+  const years = useMemo(() => {
+    const years = []
+    const startYear = (yearPanel ? yearPanel : momentValue.year()) - 12
     const now = moment()
-    for (let i = startYear; i < startYear + 22; i++) {
-      year.push({
-        key: i,
-        label: i,
-        value: i,
-        current: mRef.year() === i,
-        today: now.year() === i
+    for (
+      let yearIterator = startYear;
+      yearIterator < startYear + 22;
+      yearIterator++
+    ) {
+      years.push({
+        key: yearIterator,
+        label: yearIterator,
+        value: yearIterator,
+        current: momentValue.year() === yearIterator,
+        today: now.year() === yearIterator
       })
     }
-    return year
-  }, [mRef, yearPanel])
+    return years
+  }, [momentValue, yearPanel])
 
-  const canNavigateMonth = dir => {
-    const next = m.clone().add(dir, 'month')
+  const canNavigateMonth = offset => {
+    const next = momentDate.clone().add(offset, 'month')
     if (!isBetweenMonth(next)) {
       return false
     }
-    if (monthNavigationWithinYear && !next.isSame(mRef, 'year')) {
+    if (monthNavigationWithinYear && !next.isSame(momentValue, 'year')) {
       return false
     }
     return true
   }
 
-  const canNavigateYear = dir =>
-    isBetweenYear((yearPanel ? yearPanel : m.year()) + dir)
+  const canNavigateYear = offset =>
+    isBetweenYear((yearPanel ? yearPanel : momentDate.year()) + offset)
 
   const toggleMonths = () => {
     if (!isMonthsShown) {
@@ -190,48 +207,50 @@ export const Calendar = ({
   }
 
   const handleYearChange = year => {
-    let next = m.clone().year(year)
-    if (next.isBefore(paleozoic, 'day')) {
-      next = paleozoic.clone()
+    let next = momentDate.clone().year(year)
+    if (next.isBefore(past, 'day')) {
+      next = past.clone()
     }
     if (next.isAfter(future, 'day')) {
       next = future.clone()
     }
-    setCurrentDate(next.format(COMMON_FORMAT))
+    onChange && onChange(next.format(COMMON_FORMAT))
     toggleYears()
   }
 
-  const handleYearNavigate = dir => {
-    const prev = yearPanel ? yearPanel : mRef.year()
-    setYearPanel(prev + dir)
+  const handleYearNavigate = offset => {
+    const prev = yearPanel ? yearPanel : momentValue.year()
+    setYearPanel(prev + offset)
   }
 
   const handleMonthChange = month => {
-    setCurrentDate(m.month(month).format(COMMON_FORMAT))
+    onChange && onChange(momentDate.month(month).format(COMMON_FORMAT))
     toggleMonths()
   }
 
-  const handleMonthNavigate = direction => {
+  const handleMonthNavigate = offset => {
     setMonthsShown(false)
-    setCurrentDate(m.add(direction, 'month').format(COMMON_FORMAT))
+    onChange && onChange(momentDate.add(offset, 'month').format(COMMON_FORMAT))
   }
 
   const handleDayChange = day => {
-    if (!isBetweenDate(day._m)) {
+    if (!isBetweenDate(day.momentDate)) {
       return
     }
-    if (monthNavigationWithinYear && !day._m.isSame(mRef, 'year')) {
+    if (
+      monthNavigationWithinYear &&
+      !day.momentDate.isSame(momentValue, 'year')
+    ) {
       return
     }
 
-    if (!canChange || canChange(day._m.format(COMMON_FORMAT))) {
-      setCurrentDate(day._m.format(COMMON_FORMAT))
-      onChange && onChange(day._m.format(COMMON_FORMAT))
+    if (!canChange || canChange(day.momentDate.format(COMMON_FORMAT))) {
+      onChange && onChange(day.momentDate.format(COMMON_FORMAT))
     }
   }
 
   const handleHover = day => {
-    onHover && onHover(day._m.format(COMMON_FORMAT))
+    onHover && onHover(day.momentDate.format(COMMON_FORMAT))
   }
 
   return (
@@ -249,16 +268,14 @@ export const Calendar = ({
             <Flex alignItems='center'>
               <Typography
                 variant='labelSmallBold'
-                color={isMonthsShown ? 'accent' : undefined}
-              >
-                {m.format(monthFormat)}
+                color={isMonthsShown ? 'accent' : undefined}>
+                {momentDate.format(monthFormat)}
               </Typography>
               <Rotated
                 justifyContent='center'
                 alignItems='center'
                 color={isMonthsShown ? 'accent' : undefined}
-                aria-expanded={isMonthsShown}
-              >
+                aria-expanded={isMonthsShown}>
                 <Icon name='chevronLeft' />
               </Rotated>
             </Flex>
@@ -269,16 +286,14 @@ export const Calendar = ({
             <Flex alignItems='center'>
               <Typography
                 variant='labelSmallBold'
-                color={isYearsShown ? 'accent' : undefined}
-              >
-                {m.format(yearFormat)}
+                color={isYearsShown ? 'accent' : undefined}>
+                {momentDate.format(yearFormat)}
               </Typography>
               <Rotated
                 justifyContent='center'
                 alignItems='center'
                 color={isYearsShown ? 'accent' : undefined}
-                aria-expanded={isYearsShown}
-              >
+                aria-expanded={isYearsShown}>
                 <Icon name='chevronLeft' />
               </Rotated>
             </Flex>
@@ -287,34 +302,30 @@ export const Calendar = ({
         {monthNavigation && (
           <MonthNav
             onClick={() => handleMonthNavigate(-1)}
-            disabled={!canNavigateMonth(-1)}
-          >
+            disabled={!canNavigateMonth(-1)}>
             <Icon name='chevronLeft' />
           </MonthNav>
         )}
         {monthNavigation && (
           <MonthNav
             onClick={() => handleMonthNavigate(1)}
-            disabled={!canNavigateMonth(1)}
-          >
+            disabled={!canNavigateMonth(1)}>
             <Icon name='chevronRight' />
           </MonthNav>
         )}
       </Flex>
       {monthSelector && (
         <ConditionalFlex flexWrap='wrap' my={4} shown={isMonthsShown}>
-          {month.map(mon => (
-            <CellWrapper key={mon.key} ratio={1 / 2}>
+          {months.map(month => (
+            <CellWrapper key={month.key} ratio={1 / 2}>
               <MonthCell
-                current={mon.current}
-                disabled={!isBetweenMonth(mon._m)}
-                onClick={() => handleMonthChange(mon.value)}
-              >
+                current={month.current}
+                disabled={!isBetweenMonth(month.momentDate)}
+                onClick={() => handleMonthChange(month.value)}>
                 <Typography
                   variant='default'
-                  fontWeight={mon.today ? 'bold' : 300}
-                >
-                  {mon.label}
+                  fontWeight={month.today ? 'bold' : 300}>
+                  {month.label}
                 </Typography>
               </MonthCell>
             </CellWrapper>
@@ -326,50 +337,46 @@ export const Calendar = ({
           <CellWrapper ratio={1 / 4}>
             <YearCell
               disabled={!canNavigateYear(-10)}
-              onClick={() => handleYearNavigate(-10)}
-            >
+              onClick={() => handleYearNavigate(-10)}>
               <Icon name='chevronLeft' />
             </YearCell>
           </CellWrapper>
-          {year.map(y => (
-            <CellWrapper ratio={1 / 4} key={y.key}>
+          {years.map(year => (
+            <CellWrapper ratio={1 / 4} key={year.key}>
               <YearCell
-                key={y.key}
-                current={y.current}
-                disabled={!isBetweenYear(y.value)}
-                onClick={() => handleYearChange(y.value)}
-              >
+                key={year.key}
+                current={year.current}
+                disabled={!isBetweenYear(year.value)}
+                onClick={() => handleYearChange(year.value)}>
                 <Typography
                   variant='default'
-                  fontWeight={y.today ? 'bold' : 300}
-                >
-                  {y.label}
+                  fontWeight={year.today ? 'bold' : 300}>
+                  {year.label}
                 </Typography>
               </YearCell>
             </CellWrapper>
           ))}
           <YearCell
             disabled={!canNavigateYear(10)}
-            onClick={() => handleYearNavigate(10)}
-          >
+            onClick={() => handleYearNavigate(10)}>
             <Icon name='chevronRight' />
           </YearCell>
         </ConditionalFlex>
       )}
       {!isMonthsShown &&
         !isYearsShown &&
-        week.map(wd => (
-          <CellWrapper key={wd.key} ratio={1 / 7}>
+        week.map(weekDay => (
+          <CellWrapper key={weekDay.key} ratio={1 / 7}>
             <WeekCell>
               <Typography variant='default' opacity={0.5}>
-                {wd.label}
+                {weekDay.label}
               </Typography>
             </WeekCell>
           </CellWrapper>
         ))}
       {!isMonthsShown &&
         !isYearsShown &&
-        cal.map(day => (
+        days.map(day => (
           <CellWrapper key={day.key} ratio={1 / 7}>
             <DayCell
               onMouseOver={() => handleHover(day)}
@@ -378,13 +385,11 @@ export const Calendar = ({
               current={day.current}
               highlight={day.highlight}
               secondaryHighlight={day.secondaryHighlight}
-              disabled={!isBetweenDate(day._m)}
-              month={day.month}
-            >
+              disabled={!isBetweenDate(day.momentDate)}
+              month={day.month}>
               <Typography
                 variant='default'
-                fontWeight={day.today ? 'bold' : 300}
-              >
+                fontWeight={day.today ? 'bold' : 300}>
                 {day.label}
               </Typography>
             </DayCell>
