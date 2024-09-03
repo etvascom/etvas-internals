@@ -73,7 +73,9 @@ export const RangePicker = ({
     return { momentStart, momentEnd }
   }
 
-  const [{ momentStart, momentEnd }, setDateRange] = useState(() => resetDateRange(value))
+  const [{ momentStart, momentEnd }, setDateRange] = useState(() =>
+    resetDateRange(value)
+  )
 
   useLayoutEffect(() => {
     const listener = event => {
