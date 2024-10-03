@@ -9,7 +9,7 @@ export const Tag = ({ value, disabled, onRemove, ...rest }) => (
     <Typography color='baseWhite' variant='base14Light'>
       {value}
     </Typography>
-    {!disabled && <Icon name='close' size={1} onClick={onRemove} />}
+    {!disabled && <Icon name='close' size='medium' onClick={onRemove} />}
   </Container>
 )
 
