@@ -4,7 +4,7 @@ import { useField, useFormikContext } from 'formik'
 import PropTypes from 'prop-types'
 import { v4 } from 'uuid'
 
-import { Flex, SubdomainInput, Typography } from '@etvas/etvaskit'
+import { Flex, PrefixSuffixInput, Typography } from '@etvas/etvaskit'
 
 import { SubLabel } from './TagInput/SubLabel'
 
@@ -75,7 +75,7 @@ export const IntervalField = ({
       {...props}
     >
       <Flex width={1} justifyContent='space-between' alignItems='flex-end'>
-        <SubdomainInput
+        <PrefixSuffixInput
           id={idLeft}
           label={label}
           disabled={disabled}
@@ -94,7 +94,7 @@ export const IntervalField = ({
         <Typography variant='base12Bold' px={2} mb='14px'>
           {separator}
         </Typography>
-        <SubdomainInput
+        <PrefixSuffixInput
           id={idRight}
           disabled={disabled}
           type='number'

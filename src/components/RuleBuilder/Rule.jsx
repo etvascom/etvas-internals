@@ -9,7 +9,7 @@ import {
   DropdownField,
   Flex,
   Icon,
-  SubdomainField,
+  PrefixSuffixField,
   TextField
 } from '@etvas/etvaskit'
 
@@ -142,7 +142,7 @@ export const Rule = ({
           showTooltip={!!value.tooltip || !!value.renderTooltip}
         />
       ) : isSuffixType ? (
-        <SubdomainField
+        <PrefixSuffixField
           {...operatorValueWidthProps}
           disabled={disabled}
           name={`${name}.${type}Value`}
