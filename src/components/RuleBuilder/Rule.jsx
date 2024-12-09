@@ -102,7 +102,19 @@ export const Rule = ({
       />
       {operator.renderTooltip && operator.renderTooltip(operatorValue)}
 
-      {value.type === 'searchMultiple' ? (
+      {value.type === 'search' ? (
+        <DropdownField
+          {...operatorValueWidthProps}
+          disabled={disabled}
+          options={value.options}
+          name={`${name}.${type}Value`}
+          placeholder={valuePlaceholder}
+          label={value.label}
+          required
+          id={typeConfig.value.id}
+          showTooltip={!!value.tooltip || !!value.renderTooltip}
+        />
+      ) : value.type === 'searchMultiple' ? (
         <DropdownField
           {...operatorValueWidthProps}
           disabled={disabled}
