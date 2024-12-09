@@ -138,11 +138,14 @@ const combinedRuleOptions = {
       validate: yup.string().required(),
       options: [{ label: 'is one of', value: '~=' }]
     },
-    value: {
-      label: 'Category',
-      type: 'searchMultiple',
-      options: getCategoryOptions(),
-      validate: yup.array().of(yup.string()).required()
+
+    operatorValue: {
+      '~=': {
+        label: 'Category',
+        type: 'searchMultiple',
+        options: getCategoryOptions(),
+        validate: yup.array().of(yup.string()).required()
+      }
     }
   }
 }
@@ -220,7 +223,8 @@ export const RuleBuilderExample = () => (
       validationSchema={createValidationSchema(
         combinedRuleOptions,
         absoluteRuleOptions
-      )}>
+      )}
+    >
       <RuleBuilder
         name='cashbacks'
         label='CASHBACK CONDITIONS'
@@ -309,7 +313,8 @@ export const RuleBuilderDisabled = () => (
           combinedRuleOptions,
           absoluteRuleOptions
         )
-      }}>
+      }}
+    >
       <RuleBuilder
         name='cashbacks'
         label='CASHBACK CONDITIONS'
