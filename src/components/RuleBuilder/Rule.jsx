@@ -74,6 +74,14 @@ export const Rule = ({
     onChangeRuleValue()
   }
 
+  const typeValue = useMemo(
+    () =>
+      typeof value.type === 'function'
+        ? value.type({ operatorValue, type })
+        : value.type,
+    [value, operatorValue, type]
+  )
+
   return (
     <Flex width={1} justifyContent='space-between' alignItems='flex-start'>
       <DropdownField
@@ -102,7 +110,7 @@ export const Rule = ({
       />
       {operator.renderTooltip && operator.renderTooltip(operatorValue)}
 
-      {value.type === 'searchMultiple' ? (
+      {typeValue === 'searchMultiple' ? (
         <DropdownField
           {...operatorValueWidthProps}
           disabled={disabled}
@@ -115,7 +123,7 @@ export const Rule = ({
           id={typeConfig.value.id}
           showTooltip={!!value.tooltip || !!value.renderTooltip}
         />
-      ) : value.type === 'tag' ? (
+      ) : typeValue === 'tag' ? (
         <TagField
           {...operatorValueWidthProps}
           disabled={disabled}
@@ -128,7 +136,7 @@ export const Rule = ({
           id={typeConfig.value.id}
           showTooltip={!!value.tooltip || !!value.renderTooltip}
         />
-      ) : value.type === 'between' ? (
+      ) : typeValue === 'between' ? (
         <IntervalField
           {...operatorValueWidthProps}
           disabled={disabled}
@@ -146,7 +154,7 @@ export const Rule = ({
           {...operatorValueWidthProps}
           disabled={disabled}
           name={`${name}.${type}Value`}
-          type={value.type}
+          type={typeValue}
           label={value.label}
           placeholder={valuePlaceholder}
           suffix={value.suffix}
@@ -161,7 +169,7 @@ export const Rule = ({
           {...operatorValueWidthProps}
           disabled={disabled}
           name={`${name}.${type}Value`}
-          type={value.type}
+          type={typeValue}
           label={value.label}
           placeholder={valuePlaceholder}
           suffix={value.suffix}
