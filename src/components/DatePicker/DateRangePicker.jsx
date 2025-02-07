@@ -3,6 +3,7 @@ import { useLayoutEffect, useMemo, useRef, useState } from 'react'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import { css } from 'styled-components'
+import { v4 } from 'uuid'
 
 import { Flex, Icon, Typography, styled } from '@etvas/etvaskit'
 
@@ -11,6 +12,7 @@ import { Years } from './Years'
 import { COMMON_FORMAT } from './constants'
 
 export const DateRangePicker = ({
+  id,
   startOfTime,
   endOfTime,
   value,
@@ -27,6 +29,8 @@ export const DateRangePicker = ({
   labelEndDate,
   ...props
 }) => {
+  const inputId = id || v4()
+
   const wrapRef = useRef()
   const [isExpanded, setExpanded] = useState(false)
 
@@ -92,7 +96,8 @@ export const DateRangePicker = ({
     emitChange(null, value)
   }
 
-  const toggleExpanded = () => {
+  const toggleExpanded = event => {
+    event.stopPropagation()
     !disabled && setExpanded(!isExpanded)
   }
 
@@ -108,6 +113,8 @@ export const DateRangePicker = ({
           <Typography
             as='label'
             variant='base12Bold'
+            htmlFor={inputId?.toString()}
+            onClick={toggleExpanded}
             color='baseMetal'
             width='fit-content'>
             {label}
@@ -116,6 +123,7 @@ export const DateRangePicker = ({
       )}
       <Wrapper ref={wrapRef}>
         <FakeInput
+          id={inputId}
           onClick={toggleExpanded}
           expanded={isExpanded}
           disabled={disabled}>
@@ -227,6 +235,7 @@ const Wrapper = styled(Flex)`
 `
 
 DateRangePicker.propTypes = {
+  id: PropTypes.string,
   yearDisplayStart: PropTypes.number,
   yearDisplayEnd: PropTypes.number,
   startOfTime: PropTypes.oneOfType([

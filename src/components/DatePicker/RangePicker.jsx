@@ -3,6 +3,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import { css } from 'styled-components'
+import { v4 } from 'uuid'
 
 import {
   Box,
@@ -25,6 +26,7 @@ import {
 } from './constants'
 
 export const RangePicker = ({
+  id,
   multiple,
   startOfTime,
   endOfTime,
@@ -47,6 +49,8 @@ export const RangePicker = ({
   setIsComparing,
   ...props
 }) => {
+  const inputId = id || v4()
+
   const wrapRef = useRef()
   const [isExpanded, setExpanded] = useState(false)
   const [isSettingEnd, setSettingEnd] = useState(false)
@@ -232,7 +236,9 @@ export const RangePicker = ({
     })
   }, [value, compareValue, showCurrentPeriod])
 
-  const toggleExpanded = () => {
+  const toggleExpanded = event => {
+    event.stopPropagation()
+
     if (!value?.start && isExpanded) {
       return
     }
@@ -280,6 +286,8 @@ export const RangePicker = ({
         <Flex mb={1} alignItems='center'>
           <Typography
             as='label'
+            htmlFor={inputId?.toString()}
+            onClick={toggleExpanded}
             variant='base12Bold'
             color='baseMetal'
             width='fit-content'>
@@ -289,6 +297,7 @@ export const RangePicker = ({
       )}
       <Wrapper ref={wrapRef}>
         <FakeInput
+          id={inputId}
           onClick={toggleExpanded}
           expanded={isExpanded}
           disabled={disabled}>
@@ -492,6 +501,7 @@ const CalendarHeading = styled(Flex)`
 `
 
 RangePicker.propTypes = {
+  id: PropTypes.string,
   multiple: PropTypes.bool,
   yearDisplayStart: PropTypes.number,
   yearDisplayEnd: PropTypes.number,
