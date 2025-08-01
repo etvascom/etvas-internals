@@ -52,20 +52,19 @@ const importCombinedRules = (rules, options) =>
   )
 
 const importAbsoluteRules = (rules, options) =>
-  rules.length
-    ? Object.fromEntries(
-        Object.keys(options).map(type => {
-          const { operatorKey, valueKey } = getRuleDetails({ type })
-          const rule = rules.find(rule => rule.keypath === type)
+  Object.fromEntries(
+    Object.keys(options).map(type => {
+      const { operatorKey, valueKey } = getRuleDetails({ type })
+      const rule = rules.find(rule => rule.keypath === type)
 
-          return [
-            uuid(),
-            {
-              type,
-              [operatorKey]: rule?.operator,
-              [valueKey]: rule?.value
-            }
-          ]
-        })
-      )
-    : null
+      return [
+        uuid(),
+        {
+          type,
+          [operatorKey]:
+            rule?.operator ?? options[type].operator.options[0].value,
+          [valueKey]: rule?.value ?? ''
+        }
+      ]
+    })
+  )
