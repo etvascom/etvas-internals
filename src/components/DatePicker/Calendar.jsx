@@ -35,7 +35,10 @@ export const Calendar = ({
   const [isYearsShown, setYearsShown] = useState(false)
   const [yearPanel, setYearPanel] = useState(null)
 
-  const momentDate = useMemo(() => moment(browseDate || value), [browseDate, value])
+  const momentDate = useMemo(
+    () => moment(browseDate || value),
+    [browseDate, value]
+  )
   const momentValue = useMemo(() => moment(value), [value])
 
   const past = useMemo(
@@ -264,7 +267,7 @@ export const Calendar = ({
       )}
       <Flex width='224px' mb={1}>
         {monthSelector && (
-          <DropTrigger onClick={toggleMonths} mx={1}>
+          <DropTrigger onClick={stopPropagation(toggleMonths)} mx={1}>
             <Flex alignItems='center'>
               <Typography
                 variant='labelSmallBold'
@@ -282,7 +285,7 @@ export const Calendar = ({
           </DropTrigger>
         )}
         {yearSelector && (
-          <DropTrigger onClick={toggleYears} mx={1}>
+          <DropTrigger onClick={stopPropagation(toggleYears)} mx={1}>
             <Flex alignItems='center'>
               <Typography
                 variant='labelSmallBold'
@@ -301,14 +304,14 @@ export const Calendar = ({
         )}
         {monthNavigation && (
           <MonthNav
-            onClick={() => handleMonthNavigate(-1)}
+            onClick={stopPropagation(() => handleMonthNavigate(-1))}
             disabled={!canNavigateMonth(-1)}>
             <Icon name='chevronLeft' />
           </MonthNav>
         )}
         {monthNavigation && (
           <MonthNav
-            onClick={() => handleMonthNavigate(1)}
+            onClick={stopPropagation(() => handleMonthNavigate(1))}
             disabled={!canNavigateMonth(1)}>
             <Icon name='chevronRight' />
           </MonthNav>
@@ -337,7 +340,7 @@ export const Calendar = ({
           <CellWrapper ratio={1 / 4}>
             <YearCell
               disabled={!canNavigateYear(-10)}
-              onClick={() => handleYearNavigate(-10)}>
+              onClick={stopPropagation(() => handleYearNavigate(-10))}>
               <Icon name='chevronLeft' />
             </YearCell>
           </CellWrapper>
@@ -347,7 +350,7 @@ export const Calendar = ({
                 key={year.key}
                 current={year.current}
                 disabled={!isBetweenYear(year.value)}
-                onClick={() => handleYearChange(year.value)}>
+                onClick={stopPropagation(() => handleYearChange(year.value))}>
                 <Typography
                   variant='default'
                   fontWeight={year.today ? 'bold' : 300}>
@@ -358,7 +361,7 @@ export const Calendar = ({
           ))}
           <YearCell
             disabled={!canNavigateYear(10)}
-            onClick={() => handleYearNavigate(10)}>
+            onClick={stopPropagation(() => handleYearNavigate(10))}>
             <Icon name='chevronRight' />
           </YearCell>
         </ConditionalFlex>
@@ -380,7 +383,7 @@ export const Calendar = ({
           <CellWrapper key={day.key} ratio={1 / 7}>
             <DayCell
               onMouseOver={() => handleHover(day)}
-              onClick={() => handleDayChange(day)}
+              onClick={stopPropagation(() => handleDayChange(day))}
               highlightCurrent={highlightCurrent}
               current={day.current}
               highlight={day.highlight}
@@ -569,4 +572,9 @@ Calendar.defaultProps = {
   highlightCurrent: true,
   highlight: () => false,
   secondaryHighlight: () => false
+}
+
+const stopPropagation = fun => event => {
+  event.stopPropagation()
+  fun && fun()
 }
