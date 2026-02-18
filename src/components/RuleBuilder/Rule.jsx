@@ -55,6 +55,11 @@ export const Rule = ({
     [options, type, operatorValue]
   )
 
+  const isValueDisabled = useMemo(
+    () => disabled || options[type]?.value?.disabled,
+    [options, type, disabled]
+  )
+
   const typeConfig = options[type]
 
   const valuePlaceholder = useMemo(() => value.placeholder, [value])
@@ -105,7 +110,7 @@ export const Rule = ({
       {value.type === 'search' ? (
         <DropdownField
           {...operatorValueWidthProps}
-          disabled={disabled}
+          disabled={isValueDisabled}
           options={value.options}
           name={`${name}.${type}Value`}
           placeholder={valuePlaceholder}
@@ -117,7 +122,7 @@ export const Rule = ({
       ) : value.type === 'searchMultiple' ? (
         <DropdownField
           {...operatorValueWidthProps}
-          disabled={disabled}
+          disabled={isValueDisabled}
           options={value.options}
           name={`${name}.${type}Value`}
           placeholder={valuePlaceholder}
@@ -130,7 +135,7 @@ export const Rule = ({
       ) : value.type === 'tag' ? (
         <TagField
           {...operatorValueWidthProps}
-          disabled={disabled}
+          disabled={isValueDisabled}
           name={`${name}.${type}Value`}
           type='text'
           label={value.label}
@@ -143,7 +148,7 @@ export const Rule = ({
       ) : value.type === 'between' ? (
         <IntervalField
           {...operatorValueWidthProps}
-          disabled={disabled}
+          disabled={isValueDisabled}
           name={`${name}.${type}Value`}
           label={value.label}
           placeholder={valuePlaceholder}
@@ -171,7 +176,7 @@ export const Rule = ({
       ) : (
         <TextField
           {...operatorValueWidthProps}
-          disabled={disabled}
+          disabled={isValueDisabled}
           name={`${name}.${type}Value`}
           type={value.type}
           label={value.label}
@@ -185,7 +190,7 @@ export const Rule = ({
       )}
       {value.tooltip ||
         (value.renderTooltip && value.renderTooltip(fieldValue))}
-      {!disabled && removeRuleIcon ? (
+      {!isValueDisabled && removeRuleIcon ? (
         <Button variant='link' ml={4} mt={6} onClick={onRemove}>
           <Icon name={removeRuleIcon} size='large' />
         </Button>
