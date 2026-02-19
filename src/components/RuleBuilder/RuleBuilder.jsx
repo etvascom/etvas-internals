@@ -25,6 +25,7 @@ export const RuleBuilder = ({
   combinedRuleOptions,
   absoluteRuleOptions,
   hideAdvancedTargeting,
+  warningComponent,
   ...rest
 }) => {
   // eslint-disable-next-line no-unused-vars
@@ -154,6 +155,8 @@ export const RuleBuilder = ({
         {label}
       </Typography>
 
+      {warningComponent}
+
       {data.groups?.map((group, index) => (
         <Box key={group.id}>
           <Group
@@ -190,8 +193,7 @@ export const RuleBuilder = ({
           variant='link'
           mt={4}
           disabled={disabled}
-          onClick={handleAddGroup}
-        >
+          onClick={handleAddGroup}>
           {addGroupLabel}
         </Button>
       )}
@@ -248,7 +250,8 @@ RuleBuilder.propTypes = {
   removeRuleIcon: PropTypes.string.isRequired,
   combinedRuleOptions: ruleOptionsProps,
   absoluteRuleOptions: ruleOptionsProps,
-  hideAdvancedTargeting: PropTypes.bool
+  hideAdvancedTargeting: PropTypes.bool,
+  warningComponent: PropTypes.node
 }
 
 RuleBuilder.defaultProps = {
