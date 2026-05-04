@@ -24,7 +24,7 @@ const Grid = ({
   forceExtended,
   busy,
   name,
-  columns,
+  columns: allColumns,
   items,
   emptyGridText,
   hasHeader,
@@ -37,8 +37,40 @@ const Grid = ({
   busyVariant,
   busySkeletonNumber,
   allowMultipleExtendedItems,
+  columnVisibilityStorageKey,
+  columnVisibilityStorage,
+  columnVisibilityDefaultColumns,
+  columnVisibilityNonHidableColumns,
   ...props
 }) => {
+  const visibleColumns = useMemo(() => {
+    if (columnVisibilityStorageKey) {
+      const storedVisibility = columnVisibilityStorage.getItem(
+        columnVisibilityStorageKey
+      )
+
+      if (storedVisibility) {
+        return JSON.parse(storedVisibility)
+      }
+    }
+
+    return columnVisibilityDefaultColumns
+  }, [
+    columnVisibilityDefaultColumns,
+    columnVisibilityStorage,
+    columnVisibilityStorageKey
+  ])
+
+  const columns = useMemo(
+    () =>
+      allColumns.filter(
+        column =>
+          columnVisibilityNonHidableColumns.includes(column.name) ||
+          visibleColumns.includes(column.name)
+      ),
+    [allColumns, columnVisibilityNonHidableColumns, visibleColumns]
+  )
+
   const [sortConfig, setSortConfig] = useState(() => {
     if (initialSort?.by) {
       const asc = initialSort.asc === true || initialSort.asc === undefined
@@ -303,7 +335,14 @@ Grid.propTypes = {
   isDisabledRow: PropTypes.func,
   busySkeletonNumber: PropTypes.number,
   rowColor: PropTypes.func,
-  allowMultipleExtendedItems: PropTypes.bool
+  allowMultipleExtendedItems: PropTypes.bool,
+  columnVisibilityStorageKey: PropTypes.string,
+  columnVisibilityStorage: PropTypes.shape({
+    getItem: PropTypes.func.isRequired,
+    setItem: PropTypes.func.isRequired
+  }),
+  columnVisibilityDefaultColumns: PropTypes.arrayOf(PropTypes.string),
+  columnVisibilityNonHidableColumns: PropTypes.arrayOf(PropTypes.string)
 }
 
 Grid.defaultProps = {
@@ -314,7 +353,8 @@ Grid.defaultProps = {
   isDisabledRow: () => false,
   busySkeletonNumber: 5,
   rowColor: item => 'baseWhite',
-  allowMultipleExtendedItems: false
+  allowMultipleExtendedItems: false,
+  columnVisibilityStorage: window.localStorage
 }
 
 export default Grid
