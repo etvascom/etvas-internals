@@ -12,6 +12,7 @@ import styled from 'styled-components'
 
 import { Box, Flex, Icon, Typography, themed } from '@etvas/etvaskit'
 
+import GridColumnVisibilityConfig from './GridColumnVisibilityConfig'
 import GridFooter from './GridFooter'
 import Header from './GridHeader'
 import { LoadingGrid } from './LoadingGrid'
@@ -43,7 +44,9 @@ const Grid = ({
   columnVisibilityNonHidableColumns,
   ...props
 }) => {
-  const visibleColumns = useMemo(() => {
+  const hasColumnVisibilityConfig = !!columnVisibilityStorageKey
+
+  const [visibleColumns, setVisibleColumns] = useState(() => {
     if (columnVisibilityStorageKey) {
       const storedVisibility = columnVisibilityStorage.getItem(
         columnVisibilityStorageKey
@@ -55,21 +58,38 @@ const Grid = ({
     }
 
     return columnVisibilityDefaultColumns
-  }, [
-    columnVisibilityDefaultColumns,
-    columnVisibilityStorage,
-    columnVisibilityStorageKey
-  ])
+  })
 
   const columns = useMemo(
     () =>
       allColumns.filter(
         column =>
+          !columnVisibilityNonHidableColumns ||
           columnVisibilityNonHidableColumns.includes(column.name) ||
           visibleColumns.includes(column.name)
       ),
     [allColumns, columnVisibilityNonHidableColumns, visibleColumns]
   )
+
+  const visibleConfigurableColumns = useMemo(
+    () =>
+      allColumns.filter(
+        column =>
+          columnVisibilityNonHidableColumns &&
+          !columnVisibilityNonHidableColumns.includes(column.name) &&
+          !!column.name
+      ),
+    [allColumns, columnVisibilityNonHidableColumns]
+  )
+
+  const handleGridColumnVisibilityChange = updatedColumns => {
+    setVisibleColumns(updatedColumns)
+
+    columnVisibilityStorage.setItem(
+      columnVisibilityStorageKey,
+      JSON.stringify(updatedColumns)
+    )
+  }
 
   const [sortConfig, setSortConfig] = useState(() => {
     if (initialSort?.by) {
@@ -212,11 +232,21 @@ const Grid = ({
   return (
     <>
       <Box mb={6} {...props}>
+        {hasColumnVisibilityConfig && <Box mb={4}></Box>}
         {hasHeader && (
           <Header
             columns={gridColumns}
             toggleSort={toggleSort}
             sortConfig={sortConfig}
+            visibilityConfigComponent={
+              hasColumnVisibilityConfig && (
+                <GridColumnVisibilityConfig
+                  columns={visibleConfigurableColumns}
+                  visibleColumns={visibleColumns}
+                  onChange={handleGridColumnVisibilityChange}
+                />
+              )
+            }
           />
         )}
         {busy ? (
