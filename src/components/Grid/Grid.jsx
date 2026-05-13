@@ -42,6 +42,7 @@ const Grid = ({
   columnVisibilityStorage,
   columnVisibilityDefaultColumns,
   columnVisibilityNonHidableColumns,
+  columnVisibilityConfigHidden,
   ...props
 }) => {
   const hasColumnVisibilityConfig = !!columnVisibilityStorageKey
@@ -239,7 +240,8 @@ const Grid = ({
             toggleSort={toggleSort}
             sortConfig={sortConfig}
             visibilityConfigComponent={
-              hasColumnVisibilityConfig && (
+              hasColumnVisibilityConfig &&
+              !columnVisibilityConfigHidden && (
                 <GridColumnVisibilityConfig
                   columns={visibleConfigurableColumns}
                   visibleColumns={visibleColumns}
@@ -372,7 +374,8 @@ Grid.propTypes = {
     setItem: PropTypes.func.isRequired
   }),
   columnVisibilityDefaultColumns: PropTypes.arrayOf(PropTypes.string),
-  columnVisibilityNonHidableColumns: PropTypes.arrayOf(PropTypes.string)
+  columnVisibilityNonHidableColumns: PropTypes.arrayOf(PropTypes.string),
+  columnVisibilityConfigHidden: PropTypes.bool
 }
 
 Grid.defaultProps = {
@@ -384,7 +387,8 @@ Grid.defaultProps = {
   busySkeletonNumber: 5,
   rowColor: item => 'baseWhite',
   allowMultipleExtendedItems: false,
-  columnVisibilityStorage: window.localStorage
+  columnVisibilityStorage: window.localStorage,
+  columnVisibilityConfigHidden: false
 }
 
 export default Grid
