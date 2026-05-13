@@ -12,6 +12,7 @@ import styled from 'styled-components'
 
 import { Box, Flex, Icon, Typography, themed } from '@etvas/etvaskit'
 
+import GridColumnVisibilityConfig from './GridColumnVisibilityConfig'
 import GridFooter from './GridFooter'
 import Header from './GridHeader'
 import { LoadingGrid } from './LoadingGrid'
@@ -24,7 +25,7 @@ const Grid = ({
   forceExtended,
   busy,
   name,
-  columns,
+  columns: allColumns,
   items,
   emptyGridText,
   hasHeader,
@@ -37,8 +38,59 @@ const Grid = ({
   busyVariant,
   busySkeletonNumber,
   allowMultipleExtendedItems,
+  columnVisibilityStorageKey,
+  columnVisibilityStorage,
+  columnVisibilityDefaultColumns,
+  columnVisibilityNonHidableColumns,
   ...props
 }) => {
+  const hasColumnVisibilityConfig = !!columnVisibilityStorageKey
+
+  const [visibleColumns, setVisibleColumns] = useState(() => {
+    if (columnVisibilityStorageKey) {
+      const storedVisibility = columnVisibilityStorage.getItem(
+        columnVisibilityStorageKey
+      )
+
+      if (storedVisibility) {
+        return JSON.parse(storedVisibility)
+      }
+    }
+
+    return columnVisibilityDefaultColumns
+  })
+
+  const columns = useMemo(
+    () =>
+      allColumns.filter(
+        column =>
+          !columnVisibilityNonHidableColumns ||
+          columnVisibilityNonHidableColumns.includes(column.name) ||
+          visibleColumns.includes(column.name)
+      ),
+    [allColumns, columnVisibilityNonHidableColumns, visibleColumns]
+  )
+
+  const visibleConfigurableColumns = useMemo(
+    () =>
+      allColumns.filter(
+        column =>
+          columnVisibilityNonHidableColumns &&
+          !columnVisibilityNonHidableColumns.includes(column.name) &&
+          !!column.name
+      ),
+    [allColumns, columnVisibilityNonHidableColumns]
+  )
+
+  const handleGridColumnVisibilityChange = updatedColumns => {
+    setVisibleColumns(updatedColumns)
+
+    columnVisibilityStorage.setItem(
+      columnVisibilityStorageKey,
+      JSON.stringify(updatedColumns)
+    )
+  }
+
   const [sortConfig, setSortConfig] = useState(() => {
     if (initialSort?.by) {
       const asc = initialSort.asc === true || initialSort.asc === undefined
@@ -180,11 +232,21 @@ const Grid = ({
   return (
     <>
       <Box mb={6} {...props}>
+        {hasColumnVisibilityConfig && <Box mb={4}></Box>}
         {hasHeader && (
           <Header
             columns={gridColumns}
             toggleSort={toggleSort}
             sortConfig={sortConfig}
+            visibilityConfigComponent={
+              hasColumnVisibilityConfig && (
+                <GridColumnVisibilityConfig
+                  columns={visibleConfigurableColumns}
+                  visibleColumns={visibleColumns}
+                  onChange={handleGridColumnVisibilityChange}
+                />
+              )
+            }
           />
         )}
         {busy ? (
@@ -303,7 +365,14 @@ Grid.propTypes = {
   isDisabledRow: PropTypes.func,
   busySkeletonNumber: PropTypes.number,
   rowColor: PropTypes.func,
-  allowMultipleExtendedItems: PropTypes.bool
+  allowMultipleExtendedItems: PropTypes.bool,
+  columnVisibilityStorageKey: PropTypes.string,
+  columnVisibilityStorage: PropTypes.shape({
+    getItem: PropTypes.func.isRequired,
+    setItem: PropTypes.func.isRequired
+  }),
+  columnVisibilityDefaultColumns: PropTypes.arrayOf(PropTypes.string),
+  columnVisibilityNonHidableColumns: PropTypes.arrayOf(PropTypes.string)
 }
 
 Grid.defaultProps = {
@@ -314,7 +383,8 @@ Grid.defaultProps = {
   isDisabledRow: () => false,
   busySkeletonNumber: 5,
   rowColor: item => 'baseWhite',
-  allowMultipleExtendedItems: false
+  allowMultipleExtendedItems: false,
+  columnVisibilityStorage: window.localStorage
 }
 
 export default Grid

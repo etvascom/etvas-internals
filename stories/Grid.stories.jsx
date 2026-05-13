@@ -1,3 +1,5 @@
+import { useMemo } from 'react'
+
 import { action } from '@storybook/addon-actions'
 
 import { Box, Button } from '@etvas/etvaskit'
@@ -22,8 +24,7 @@ const getExampleGrid = () => ({
       header: 'Name',
       render: item => (
         <GridMainComponent
-          dotColor={item.name.length % 2 ? 'positive' : 'error'}
-        >
+          dotColor={item.name.length % 2 ? 'positive' : 'error'}>
           {item.name}
         </GridMainComponent>
       ),
@@ -82,8 +83,7 @@ const getGridLongHeader = () => ({
       header: 'Lorem ipsum dolor sit amet consectetur adipisicing.',
       render: item => (
         <GridMainComponent
-          dotColor={item.name.length % 2 ? 'positive' : 'error'}
-        >
+          dotColor={item.name.length % 2 ? 'positive' : 'error'}>
           {item.name}
         </GridMainComponent>
       ),
@@ -269,5 +269,82 @@ export const MultipleForceExtended = args => {
       allowMultipleExtendedItems
       forceExtended={items.map(({ id }) => id)}
     />
+  )
+}
+
+const getGridWithManyColumns = (columnCount = 10) => ({
+  name: 'example-list',
+  extendedField: 'id',
+  renderExtended: ExtendedContent,
+  columns: [
+    {
+      name: 'left-spacing',
+      width: '16px'
+    },
+    ...Array.from({ length: columnCount }, (_, i) => ({
+      name: `column-${i}`,
+      header: `Column ${i}`,
+      attribute: item => item[`value${i}`],
+      sort: `value${i}`,
+      width: '1fr'
+    })),
+    {
+      name: 'right-spacing',
+      width: '16px'
+    }
+  ]
+})
+
+const getItemsWithManyColumns = (columnCount = 10) =>
+  Array.from({ length: 15 }, (_, i) => ({
+    id: `${i}`,
+    ...Object.fromEntries(
+      Array.from({ length: columnCount }, (_, j) => [
+        `value${j}`,
+        Math.floor(Math.random() * 1000)
+      ])
+    )
+  }))
+
+export const GridWithManyColumnsAndColumnVisibilityConfig = () => {
+  const columnCount = 15
+
+  const grid = getGridWithManyColumns(columnCount)
+  const items = getItemsWithManyColumns(columnCount)
+
+  const defaultVisibleColumns = useMemo(
+    () =>
+      grid.columns
+        .filter(
+          ({ name }, index) =>
+            index > 5 && index < 10 && name.startsWith('column-')
+        )
+        .map(column => column.name),
+    [grid.columns]
+  )
+
+  const columnVisibilityNonHidableColumns = useMemo(
+    () => [
+      ...grid.columns
+        .filter(({ name }, index) => index < 3 && name.startsWith('column-'))
+        .map(column => column.name),
+      'left-spacing',
+      'right-spacing'
+    ],
+    [grid.columns]
+  )
+
+  return (
+    <Box m={10}>
+      <Grid
+        name={grid.name}
+        columns={grid.columns}
+        items={items}
+        columnVisibilityStorageKey='grid-with-many-columns-visibility'
+        columnVisibilityStorage={window.localStorage}
+        columnVisibilityNonHidableColumns={columnVisibilityNonHidableColumns}
+        columnVisibilityDefaultColumns={defaultVisibleColumns}
+      />
+    </Box>
   )
 }

@@ -38,7 +38,12 @@ const HeaderCell = ({ column, sortType }) => (
   </StyledWrapper>
 )
 
-const Header = ({ columns, toggleSort, sortConfig }) => {
+const Header = ({
+  columns,
+  toggleSort,
+  sortConfig,
+  visibilityConfigComponent
+}) => {
   const gridTemplateColumns = useMemo(
     () => columns.map(column => column.width).join(' '),
     [columns]
@@ -52,15 +57,14 @@ const Header = ({ columns, toggleSort, sortConfig }) => {
   }
 
   return (
-    <StyledRow gridTemplateColumns={gridTemplateColumns}>
+    <StyledRow gridTemplateColumns={gridTemplateColumns} position='relative'>
       {columns.map(column => (
         <Fragment key={column.name}>
           {column.sort ? (
             <Touchable
               key={`header-${column.name}`}
               onClick={() => toggleSort(column.sort)}
-              minWidth={0}
-            >
+              minWidth={0}>
               <HeaderCell column={column} sortType={getSortType(column)} />
             </Touchable>
           ) : (
@@ -72,6 +76,7 @@ const Header = ({ columns, toggleSort, sortConfig }) => {
           )}
         </Fragment>
       ))}
+      {visibilityConfigComponent && visibilityConfigComponent}
     </StyledRow>
   )
 }
@@ -114,7 +119,8 @@ Header.propTypes = {
     PropTypes.shape({
       name: PropTypes.string
     })
-  )
+  ),
+  visibilityConfigComponent: PropTypes.node
 }
 
 export default Header
